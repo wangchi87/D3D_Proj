@@ -6,6 +6,11 @@ cbuffer ConstantBuffer: register( b0 )
 	matrix Projection;
 };
 
+cbuffer ConstantBuffer: register( b1 )
+{
+	float4 MyColor;
+};
+
 struct VS_INPUT
 {
 	float4 Pos: POSITION;
@@ -24,10 +29,11 @@ PS_INPUT VS ( VS_INPUT input )
 	
 	output.Pos = input.Pos;
 	output.Color = input.Color;
+
 	return output;
 }
 
 float4 PS ( PS_INPUT input ) : SV_Target
 {
-	return input.Color;
+	return MyColor;
 }

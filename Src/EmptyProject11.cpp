@@ -65,6 +65,8 @@ HRESULT CALLBACK OnD3D11CreateDevice ( ID3D11Device* pd3dDevice , const DXGI_SUR
 	dc.InitVertexData ();
 
 	dc.InitIndexBuffer ();
+
+	dc.InitConstBuffer ();
 	/*
 	D3D11_BUFFER_DESC bd;
 	ZeroMemory ( &bd , sizeof ( bd ) );

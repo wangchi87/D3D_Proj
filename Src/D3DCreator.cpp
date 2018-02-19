@@ -85,7 +85,7 @@ HRESULT D3DCreator::InitVertexLayout ()
 	D3D11_INPUT_ELEMENT_DESC layout [] =
 	{
 		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-	{ "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		{ "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 	};
 	UINT numElements = ARRAYSIZE ( layout );
 
@@ -242,20 +242,24 @@ HRESULT D3DCreator::InitIndexBuffer ()
 
 HRESULT D3DCreator::InitConstBuffer ()
 {
-	/*HRESULT hr = S_OK;
+	HRESULT hr = S_OK;
 
 	D3D11_BUFFER_DESC bd;
 	ZeroMemory ( &bd , sizeof ( bd ) );
-	bd.Usage = D3D11_USAGE_DYNAMIC;
-	bd.ByteWidth = sizeof ( ConstantBuffer );
-	bd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+	bd.Usage = D3D11_USAGE_DEFAULT;
+	bd.ByteWidth = sizeof ( ConstBufColor );
+	bd.CPUAccessFlags = 0;
 	bd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
 	hr = pd3dDevice->CreateBuffer ( &bd , nullptr , &g_pConstantBuffer );
 	if (FAILED ( hr ))
 	{
 		return hr;
 	}
-*/
+
+	ConstBufColor cbc;
+	cbc.Color = XMFLOAT4 ( 0.9f , 0.07f , 0.2f , 1.0f );
+	pd3dImmediateContext->UpdateSubresource ( g_pConstantBuffer , 0 , nullptr , &cbc , 0 , 0 );
+
 	return S_OK;
 }
 
@@ -270,8 +274,10 @@ void D3DCreator::RenderScene ( double fTime , float fElapsedTime , void* pUserCo
 
 
 	pd3dImmediateContext->VSSetShader ( g_pVertexShader , nullptr , 0 );
-	//pd3dImmediateContext->VSGetConstantBuffers ( 0 , 1 , &g_pConstantBuffer );
+	//pd3dImmediateContext->VSSetConstantBuffers ( 1 , 1 , &g_pConstantBuffer );	
 	pd3dImmediateContext->PSSetShader ( g_pPixelShader , nullptr , 0 );
+	pd3dImmediateContext->PSSetConstantBuffers ( 1 , 1 , &g_pConstantBuffer );
+	//
 	pd3dImmediateContext->DrawIndexed ( 6 , 0 , 0 );
 }
 
