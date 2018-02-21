@@ -13,7 +13,7 @@
 
 
 // global variables
-D3DCreator dc;
+MyD3DCreator dc;
 
 //ID3D11VertexShader*			g_pVertexShader = nullptr;
 //ID3D11PixelShader*			g_pPixelShader = nullptr;
@@ -54,19 +54,8 @@ HRESULT CALLBACK OnD3D11CreateDevice ( ID3D11Device* pd3dDevice , const DXGI_SUR
 	
 	dc.InitCreator ( pd3dDevice , pBackBufferSurfaceDesc , pUserContext );
 
-	//auto pd3dImmediateContext = dc.GetDeviceContext ();
+	dc.AddResources ();
 
-	dc.InitVertexShader ();
-	
-	dc.InitVertexLayout ();
-
-	dc.InitPixelShader (  );
-	
-	dc.InitVertexData ();
-
-	dc.InitIndexBuffer ();
-
-	dc.InitConstBuffer ();
 	/*
 	D3D11_BUFFER_DESC bd;
 	ZeroMemory ( &bd , sizeof ( bd ) );
@@ -146,7 +135,7 @@ void CALLBACK OnD3D11ReleasingSwapChain( void* pUserContext )
 //--------------------------------------------------------------------------------------
 void CALLBACK OnD3D11DestroyDevice( void* pUserContext )
 {
-	dc.~D3DCreator ();
+	dc.~MyD3DCreator ();
 }
 
 

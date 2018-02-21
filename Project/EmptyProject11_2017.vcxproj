@@ -376,10 +376,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\Src\D3DCreator.cpp" />
+    <ClCompile Include="..\Src\DDSTextureLoader.cpp" />
     <ClCompile Include="..\Src\EmptyProject11.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Src\D3DCreator.h" />
+    <ClInclude Include="..\Src\DDSTextureLoader.h" />
     <ClInclude Include="..\Src\resource.h" />
   </ItemGroup>
   <ItemGroup>
