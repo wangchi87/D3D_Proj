@@ -68,7 +68,7 @@ HRESULT Cube:: InitVertexShader ()
 	if (FAILED ( hr ))
 	{
 		MessageBox ( nullptr ,
-			L"The FX file cannot be compiled.  Please run this executable from the directory that contains the FX file." , L"Error" , MB_OK );
+			L"The Vertex shader FX file cannot be compiled. " , L"Error" , MB_OK );
 		return hr;
 	}
 
@@ -350,21 +350,14 @@ HRESULT Cube::InitConstBufferProjection ()
 		MessageBox ( nullptr , L"Failed to create Constant Buffer." , L"Error" , MB_OK );
 		return hr;
 	}
-	/*
-	ConstantBufferProjection cbp;
-	cbp.World = XMMatrixTranspose ( XMMatrixIdentity () );
 
-	// Initialize the view matrix
-	XMVECTOR Eye = XMVectorSet ( 0.0f , 1.0f , -5.0f , 0.0f );
-	XMVECTOR At = XMVectorSet ( 0.0f , 1.0f , 0.0f , 0.0f );
-	XMVECTOR Up = XMVectorSet ( 0.0f , 1.0f , 0.0f , 0.0f );
-	cbp.View = XMMatrixTranspose ( XMMatrixLookAtLH ( Eye , At , Up ) );
-
-	// Initialize the projection matrix
-	cbp.Projection = XMMatrixTranspose ( XMMatrixPerspectiveFovLH ( XM_PIDIV2 , 800 / ( float ) 600 , 0.01f , 100.0f ) );
-
-	pd3dImmediateContext->UpdateSubresource ( g_pConstantBuffer , 0 , nullptr , &cbp , 0 , 0 );
-	*/
+	bd.ByteWidth = sizeof ( ConstBufMatrix1 );
+	hr = pd3dDevice->CreateBuffer ( &bd , nullptr , &constBufWorld );
+	if (FAILED ( hr ))
+	{
+		MessageBox ( nullptr , L"Failed to create Constant Buffer." , L"Error" , MB_OK );
+		return hr;
+	}
 
 	// Initialize the view matrix
 	XMVECTOR Eye = XMVectorSet ( 0.0f , 0.0f , -10.0f , 0.0f );
@@ -403,7 +396,7 @@ HRESULT Cube::InitTexture ()
 	return S_OK;
 }
 
-void Cube::RenderScene ( double fTime , float fElapsedTime , void* pUserContext )
+void Cube::RenderScene ( double fTime , float fElapsedTime , void* pUserContext, ID3D11Buffer * constBufView , ID3D11Buffer * constBufProj )
 {
 
 	// Update our time
@@ -419,14 +412,14 @@ void Cube::RenderScene ( double fTime , float fElapsedTime , void* pUserContext 
 	
 	//t = sinf ( t );
 
-	/*ConstBufColor cbc;
-	cbc.Color = XMFLOAT4 ( 0.2f, 0.5f,t, 1.0f );
-	pd3dImmediateContext->UpdateSubresource ( g_pConstantBuffer , 0 , nullptr , &cbc , 0 , 0 );*/
 
-	UpdateWVPMatrix ();
+	UpdateWorldMatrix ();
 
 	pd3dImmediateContext->VSSetShader ( g_pVertexShader , nullptr , 0 );
-	pd3dImmediateContext->VSSetConstantBuffers ( 0 , 1 , &g_pConstantBuffer );	
+	pd3dImmediateContext->VSSetConstantBuffers ( 1 , 1 , &constBufWorld );
+	pd3dImmediateContext->VSSetConstantBuffers ( 2 , 1 , &constBufView );
+	pd3dImmediateContext->VSSetConstantBuffers ( 3 , 1 , &constBufProj );
+	//pd3dImmediateContext->VSSetConstantBuffers ( 0 , 1 , &g_pConstantBuffer );	
 	pd3dImmediateContext->PSSetShader ( g_pPixelShader , nullptr , 0 );
 	//pd3dImmediateContext->PSSetConstantBuffers ( 1 , 1 , &g_pConstantBuffer );
 	
@@ -445,6 +438,8 @@ Cube::~Cube ()
 
 	SAFE_RELEASE ( g_pVertexBuffer );
 	SAFE_RELEASE ( g_pIndexBuffer );
+
+	SAFE_RELEASE ( constBufWorld );
 	SAFE_RELEASE ( g_pConstantBuffer );
 
 	SAFE_RELEASE ( g_pTextureRV );

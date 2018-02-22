@@ -1,13 +1,22 @@
-﻿生成启动时间为 2018/2/22 17:28:08。
+﻿生成启动时间为 2018/2/22 18:23:59。
      1>项目“I:\网易\d3d_test\EmptyProject\Project\EmptyProject11_2017.vcxproj”在节点 2 上(Build 个目标)。
      1>InitializeBuildStatus:
          正在对“Debug\EmptyProject11.tlog\unsuccessfulbuild”执行 Touch 任务。
        ClCompile:
-         所有输出均为最新。
+         d:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Tools\MSVC\14.12.25827\bin\HostX86\x86\CL.exe /c /I..\Src /I..\Dependency /ZI /nologo /W4 /WX- /diagnostics:classic /Od /Oi /Oy- /D WIN32 /D _DEBUG /D DEBUG /D PROFILE /D _WINDOWS /D USE_DIRECT3D11_2 /D _WIN32_WINNT=0x0600 /D _UNICODE /D UNICODE /Gm- /EHsc /RTC1 /MDd /GS /arch:SSE2 /fp:fast /Zc:wchar_t /Zc:forScope /Zc:inline /openmp- /Fo"Debug\\" /Fd"Debug\vc141.pdb" /Gd /TP /analyze- /errorReport:prompt /permissive- ..\Src\Camera\FirstPersonCamera.cpp
+         FirstPersonCamera.cpp
        ResourceCompile:
          所有输出均为最新。
        Link:
-         所有输出均为最新。
+         d:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Tools\MSVC\14.12.25827\bin\HostX86\x86\link.exe /ERRORREPORT:PROMPT /OUT:"..\Bin\EmptyProject11.exe" /INCREMENTAL /NOLOGO /LIBPATH:..\Dependency\Lib DXUT.lib DXUTOpt.lib d3dcompiler.lib dxguid.lib winmm.lib comctl32.lib usp10.lib imm32.lib version.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /manifestinput:"d:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Tools\MSVC\14.12.25827\Include\Manifest\PerMonitorHighDPIAware.manifest" /DEBUG /PDB:"..\Bin\EmptyProject11.pdb" /SUBSYSTEM:WINDOWS /LARGEADDRESSAWARE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"..\Bin\EmptyProject11.lib" /MACHINE:X86 /SAFESEH  Debug\EmptyProject11.res
+         Debug\FirstPersonCamera.obj
+         Debug\D3DCreator.obj
+         Debug\EmptyProject11.obj
+         Debug\BaseModel.obj
+         Debug\Mesh.obj
+         Debug\ModelLoader.obj
+         Debug\MyScene.obj
+         Debug\DDSTextureLoader.obj
          EmptyProject11_2017.vcxproj -> I:\网易\d3d_test\EmptyProject\Project\..\Bin\EmptyProject11.exe
        FinalizeBuildStatus:
          正在删除文件“Debug\EmptyProject11.tlog\unsuccessfulbuild”。
@@ -18,4 +27,4 @@
     0 个警告
     0 个错误
 
-已用时间 00:00:00.10
+已用时间 00:00:01.95

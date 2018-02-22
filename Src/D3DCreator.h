@@ -28,6 +28,12 @@ struct ConstBufColor
 	XMFLOAT4 Color;
 };
 
+struct ConstBufMatrix1
+{
+	XMMATRIX Mat;
+};
+
+
 struct ConstantBufferProjection
 {
 	XMMATRIX World;
@@ -53,6 +59,7 @@ class Cube
 	ID3D11Buffer*				g_pVertexBuffer;
 	ID3D11Buffer*				g_pIndexBuffer;
 	ID3D11Buffer*				g_pConstantBuffer;
+	ID3D11Buffer*				constBufWorld;
 
 	UINT						indexNum;
 	
@@ -125,19 +132,25 @@ public:
 		lastMousePosY = yPos;
 	}
 
-	void UpdateWVPMatrix ()
+	void UpdateWorldMatrix ()
 	{
-		ConstantBufferProjection cbp;
-		cbp.World = XMMatrixTranspose ( XMMatrixRotationY ( 0 ) );
 
-		cbp.View = camera.GetTransposedViewMatrix ();
+		ConstBufMatrix1 worldMatrix;
+		worldMatrix.Mat = XMMatrixTranspose ( XMMatrixRotationY ( 0 ) );
+		pd3dImmediateContext->UpdateSubresource ( constBufWorld , 0 , nullptr , &worldMatrix , 0 , 0 );
 
-		float fAspectRatio = pBackBufferSurfaceDesc->Width / ( FLOAT ) pBackBufferSurfaceDesc->Height;
+		//ConstantBufferProjection cbp;
+		//cbp.World = XMMatrixTranspose ( XMMatrixRotationY ( 0 ) );
 
-		// Initialize the projection matrix
-		cbp.Projection = XMMatrixTranspose ( XMMatrixPerspectiveFovLH ( XM_PIDIV4 , fAspectRatio , 0.01f , 100.0f ) );
+		//cbp.View = camera.GetTransposedViewMatrix ();
 
-		pd3dImmediateContext->UpdateSubresource ( g_pConstantBuffer , 0 , nullptr , &cbp , 0 , 0 );
+		//float fAspectRatio = pBackBufferSurfaceDesc->Width / ( FLOAT ) pBackBufferSurfaceDesc->Height;
+
+		//// Initialize the projection matrix
+		//cbp.Projection = XMMatrixTranspose ( XMMatrixPerspectiveFovLH ( XM_PIDIV4 , fAspectRatio , 0.01f , 100.0f ) );
+
+		//pd3dImmediateContext->UpdateSubresource ( g_pConstantBuffer , 0 , nullptr , &cbp , 0 , 0 );
+
 	}
 	void UpdateCameraPos ( char c )
 	{
@@ -155,7 +168,7 @@ public:
 			camera.ProcessKeyboard ( RIGHT , deltaTime );
 	}
 
-	void RenderScene ( double fTime , float fElapsedTime , void* pUserContext );
+	void RenderScene ( double fTime , float fElapsedTime , void* pUserContext, ID3D11Buffer * constBufView , ID3D11Buffer * constBufProj );
 
 	void AddResources ()
 	{

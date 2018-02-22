@@ -3,6 +3,8 @@
 #include "ProjectHeader.h"
 #include "D3DCreator.h"
 
+
+
 class MyScene
 {
 	ID3D11Device*				pd3dDevice;
@@ -11,6 +13,9 @@ class MyScene
 	void*						pUserContext;
 
 	DWORD						dwShaderFlags;
+
+	ID3D11Buffer*				constBufView;
+	ID3D11Buffer*				constBufProj;
 
 	XMMATRIX					g_View;
 	XMMATRIX					g_Projection;
@@ -31,7 +36,12 @@ public:
 		const DXGI_SURFACE_DESC* pBackBufferSurfaceDesc ,
 		void* pUserContext );
 
+	void InitCamera ();
+
+	void UpdateViewProjBuffer ();
+
 	void AddModel ();
+
 	void RenderScene ( double fTime , float fElapsedTime , void* pUserContext );
 
 	void MouseLeave ();

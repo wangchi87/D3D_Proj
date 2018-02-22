@@ -12,8 +12,19 @@ cbuffer ConstantBuffer: register( b0 )
 
 cbuffer ConstantBuffer: register( b1 )
 {
-	float4 MyColor;
+	matrix WorldMatrix;
 };
+
+cbuffer ConstantBuffer: register( b2 )
+{
+	matrix ViewMatrix;
+};
+
+cbuffer ConstantBuffer: register( b3 )
+{
+	matrix ProjectionMatrix;
+};
+
 
 struct VS_INPUT
 {
@@ -33,9 +44,14 @@ PS_INPUT VS ( VS_INPUT input )
 {
 	PS_INPUT output = ( PS_INPUT ) 0;
 	
-	output.Pos = mul( input.Pos, World);
-	output.Pos = mul ( output.Pos , View );
-	output.Pos = mul ( output.Pos , Projection );
+	//output.Pos = mul( input.Pos, World);
+	//output.Pos = mul ( output.Pos , View );
+	//output.Pos = mul ( output.Pos , Projection );
+
+	output.Pos = mul ( input.Pos , WorldMatrix );
+	output.Pos = mul ( output.Pos , ViewMatrix );
+	output.Pos = mul ( output.Pos , ProjectionMatrix );
+
 	output.Color = input.Color;
 	output.Tex = input.Tex;
 	return output;

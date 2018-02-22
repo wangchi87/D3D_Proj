@@ -65,7 +65,6 @@ XMMATRIX FirstPersonCamera::GetTransposedViewMatrix ()
 
 	XMVECTOR At = Position + Front;
 
-	// we use RH here ...
 	return XMMatrixTranspose ( XMMatrixLookAtLH ( Position ,At , Up ) );
 	//return glm::lookAt ( Position , Position + Front , Up );
 }
@@ -81,9 +80,9 @@ void FirstPersonCamera::ProcessKeyboard ( Camera_Movement direction , float delt
 	if (direction == BACKWARD)
 		Position -= Front * velocity;
 	if (direction == LEFT)
-		Position -= Right * velocity;
-	if (direction == RIGHT)
 		Position += Right * velocity;
+	if (direction == RIGHT)
+		Position -= Right * velocity;
 }
 
 // Processes input received from a mouse input system. Expects the offset value in both the x and y direction.
