@@ -1,9 +1,7 @@
 #pragma once
 
 #include "ProjectHeader.h"
-#include "D3DCreator.h"
-
-
+#include "Cube.h"
 
 class MyScene
 {
@@ -26,7 +24,7 @@ class MyScene
 	UINT						lastMousePosX;
 	UINT						lastMousePosY;
 
-	vector<Cube*>				models;
+	vector<BaseModel*>				models;
 
 public:
 	MyScene ();

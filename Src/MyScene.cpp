@@ -5,8 +5,7 @@
 MyScene::MyScene ()
 {
 	firstMouseEntry = true;
-	lastFrameTime = 0;
-
+	lastFrameTime = DXUTGetTime();
 }
 
 
@@ -15,11 +14,11 @@ MyScene::~MyScene ()
 	// release object
 	for (auto i = 0; i < models.size (); i++)
 	{
-		models[ i ]->~Cube ();
+		models[ i ]->Release();
 	}
 
 	// empty vector
-	for (vector<Cube *>::iterator it = models.begin (); it != models.end (); it++)
+	for (vector<BaseModel *>::iterator it = models.begin (); it != models.end (); it++)
 		if (NULL != *it)
 		{
 			delete *it;
@@ -94,7 +93,7 @@ void MyScene::UpdateViewProjBuffer ()
 
 void MyScene::AddModel ()
 {
-	Cube *myCube = new Cube( pd3dDevice , pBackBufferSurfaceDesc , pUserContext );
+	BaseModel *myCube = new Cube( pd3dDevice , pBackBufferSurfaceDesc , pUserContext );
 	myCube->AddResources ();
 	models.push_back ( myCube );
 }
@@ -119,21 +118,12 @@ void MyScene::RenderScene ( double fTime , float fElapsedTime , void* pUserConte
 
 void MyScene::MouseLeave ()
 {
-	for (auto i = 0; i < models.size (); i++)
-	{
-		models[ i ]->MouseLeave();
-	}
 
 	firstMouseEntry = true;
 }
 
 void MyScene::UpdateCameraPos ( char c )
 {
-
-	for (auto i = 0; i < models.size (); i++)
-	{
-		models[ i ]->UpdateCameraPos (c);
-	}
 
 	float currentFrame = DXUTGetTime ();
 	float deltaTime = currentFrame - lastFrameTime;
@@ -151,10 +141,7 @@ void MyScene::UpdateCameraPos ( char c )
 
 void MyScene::UpdateMousePos ( int xPos , int yPos )
 {
-	for (auto i = 0; i < models.size (); i++)
-	{
-		models[ i ]->UpdateMousePos (xPos,yPos);
-	}
+	
 
 	if (firstMouseEntry)
 	{

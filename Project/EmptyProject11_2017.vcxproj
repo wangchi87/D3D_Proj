@@ -376,7 +376,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\Src\Camera\FirstPersonCamera.cpp" />
-    <ClCompile Include="..\Src\D3DCreator.cpp" />
+    <ClCompile Include="..\Src\Cube.cpp" />
     <ClCompile Include="..\Src\EmptyProject11.cpp" />
     <ClCompile Include="..\Src\Model\BaseModel.cpp" />
     <ClCompile Include="..\Src\Model\Mesh.cpp" />
@@ -386,7 +386,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Src\Camera\FirstPersonCamera.h" />
-    <ClInclude Include="..\Src\D3DCreator.h" />
+    <ClInclude Include="..\Src\Cube.h" />
     <ClInclude Include="..\Src\Model\BaseModel.h" />
     <ClInclude Include="..\Src\Model\Mesh.h" />
     <ClInclude Include="..\Src\Model\ModelLoader.h" />

@@ -8,7 +8,6 @@
 
 //#pragma comment( linker, "/subsystem:\"console\" /entry:\"WinMainCRTStartup\"")  
 
-#include "D3DCreator.h"
 #include "MyScene.h"
 
 #include <Windowsx.h>

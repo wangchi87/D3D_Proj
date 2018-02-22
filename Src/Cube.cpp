@@ -1,63 +1,5 @@
-#include "D3DCreator.h"
+#include "Cube.h"
 
-
-
-void Cube::InitCreator ( ID3D11Device * d3dDevice , const DXGI_SURFACE_DESC * BackBufferSurfaceDesc , void * UserContext )
-{
-	firstMouseEntry = true;
-	indexNum = 0;
-	lastFrameTime = DXUTGetTime ();
-
-	pd3dImmediateContext = DXUTGetD3D11DeviceContext ();
-	dwShaderFlags = D3DCOMPILE_ENABLE_STRICTNESS;
-	this->pd3dDevice = d3dDevice;
-	this->pBackBufferSurfaceDesc = BackBufferSurfaceDesc;
-	this->pUserContext = UserContext;
-
-#ifdef DEBUG
-	dwShaderFlags |= D3DCOMPILE_DEBUG;
-	dwShaderFlags |= D3DCOMPILE_SKIP_OPTIMIZATION;
-#endif // DEBUG
-}
-
-Cube::Cube ( ID3D11Device* pd3dDevice )
-{
-	firstMouseEntry = true;
-	indexNum = 0;
-	lastFrameTime = DXUTGetTime ();
-
-	pd3dImmediateContext = DXUTGetD3D11DeviceContext ();
-	dwShaderFlags = D3DCOMPILE_ENABLE_STRICTNESS;
-	this->pd3dDevice = pd3dDevice;
-
-#ifdef DEBUG
-	dwShaderFlags |= D3DCOMPILE_DEBUG;
-	dwShaderFlags |= D3DCOMPILE_SKIP_OPTIMIZATION;
-#endif // DEBUG
-
-}
-
-
-Cube::Cube ( ID3D11Device* pd3dDevice, 
-						const DXGI_SURFACE_DESC* pBackBufferSurfaceDesc,
-						void* pUserContext )
-{
-	firstMouseEntry = true;
-	indexNum = 0;
-	lastFrameTime = DXUTGetTime ();
-
-	pd3dImmediateContext = DXUTGetD3D11DeviceContext ();
-	dwShaderFlags = D3DCOMPILE_ENABLE_STRICTNESS;
-	this->pd3dDevice = pd3dDevice;
-	this->pBackBufferSurfaceDesc = pBackBufferSurfaceDesc;
-	this->pUserContext = pUserContext;
-
-#ifdef DEBUG
-	dwShaderFlags |= D3DCOMPILE_DEBUG;
-	dwShaderFlags |= D3DCOMPILE_SKIP_OPTIMIZATION;
-#endif // DEBUG
-
-}
 
 HRESULT Cube:: InitVertexShader ()
 {
@@ -283,13 +225,13 @@ HRESULT Cube::InitIndexBuffer ()
 
 	// *********** change this ************
 	WORD *indices = cubeIndices;
-	indexNum = ARRAYSIZE ( cubeIndices );
+	vertexIndicesNum = ARRAYSIZE ( cubeIndices );
 	// *********** change this ************
 
 	D3D11_BUFFER_DESC bd;
 	ZeroMemory ( &bd , sizeof ( bd ) );
 	bd.Usage = D3D11_USAGE_DEFAULT;
-	bd.ByteWidth = sizeof ( WORD ) * indexNum;
+	bd.ByteWidth = sizeof ( WORD ) * vertexIndicesNum;
 	bd.BindFlags = D3D11_BIND_INDEX_BUFFER;
 	bd.CPUAccessFlags = 0;
 
@@ -310,47 +252,15 @@ HRESULT Cube::InitIndexBuffer ()
 	return S_OK;
 }
 
-HRESULT Cube::InitConstBufferColor ()
+HRESULT Cube::InitConstBufferWorld ()
 {
 	HRESULT hr = S_OK;
 
 	D3D11_BUFFER_DESC bd;
 	ZeroMemory ( &bd , sizeof ( bd ) );
 	bd.Usage = D3D11_USAGE_DEFAULT;
-	bd.ByteWidth = sizeof ( ConstBufColor );
 	bd.CPUAccessFlags = 0;
 	bd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-	hr = pd3dDevice->CreateBuffer ( &bd , nullptr , &g_pConstantBuffer );
-	if (FAILED ( hr ))
-	{
-		MessageBox ( nullptr , L"Failed to create Constant Buffer." , L"Error" , MB_OK );
-		return hr;
-	}
-
-	ConstBufColor cbc;
-	cbc.Color = XMFLOAT4 ( 0.9f , 0.07f , 0.2f , 1.0f );
-	pd3dImmediateContext->UpdateSubresource ( g_pConstantBuffer , 0 , nullptr , &cbc , 0 , 0 );
-
-	return S_OK;
-}
-
-HRESULT Cube::InitConstBufferProjection ()
-{
-	HRESULT hr = S_OK;
-
-	D3D11_BUFFER_DESC bd;
-	ZeroMemory ( &bd , sizeof ( bd ) );
-	bd.Usage = D3D11_USAGE_DEFAULT;
-	bd.ByteWidth = sizeof ( ConstantBufferProjection );
-	bd.CPUAccessFlags = 0;
-	bd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-	hr = pd3dDevice->CreateBuffer ( &bd , nullptr , &g_pConstantBuffer );
-	if (FAILED ( hr ))
-	{
-		MessageBox ( nullptr , L"Failed to create Constant Buffer." , L"Error" , MB_OK );
-		return hr;
-	}
-
 	bd.ByteWidth = sizeof ( ConstBufMatrix1 );
 	hr = pd3dDevice->CreateBuffer ( &bd , nullptr , &constBufWorld );
 	if (FAILED ( hr ))
@@ -358,13 +268,6 @@ HRESULT Cube::InitConstBufferProjection ()
 		MessageBox ( nullptr , L"Failed to create Constant Buffer." , L"Error" , MB_OK );
 		return hr;
 	}
-
-	// Initialize the view matrix
-	XMVECTOR Eye = XMVectorSet ( 0.0f , 0.0f , -10.0f , 0.0f );
-	XMVECTOR At = XMVectorSet ( -0.0f , -0.0f , 0.0f , 0.0f );
-	XMVECTOR Up = XMVectorSet ( 0.0f , 1.0f , 0.0f , 0.0f );
-
-	camera.InitCamera ( Eye , Up );
 
 	return S_OK;
 }
@@ -396,9 +299,8 @@ HRESULT Cube::InitTexture ()
 	return S_OK;
 }
 
-void Cube::RenderScene ( double fTime , float fElapsedTime , void* pUserContext, ID3D11Buffer * constBufView , ID3D11Buffer * constBufProj )
+inline void Cube::UpdateWorldMatrix ()
 {
-
 	// Update our time
 	static float t = 0.0f;
 	{
@@ -406,13 +308,28 @@ void Cube::RenderScene ( double fTime , float fElapsedTime , void* pUserContext,
 		ULONGLONG timeCur = GetTickCount64 ();
 		if (timeStart == 0)
 			timeStart = timeCur;
-		t = ( timeCur - timeStart )/500.0f ;
+		t = ( timeCur - timeStart ) / 500.0f;
 	}
 
-	
 	//t = sinf ( t );
 
+	ConstBufMatrix1 worldMatrix;
+	worldMatrix.Mat = XMMatrixTranspose ( XMMatrixRotationY ( t ) );
+	pd3dImmediateContext->UpdateSubresource ( constBufWorld , 0 , nullptr , &worldMatrix , 0 , 0 );
 
+	//ConstantBufferProjection cbp;
+	//cbp.World = XMMatrixTranspose ( XMMatrixRotationY ( 0 ) );
+	//cbp.View = camera.GetTransposedViewMatrix ();
+	//float fAspectRatio = pBackBufferSurfaceDesc->Width / ( FLOAT ) pBackBufferSurfaceDesc->Height;
+	//// Initialize the projection matrix
+	//cbp.Projection = XMMatrixTranspose ( XMMatrixPerspectiveFovLH ( XM_PIDIV4 , fAspectRatio , 0.01f , 100.0f ) );
+	//pd3dImmediateContext->UpdateSubresource ( g_pConstantBuffer , 0 , nullptr , &cbp , 0 , 0 );
+}
+
+void Cube::RenderScene ( double fTime , float fElapsedTime , void* pUserContext, ID3D11Buffer * constBufView , ID3D11Buffer * constBufProj )
+{
+
+	
 	UpdateWorldMatrix ();
 
 	pd3dImmediateContext->VSSetShader ( g_pVertexShader , nullptr , 0 );
@@ -427,36 +344,39 @@ void Cube::RenderScene ( double fTime , float fElapsedTime , void* pUserContext,
 	pd3dImmediateContext->PSSetShaderResources ( 0 , 1 , &g_pTextureRV );
 	pd3dImmediateContext->PSSetSamplers ( 0 , 1 , &g_pSamplerState );
 
-	pd3dImmediateContext->DrawIndexed ( indexNum , 0 , 0 );
+	pd3dImmediateContext->DrawIndexed ( vertexIndicesNum , 0 , 0 );
 }
 
-Cube::~Cube ()
+void Cube::Release ()
 {
+	BaseModel::Release ();
 	SAFE_RELEASE ( g_pVertexShader );
-	SAFE_RELEASE ( g_pVertexLayout );
 	SAFE_RELEASE ( g_pPixelShader );
 
 	SAFE_RELEASE ( g_pVertexBuffer );
 	SAFE_RELEASE ( g_pIndexBuffer );
 
-	SAFE_RELEASE ( constBufWorld );
-	SAFE_RELEASE ( g_pConstantBuffer );
-
 	SAFE_RELEASE ( g_pTextureRV );
 	SAFE_RELEASE ( g_pSamplerState );
-	
-	//SAFE_RELEASE ( pd3dDevice );
-	//SAFE_RELEASE ( pd3dImmediateContext );
-//#if defined(DEBUG) || defined(_DEBUG)  
-//	ID3D11Debug *d3dDebug;
-//	HRESULT hr = pd3dDevice->QueryInterface ( __uuidof( ID3D11Debug ) , reinterpret_cast<void**>( &d3dDebug ) );
-//	if (SUCCEEDED ( hr ))
-//	{
-//		hr = d3dDebug->ReportLiveDeviceObjects ( D3D11_RLDO_DETAIL );
-//	}
-//	if (d3dDebug != nullptr)            d3dDebug->Release ();
-//#endif  
+
+	//#if defined(DEBUG) || defined(_DEBUG)  
+	//	ID3D11Debug *d3dDebug;
+	//	HRESULT hr = pd3dDevice->QueryInterface ( __uuidof( ID3D11Debug ) , reinterpret_cast<void**>( &d3dDebug ) );
+	//	if (SUCCEEDED ( hr ))
+	//	{
+	//		hr = d3dDebug->ReportLiveDeviceObjects ( D3D11_RLDO_DETAIL );
+	//	}
+	//	if (d3dDebug != nullptr)            d3dDebug->Release ();
+	//#endif  
 	//if (pd3dDevice != nullptr)             pd3dDevice->Release ();
+}
 
-
+Cube::~Cube ()
+{
+	/*SAFE_RELEASE ( g_pVertexShader );
+	SAFE_RELEASE ( g_pPixelShader );
+	SAFE_RELEASE ( g_pVertexBuffer );
+	SAFE_RELEASE ( g_pIndexBuffer );
+	SAFE_RELEASE ( g_pTextureRV );
+	SAFE_RELEASE ( g_pSamplerState );*/
 }

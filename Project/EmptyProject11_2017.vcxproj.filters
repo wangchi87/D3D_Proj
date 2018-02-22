@@ -28,9 +28,6 @@
     <ClCompile Include="..\Src\EmptyProject11.cpp">
       <Filter>Src</Filter>
     </ClCompile>
-    <ClCompile Include="..\Src\D3DCreator.cpp">
-      <Filter>Src</Filter>
-    </ClCompile>
     <ClCompile Include="..\Src\Camera\FirstPersonCamera.cpp">
       <Filter>Tools\Camera</Filter>
     </ClCompile>
@@ -49,13 +46,13 @@
     <ClCompile Include="..\Src\Model\BaseModel.cpp">
       <Filter>Tools\Model</Filter>
     </ClCompile>
+    <ClCompile Include="..\Src\Cube.cpp">
+      <Filter>Src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Src\resource.h">
       <Filter>Resource Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Src\D3DCreator.h">
-      <Filter>Src</Filter>
     </ClInclude>
     <ClInclude Include="..\Src\Camera\FirstPersonCamera.h">
       <Filter>Tools\Camera</Filter>
@@ -77,6 +74,9 @@
     </ClInclude>
     <ClInclude Include="..\Src\Model\BaseModel.h">
       <Filter>Tools\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Cube.h">
+      <Filter>Src</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

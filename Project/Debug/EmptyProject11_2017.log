@@ -1,22 +1,71 @@
-﻿生成启动时间为 2018/2/22 18:23:59。
+﻿生成启动时间为 2018/2/22 22:07:31。
      1>项目“I:\网易\d3d_test\EmptyProject\Project\EmptyProject11_2017.vcxproj”在节点 2 上(Build 个目标)。
      1>InitializeBuildStatus:
          正在对“Debug\EmptyProject11.tlog\unsuccessfulbuild”执行 Touch 任务。
        ClCompile:
-         d:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Tools\MSVC\14.12.25827\bin\HostX86\x86\CL.exe /c /I..\Src /I..\Dependency /ZI /nologo /W4 /WX- /diagnostics:classic /Od /Oi /Oy- /D WIN32 /D _DEBUG /D DEBUG /D PROFILE /D _WINDOWS /D USE_DIRECT3D11_2 /D _WIN32_WINNT=0x0600 /D _UNICODE /D UNICODE /Gm- /EHsc /RTC1 /MDd /GS /arch:SSE2 /fp:fast /Zc:wchar_t /Zc:forScope /Zc:inline /openmp- /Fo"Debug\\" /Fd"Debug\vc141.pdb" /Gd /TP /analyze- /errorReport:prompt /permissive- ..\Src\Camera\FirstPersonCamera.cpp
-         FirstPersonCamera.cpp
+         d:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Tools\MSVC\14.12.25827\bin\HostX86\x86\CL.exe /c /I..\Src /I..\Dependency /ZI /nologo /W4 /WX- /diagnostics:classic /Od /Oi /Oy- /D WIN32 /D _DEBUG /D DEBUG /D PROFILE /D _WINDOWS /D USE_DIRECT3D11_2 /D _WIN32_WINNT=0x0600 /D _UNICODE /D UNICODE /Gm- /EHsc /RTC1 /MDd /GS /arch:SSE2 /fp:fast /Zc:wchar_t /Zc:forScope /Zc:inline /openmp- /Fo"Debug\\" /Fd"Debug\vc141.pdb" /Gd /TP /analyze- /errorReport:prompt /permissive- ..\Src\Cube.cpp ..\Src\EmptyProject11.cpp ..\Src\MyScene.cpp
+         Cube.cpp
+     1>i:\网易\d3d_test\emptyproject\src\model\basemodel.h(73): warning C4458: “pUserContext”的声明隐藏了类成员
+         i:\网易\d3d_test\emptyproject\src\model\basemodel.h(49): note: 参见“BaseModel::pUserContext”的声明
+     1>i:\网易\d3d_test\emptyproject\src\model\basemodel.h(75): warning C4100: “constBufProj”: 未引用的形参
+     1>i:\网易\d3d_test\emptyproject\src\model\basemodel.h(74): warning C4100: “constBufView”: 未引用的形参
+     1>i:\网易\d3d_test\emptyproject\src\model\basemodel.h(73): warning C4100: “pUserContext”: 未引用的形参
+     1>i:\网易\d3d_test\emptyproject\src\model\basemodel.h(72): warning C4100: “fElapsedTime”: 未引用的形参
+     1>i:\网易\d3d_test\emptyproject\src\model\basemodel.h(71): warning C4100: “fTime”: 未引用的形参
+     1>i:\网易\d3d_test\emptyproject\src\cube.cpp(329): warning C4458: “pUserContext”的声明隐藏了类成员
+         i:\网易\d3d_test\emptyproject\src\model\basemodel.h(49): note: 参见“BaseModel::pUserContext”的声明
+     1>i:\网易\d3d_test\emptyproject\src\cube.cpp(329): warning C4100: “pUserContext”: 未引用的形参
+     1>i:\网易\d3d_test\emptyproject\src\cube.cpp(329): warning C4100: “fElapsedTime”: 未引用的形参
+     1>i:\网易\d3d_test\emptyproject\src\cube.cpp(329): warning C4100: “fTime”: 未引用的形参
+         EmptyProject11.cpp
+     1>i:\网易\d3d_test\emptyproject\src\model\basemodel.h(73): warning C4458: “pUserContext”的声明隐藏了类成员
+         i:\网易\d3d_test\emptyproject\src\model\basemodel.h(49): note: 参见“BaseModel::pUserContext”的声明
+     1>i:\网易\d3d_test\emptyproject\src\model\basemodel.h(75): warning C4100: “constBufProj”: 未引用的形参
+     1>i:\网易\d3d_test\emptyproject\src\model\basemodel.h(74): warning C4100: “constBufView”: 未引用的形参
+     1>i:\网易\d3d_test\emptyproject\src\model\basemodel.h(73): warning C4100: “pUserContext”: 未引用的形参
+     1>i:\网易\d3d_test\emptyproject\src\model\basemodel.h(72): warning C4100: “fElapsedTime”: 未引用的形参
+     1>i:\网易\d3d_test\emptyproject\src\model\basemodel.h(71): warning C4100: “fTime”: 未引用的形参
+     1>i:\网易\d3d_test\emptyproject\src\emptyproject11.cpp(59): warning C4996: 'freopen': This function or variable may be unsafe. Consider using freopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+         c:\program files (x86)\windows kits\10\include\10.0.16299.0\ucrt\stdio.h(242): note: 参见“freopen”的声明
+     1>i:\网易\d3d_test\emptyproject\src\emptyproject11.cpp(89): warning C4189: “hr”: 局部变量已初始化但不引用
+         MyScene.cpp
+     1>i:\网易\d3d_test\emptyproject\src\model\basemodel.h(73): warning C4458: “pUserContext”的声明隐藏了类成员
+         i:\网易\d3d_test\emptyproject\src\model\basemodel.h(49): note: 参见“BaseModel::pUserContext”的声明
+     1>i:\网易\d3d_test\emptyproject\src\model\basemodel.h(75): warning C4100: “constBufProj”: 未引用的形参
+     1>i:\网易\d3d_test\emptyproject\src\model\basemodel.h(74): warning C4100: “constBufView”: 未引用的形参
+     1>i:\网易\d3d_test\emptyproject\src\model\basemodel.h(73): warning C4100: “pUserContext”: 未引用的形参
+     1>i:\网易\d3d_test\emptyproject\src\model\basemodel.h(72): warning C4100: “fElapsedTime”: 未引用的形参
+     1>i:\网易\d3d_test\emptyproject\src\model\basemodel.h(71): warning C4100: “fTime”: 未引用的形参
+     1>i:\网易\d3d_test\emptyproject\src\myscene.cpp(8): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+     1>i:\网易\d3d_test\emptyproject\src\myscene.cpp(15): warning C4018: “<”: 有符号/无符号不匹配
+     1>i:\网易\d3d_test\emptyproject\src\myscene.cpp(101): warning C4458: “pUserContext”的声明隐藏了类成员
+         i:\网易\d3d_test\emptyproject\src\myscene.h(11): note: 参见“MyScene::pUserContext”的声明
+     1>i:\网易\d3d_test\emptyproject\src\myscene.cpp(113): warning C4018: “<”: 有符号/无符号不匹配
+     1>i:\网易\d3d_test\emptyproject\src\myscene.cpp(128): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
+     1>i:\网易\d3d_test\emptyproject\src\myscene.cpp(156): warning C4244: “参数”: 从“int”转换到“float”，可能丢失数据
+         正在生成代码...
        ResourceCompile:
          所有输出均为最新。
        Link:
          d:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Tools\MSVC\14.12.25827\bin\HostX86\x86\link.exe /ERRORREPORT:PROMPT /OUT:"..\Bin\EmptyProject11.exe" /INCREMENTAL /NOLOGO /LIBPATH:..\Dependency\Lib DXUT.lib DXUTOpt.lib d3dcompiler.lib dxguid.lib winmm.lib comctl32.lib usp10.lib imm32.lib version.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /manifestinput:"d:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Tools\MSVC\14.12.25827\Include\Manifest\PerMonitorHighDPIAware.manifest" /DEBUG /PDB:"..\Bin\EmptyProject11.pdb" /SUBSYSTEM:WINDOWS /LARGEADDRESSAWARE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"..\Bin\EmptyProject11.lib" /MACHINE:X86 /SAFESEH  Debug\EmptyProject11.res
          Debug\FirstPersonCamera.obj
-         Debug\D3DCreator.obj
+         Debug\Cube.obj
          Debug\EmptyProject11.obj
          Debug\BaseModel.obj
          Debug\Mesh.obj
          Debug\ModelLoader.obj
          Debug\MyScene.obj
          Debug\DDSTextureLoader.obj
+     1>FirstPersonCamera.obj : warning LNK4075: 忽略“/EDITANDCONTINUE”(由于“/SAFESEH”规范)
+     1>DXUT.lib(DXUT.obj) : warning LNK4099: 未找到 PDB“DXUT.pdb”(使用“DXUT.lib(DXUT.obj)”或在“I:\网易\d3d_test\EmptyProject\Bin\DXUT.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+     1>DXUT.lib(DXUTDevice11.obj) : warning LNK4099: 未找到 PDB“DXUT.pdb”(使用“DXUT.lib(DXUTDevice11.obj)”或在“I:\网易\d3d_test\EmptyProject\Bin\DXUT.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+     1>DXUT.lib(DXUTmisc.obj) : warning LNK4099: 未找到 PDB“DXUT.pdb”(使用“DXUT.lib(DXUTmisc.obj)”或在“I:\网易\d3d_test\EmptyProject\Bin\DXUT.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+     1>DXUT.lib(DXErr.obj) : warning LNK4099: 未找到 PDB“DXUT.pdb”(使用“DXUT.lib(DXErr.obj)”或在“I:\网易\d3d_test\EmptyProject\Bin\DXUT.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+     1>DXUT.lib(Screengrab.obj) : warning LNK4099: 未找到 PDB“DXUT.pdb”(使用“DXUT.lib(Screengrab.obj)”或在“I:\网易\d3d_test\EmptyProject\Bin\DXUT.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+     1>DXUT.lib(WICTextureLoader.obj) : warning LNK4099: 未找到 PDB“DXUT.pdb”(使用“DXUT.lib(WICTextureLoader.obj)”或在“I:\网易\d3d_test\EmptyProject\Bin\DXUT.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+     1>DXUTOpt.lib(DXUTgui.obj) : warning LNK4099: 未找到 PDB“DXUTOpt.pdb”(使用“DXUTOpt.lib(DXUTgui.obj)”或在“I:\网易\d3d_test\EmptyProject\Bin\DXUTOpt.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+     1>DXUTOpt.lib(DXUTres.obj) : warning LNK4099: 未找到 PDB“DXUTOpt.pdb”(使用“DXUTOpt.lib(DXUTres.obj)”或在“I:\网易\d3d_test\EmptyProject\Bin\DXUTOpt.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+     1>DXUTOpt.lib(SDKmisc.obj) : warning LNK4099: 未找到 PDB“DXUTOpt.pdb”(使用“DXUTOpt.lib(SDKmisc.obj)”或在“I:\网易\d3d_test\EmptyProject\Bin\DXUTOpt.pdb”中寻找)；正在链接对象，如同没有调试信息一样
          EmptyProject11_2017.vcxproj -> I:\网易\d3d_test\EmptyProject\Project\..\Bin\EmptyProject11.exe
        FinalizeBuildStatus:
          正在删除文件“Debug\EmptyProject11.tlog\unsuccessfulbuild”。
@@ -24,7 +73,55 @@
      1>已完成生成项目“I:\网易\d3d_test\EmptyProject\Project\EmptyProject11_2017.vcxproj”(Build 个目标)的操作。
 
 已成功生成。
-    0 个警告
+
+       “I:\网易\d3d_test\EmptyProject\Project\EmptyProject11_2017.vcxproj”(Build 目标) (1) ->
+       (ClCompile 目标) -> 
+         i:\网易\d3d_test\emptyproject\src\model\basemodel.h(73): warning C4458: “pUserContext”的声明隐藏了类成员
+         i:\网易\d3d_test\emptyproject\src\model\basemodel.h(75): warning C4100: “constBufProj”: 未引用的形参
+         i:\网易\d3d_test\emptyproject\src\model\basemodel.h(74): warning C4100: “constBufView”: 未引用的形参
+         i:\网易\d3d_test\emptyproject\src\model\basemodel.h(73): warning C4100: “pUserContext”: 未引用的形参
+         i:\网易\d3d_test\emptyproject\src\model\basemodel.h(72): warning C4100: “fElapsedTime”: 未引用的形参
+         i:\网易\d3d_test\emptyproject\src\model\basemodel.h(71): warning C4100: “fTime”: 未引用的形参
+         i:\网易\d3d_test\emptyproject\src\cube.cpp(329): warning C4458: “pUserContext”的声明隐藏了类成员
+         i:\网易\d3d_test\emptyproject\src\cube.cpp(329): warning C4100: “pUserContext”: 未引用的形参
+         i:\网易\d3d_test\emptyproject\src\cube.cpp(329): warning C4100: “fElapsedTime”: 未引用的形参
+         i:\网易\d3d_test\emptyproject\src\cube.cpp(329): warning C4100: “fTime”: 未引用的形参
+         i:\网易\d3d_test\emptyproject\src\model\basemodel.h(73): warning C4458: “pUserContext”的声明隐藏了类成员
+         i:\网易\d3d_test\emptyproject\src\model\basemodel.h(75): warning C4100: “constBufProj”: 未引用的形参
+         i:\网易\d3d_test\emptyproject\src\model\basemodel.h(74): warning C4100: “constBufView”: 未引用的形参
+         i:\网易\d3d_test\emptyproject\src\model\basemodel.h(73): warning C4100: “pUserContext”: 未引用的形参
+         i:\网易\d3d_test\emptyproject\src\model\basemodel.h(72): warning C4100: “fElapsedTime”: 未引用的形参
+         i:\网易\d3d_test\emptyproject\src\model\basemodel.h(71): warning C4100: “fTime”: 未引用的形参
+         i:\网易\d3d_test\emptyproject\src\emptyproject11.cpp(59): warning C4996: 'freopen': This function or variable may be unsafe. Consider using freopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+         i:\网易\d3d_test\emptyproject\src\emptyproject11.cpp(89): warning C4189: “hr”: 局部变量已初始化但不引用
+         i:\网易\d3d_test\emptyproject\src\model\basemodel.h(73): warning C4458: “pUserContext”的声明隐藏了类成员
+         i:\网易\d3d_test\emptyproject\src\model\basemodel.h(75): warning C4100: “constBufProj”: 未引用的形参
+         i:\网易\d3d_test\emptyproject\src\model\basemodel.h(74): warning C4100: “constBufView”: 未引用的形参
+         i:\网易\d3d_test\emptyproject\src\model\basemodel.h(73): warning C4100: “pUserContext”: 未引用的形参
+         i:\网易\d3d_test\emptyproject\src\model\basemodel.h(72): warning C4100: “fElapsedTime”: 未引用的形参
+         i:\网易\d3d_test\emptyproject\src\model\basemodel.h(71): warning C4100: “fTime”: 未引用的形参
+         i:\网易\d3d_test\emptyproject\src\myscene.cpp(8): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+         i:\网易\d3d_test\emptyproject\src\myscene.cpp(15): warning C4018: “<”: 有符号/无符号不匹配
+         i:\网易\d3d_test\emptyproject\src\myscene.cpp(101): warning C4458: “pUserContext”的声明隐藏了类成员
+         i:\网易\d3d_test\emptyproject\src\myscene.cpp(113): warning C4018: “<”: 有符号/无符号不匹配
+         i:\网易\d3d_test\emptyproject\src\myscene.cpp(128): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
+         i:\网易\d3d_test\emptyproject\src\myscene.cpp(156): warning C4244: “参数”: 从“int”转换到“float”，可能丢失数据
+
+
+       “I:\网易\d3d_test\EmptyProject\Project\EmptyProject11_2017.vcxproj”(Build 目标) (1) ->
+       (Link 目标) -> 
+         FirstPersonCamera.obj : warning LNK4075: 忽略“/EDITANDCONTINUE”(由于“/SAFESEH”规范)
+         DXUT.lib(DXUT.obj) : warning LNK4099: 未找到 PDB“DXUT.pdb”(使用“DXUT.lib(DXUT.obj)”或在“I:\网易\d3d_test\EmptyProject\Bin\DXUT.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+         DXUT.lib(DXUTDevice11.obj) : warning LNK4099: 未找到 PDB“DXUT.pdb”(使用“DXUT.lib(DXUTDevice11.obj)”或在“I:\网易\d3d_test\EmptyProject\Bin\DXUT.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+         DXUT.lib(DXUTmisc.obj) : warning LNK4099: 未找到 PDB“DXUT.pdb”(使用“DXUT.lib(DXUTmisc.obj)”或在“I:\网易\d3d_test\EmptyProject\Bin\DXUT.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+         DXUT.lib(DXErr.obj) : warning LNK4099: 未找到 PDB“DXUT.pdb”(使用“DXUT.lib(DXErr.obj)”或在“I:\网易\d3d_test\EmptyProject\Bin\DXUT.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+         DXUT.lib(Screengrab.obj) : warning LNK4099: 未找到 PDB“DXUT.pdb”(使用“DXUT.lib(Screengrab.obj)”或在“I:\网易\d3d_test\EmptyProject\Bin\DXUT.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+         DXUT.lib(WICTextureLoader.obj) : warning LNK4099: 未找到 PDB“DXUT.pdb”(使用“DXUT.lib(WICTextureLoader.obj)”或在“I:\网易\d3d_test\EmptyProject\Bin\DXUT.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+         DXUTOpt.lib(DXUTgui.obj) : warning LNK4099: 未找到 PDB“DXUTOpt.pdb”(使用“DXUTOpt.lib(DXUTgui.obj)”或在“I:\网易\d3d_test\EmptyProject\Bin\DXUTOpt.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+         DXUTOpt.lib(DXUTres.obj) : warning LNK4099: 未找到 PDB“DXUTOpt.pdb”(使用“DXUTOpt.lib(DXUTres.obj)”或在“I:\网易\d3d_test\EmptyProject\Bin\DXUTOpt.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+         DXUTOpt.lib(SDKmisc.obj) : warning LNK4099: 未找到 PDB“DXUTOpt.pdb”(使用“DXUTOpt.lib(SDKmisc.obj)”或在“I:\网易\d3d_test\EmptyProject\Bin\DXUTOpt.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+
+    40 个警告
     0 个错误
 
-已用时间 00:00:01.95
+已用时间 00:00:04.92
