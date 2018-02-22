@@ -351,6 +351,13 @@ HRESULT MyD3DCreator::InitConstBufferProjection ()
 	pd3dImmediateContext->UpdateSubresource ( g_pConstantBuffer , 0 , nullptr , &cbp , 0 , 0 );
 	*/
 
+	// Initialize the view matrix
+	XMVECTOR Eye = XMVectorSet ( 0.0f , 0.0f , -10.0f , 0.0f );
+	XMVECTOR At = XMVectorSet ( -0.0f , -0.0f , 0.0f , 0.0f );
+	XMVECTOR Up = XMVectorSet ( 0.0f , 1.0f , 0.0f , 0.0f );
+
+	camera.InitCamera ( Eye , Up );
+
 	return S_OK;
 }
 
@@ -400,26 +407,25 @@ void MyD3DCreator::RenderScene ( double fTime , float fElapsedTime , void* pUser
 		t = ( timeCur - timeStart )/500.0f ;
 	}
 
+	
 	//t = sinf ( t );
 
 	/*ConstBufColor cbc;
 	cbc.Color = XMFLOAT4 ( 0.2f, 0.5f,t, 1.0f );
 	pd3dImmediateContext->UpdateSubresource ( g_pConstantBuffer , 0 , nullptr , &cbc , 0 , 0 );*/
 
-	ConstantBufferProjection cbp;
-	cbp.World = XMMatrixTranspose ( XMMatrixRotationY (t) );
+	//ConstantBufferProjection cbp;
+	//cbp.World = XMMatrixTranspose ( XMMatrixRotationY (0) );
 
-	// Initialize the view matrix
-	XMVECTOR Eye = XMVectorSet ( 0.0f , 1.0f , -5.0f , 0.0f );
-	XMVECTOR At = XMVectorSet ( 0.0f , 1.0f , 0.0f , 0.0f );
-	XMVECTOR Up = XMVectorSet ( 0.0f , 1.0f , 0.0f , 0.0f );
-	cbp.View = XMMatrixTranspose ( XMMatrixLookAtLH ( Eye , At , Up ) );
+	//cbp.View = camera.GetTransposedViewMatrix ();
 
-	// Initialize the projection matrix
-	cbp.Projection = XMMatrixTranspose ( XMMatrixPerspectiveFovLH ( XM_PIDIV2 , 800 / ( float ) 600 , 0.01f , 100.0f ) );
+	////cbp.View = XMMatrixTranspose ( XMMatrixLookAtLH ( Eye , At , Up ) );
 
-	pd3dImmediateContext->UpdateSubresource ( g_pConstantBuffer , 0 , nullptr , &cbp , 0 , 0 );
+	//// Initialize the projection matrix
+	//cbp.Projection = XMMatrixTranspose ( XMMatrixPerspectiveFovLH ( XM_PIDIV4 , pBackBufferSurfaceDesc->Width / ( FLOAT ) pBackBufferSurfaceDesc->Height , 0.01f , 100.0f ) );
 
+	//pd3dImmediateContext->UpdateSubresource ( g_pConstantBuffer , 0 , nullptr , &cbp , 0 , 0 );
+	UpdateWVPMatrix ();
 
 	pd3dImmediateContext->VSSetShader ( g_pVertexShader , nullptr , 0 );
 	pd3dImmediateContext->VSSetConstantBuffers ( 0 , 1 , &g_pConstantBuffer );	

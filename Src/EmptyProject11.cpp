@@ -6,14 +6,24 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 //--------------------------------------------------------------------------------------
 
-#include "D3DCreator.h"
+//#pragma comment( linker, "/subsystem:\"console\" /entry:\"WinMainCRTStartup\"")  
 
+#include "D3DCreator.h"
+#include <Windowsx.h>
+#include <fcntl.h>
+#include <io.h>
+
+#include <iostream>
+using namespace std;
 #pragma warning( disable : 4100 )
 
 
 
 // global variables
 MyD3DCreator dc;
+
+static BOOL bTrackLeave = FALSE;
+TRACKMOUSEEVENT tEventTrack;
 
 //ID3D11VertexShader*			g_pVertexShader = nullptr;
 //ID3D11PixelShader*			g_pPixelShader = nullptr;
@@ -24,6 +34,30 @@ MyD3DCreator dc;
 //XMMATRIX                g_World;
 //XMMATRIX                g_View;
 //XMMATRIX                g_Projection;
+
+
+void RequestMouseLeaveMsg ()
+{
+	if (!bTrackLeave)
+	{
+		// 鼠标第一次移入窗口时，请求一个WM_MOUSELEAVE 消息
+		TRACKMOUSEEVENT tme;
+		tme.cbSize = sizeof ( tme );
+		tme.hwndTrack = DXUTGetHWND ();
+		tme.dwFlags = TME_LEAVE;
+		_TrackMouseEvent ( &tme );
+		bTrackLeave = true;
+	}
+}
+
+
+void CallConcoleOutput ( void )
+{
+	AllocConsole ();
+	freopen ( "CONOUT$" , "w+t" , stdout );
+	// test code
+	printf ( "InitConsoleWindow OK!/n" );
+}
 
 //--------------------------------------------------------------------------------------
 // Reject any D3D11 devices that aren't acceptable by returning false
@@ -97,6 +131,10 @@ HRESULT CALLBACK OnD3D11CreateDevice ( ID3D11Device* pd3dDevice , const DXGI_SUR
 HRESULT CALLBACK OnD3D11ResizedSwapChain( ID3D11Device* pd3dDevice, IDXGISwapChain* pSwapChain,
                                           const DXGI_SURFACE_DESC* pBackBufferSurfaceDesc, void* pUserContext )
 {
+
+	float fAspectRatio = pBackBufferSurfaceDesc->Width / ( FLOAT ) pBackBufferSurfaceDesc->Height;
+	XMMatrixTranspose ( XMMatrixPerspectiveFovLH ( XM_PIDIV4 , 800 / ( float ) 600 , 0.01f , 100.0f ) );
+
     return S_OK;
 }
 
@@ -118,7 +156,7 @@ void CALLBACK OnD3D11FrameRender( ID3D11Device* pd3dDevice, ID3D11DeviceContext*
 	dc.RenderScene ( fTime , fElapsedTime , pUserContext );
 
 
-	printf ( "time : %f" , fTime );
+	//printf ( "time : %f" , fTime );
 }
 
 
@@ -145,8 +183,27 @@ void CALLBACK OnD3D11DestroyDevice( void* pUserContext )
 LRESULT CALLBACK MsgProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam,
                           bool* pbNoFurtherProcessing, void* pUserContext )
 {
+	//printf ( "msg %d \n", uMsg );
+	if (uMsg == WM_MOUSEMOVE)
+	{
+		RequestMouseLeaveMsg ();
+
+		int xPos = GET_X_LPARAM ( lParam );
+		int yPos = GET_Y_LPARAM ( lParam );
+
+		dc.UpdateMousePos ( xPos , yPos );
+		//printf ( "mouse move %d %d",xPos,yPos );
+	}
+	if (uMsg == WM_MOUSELEAVE)
+	{
+		//printf ( "mouse leave" );
+		bTrackLeave = false;
+		dc.MouseLeave ();
+	}
+
     return 0;
 }
+
 
 
 //--------------------------------------------------------------------------------------
@@ -154,6 +211,30 @@ LRESULT CALLBACK MsgProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam,
 //--------------------------------------------------------------------------------------
 void CALLBACK OnKeyboard( UINT nChar, bool bKeyDown, bool bAltDown, void* pUserContext )
 {
+	if (bKeyDown)
+	{
+		
+		switch (nChar)
+		{
+		case VK_F1: // Change as needed                
+			break;
+		case VK_SHIFT:
+			cout <<"shift"<<endl;
+			break;
+		case 0x41:            //A
+			dc.UpdateCameraPos ( 'A' );
+			break;
+		case 0x53:            //S
+			dc.UpdateCameraPos ( 'S' );
+			break;
+		case 0x44:            //D
+			dc.UpdateCameraPos ( 'D' );
+			break; 
+		case 0x57:            //W
+			dc.UpdateCameraPos ( 'W' );
+			break; 
+		}
+	}
 }
 
 
@@ -164,6 +245,8 @@ void CALLBACK OnMouse( bool bLeftButtonDown, bool bRightButtonDown, bool bMiddle
                        bool bSideButton1Down, bool bSideButton2Down, int nMouseWheelDelta,
                        int xPos, int yPos, void* pUserContext )
 {
+	printf ( "mouse move OK!/n" );
+	dc.UpdateMousePos ( xPos , yPos );
 }
 
 
@@ -175,12 +258,16 @@ bool CALLBACK OnDeviceRemoved( void* pUserContext )
     return true;
 }
 
-
 //--------------------------------------------------------------------------------------
 // Initialize everything and go into a render loop
 //--------------------------------------------------------------------------------------
 int WINAPI wWinMain( _In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPWSTR lpCmdLine, _In_ int nCmdShow )
 {
+
+	CallConcoleOutput ();
+
+	OutputDebugString ( L"asdssadas" );
+	
     // Enable run-time memory check for debug builds.
 #ifdef _DEBUG
     _CrtSetDbgFlag( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
@@ -204,7 +291,8 @@ int WINAPI wWinMain( _In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
     DXUTSetCallbackD3D11FrameRender( OnD3D11FrameRender );
     DXUTSetCallbackD3D11SwapChainReleasing( OnD3D11ReleasingSwapChain );
     DXUTSetCallbackD3D11DeviceDestroyed( OnD3D11DestroyDevice );
-
+	
+	
     // Perform any application-level initialization here
 
     DXUTInit( true, true, nullptr ); // Parse the command line, show msgboxes on error, no extra command line params

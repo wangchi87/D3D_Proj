@@ -11,6 +11,18 @@
     <Filter Include="Shaders">
       <UniqueIdentifier>{63996001-e1ea-4484-8b2a-5b7dc9b9b6fb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Tools">
+      <UniqueIdentifier>{2efb1fbe-8665-4018-af07-3adc75b7d3c3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tools\Camera">
+      <UniqueIdentifier>{9ba54b5b-6c31-4bb2-8a10-2d751841dc0d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tools\Model">
+      <UniqueIdentifier>{c4082f7f-3992-466e-a62d-7d08feb9ea73}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tools\Texture">
+      <UniqueIdentifier>{255e950c-9917-412c-9d90-5f3150286bfa}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Src\EmptyProject11.cpp">
@@ -19,8 +31,17 @@
     <ClCompile Include="..\Src\D3DCreator.cpp">
       <Filter>Src</Filter>
     </ClCompile>
-    <ClCompile Include="..\Src\DDSTextureLoader.cpp">
-      <Filter>Src</Filter>
+    <ClCompile Include="..\Src\Camera\FirstPersonCamera.cpp">
+      <Filter>Tools\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Src\Model\Mesh.cpp">
+      <Filter>Tools\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Src\Model\ModelLoader.cpp">
+      <Filter>Tools\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Src\Texture\DDSTextureLoader.cpp">
+      <Filter>Tools\Texture</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -30,8 +51,20 @@
     <ClInclude Include="..\Src\D3DCreator.h">
       <Filter>Src</Filter>
     </ClInclude>
-    <ClInclude Include="..\Src\DDSTextureLoader.h">
+    <ClInclude Include="..\Src\Camera\FirstPersonCamera.h">
+      <Filter>Tools\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\ProjectHeader.h">
       <Filter>Src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Model\Mesh.h">
+      <Filter>Tools\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Model\ModelLoader.h">
+      <Filter>Tools\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Texture\DDSTextureLoader.h">
+      <Filter>Tools\Texture</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
