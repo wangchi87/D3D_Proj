@@ -9,6 +9,8 @@
 //#pragma comment( linker, "/subsystem:\"console\" /entry:\"WinMainCRTStartup\"")  
 
 #include "D3DCreator.h"
+#include "MyScene.h"
+
 #include <Windowsx.h>
 #include <fcntl.h>
 #include <io.h>
@@ -20,7 +22,8 @@ using namespace std;
 
 
 // global variables
-MyD3DCreator dc;
+//Cube dc;
+MyScene mScene;
 
 static BOOL bTrackLeave = FALSE;
 TRACKMOUSEEVENT tEventTrack;
@@ -86,42 +89,13 @@ HRESULT CALLBACK OnD3D11CreateDevice ( ID3D11Device* pd3dDevice , const DXGI_SUR
 {
 	HRESULT hr = S_OK;
 	
-	dc.InitCreator ( pd3dDevice , pBackBufferSurfaceDesc , pUserContext );
+	/*dc.InitCreator ( pd3dDevice , pBackBufferSurfaceDesc , pUserContext );
+	dc.AddResources ();*/
 
-	dc.AddResources ();
+	mScene.InitScene ( pd3dDevice , pBackBufferSurfaceDesc , pUserContext );
+	mScene.AddModel ();
 
-	/*
-	D3D11_BUFFER_DESC bd;
-	ZeroMemory ( &bd , sizeof ( bd ) );
-	bd.Usage = D3D11_USAGE_DYNAMIC;
-	bd.ByteWidth = sizeof ( ConstantBuffer );
-	bd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-	bd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-	hr = pd3dDevice->CreateBuffer ( &bd , nullptr , &g_pConstantBuffer );
-	if (FAILED ( hr ))
-	{
-		return hr;
-	}
-
-	g_World = XMMatrixIdentity ();
-
-	XMVECTOR Eye = XMVectorSet ( 0.0f , 1.0f , -5.0f , 0.0f );
-	XMVECTOR At = XMVectorSet ( 0.0f , 1.0f , 0.0f , 0.0f );
-	XMVECTOR Up = XMVectorSet ( 0.0f , 1.0f , 0.0f , 0.0f );
-
-	g_View = XMMatrixLookAtLH ( Eye , At , Up );
-
-	g_Projection = XMMatrixPerspectiveFovLH ( XM_PIDIV2 , 8/(float)6 , 0.01f , 100.0f );
-
-	D3D11_MAPPED_SUBRESOURCE MappedResource;
-	V ( pd3dImmediateContext->Map ( g_pConstantBuffer , 0 , D3D11_MAP_WRITE_DISCARD , 0 , &MappedResource ) );
-	auto pCB = reinterpret_cast<ConstantBuffer*>( MappedResource.pData );
-	DirectX::XMStoreFloat4x4 ( &pCB->World , XMMatrixTranspose ( g_World ) );
-	DirectX::XMStoreFloat4x4 ( &pCB->View , XMMatrixTranspose ( g_View ) );
-	DirectX::XMStoreFloat4x4 ( &pCB->Projection , XMMatrixTranspose ( g_Projection ) );
-	pd3dImmediateContext->Unmap ( g_pConstantBuffer , 0 );
-	*/
-    return S_OK;
+	return S_OK;
 }
 
 
@@ -131,10 +105,6 @@ HRESULT CALLBACK OnD3D11CreateDevice ( ID3D11Device* pd3dDevice , const DXGI_SUR
 HRESULT CALLBACK OnD3D11ResizedSwapChain( ID3D11Device* pd3dDevice, IDXGISwapChain* pSwapChain,
                                           const DXGI_SURFACE_DESC* pBackBufferSurfaceDesc, void* pUserContext )
 {
-
-	float fAspectRatio = pBackBufferSurfaceDesc->Width / ( FLOAT ) pBackBufferSurfaceDesc->Height;
-	XMMatrixTranspose ( XMMatrixPerspectiveFovLH ( XM_PIDIV4 , 800 / ( float ) 600 , 0.01f , 100.0f ) );
-
     return S_OK;
 }
 
@@ -153,10 +123,8 @@ void CALLBACK OnFrameMove( double fTime, float fElapsedTime, void* pUserContext 
 void CALLBACK OnD3D11FrameRender( ID3D11Device* pd3dDevice, ID3D11DeviceContext* pd3dImmediateContext,
                                   double fTime, float fElapsedTime, void* pUserContext )
 {
-	dc.RenderScene ( fTime , fElapsedTime , pUserContext );
-
-
-	//printf ( "time : %f" , fTime );
+	mScene.RenderScene ( fTime , fElapsedTime , pUserContext );
+	//dc.RenderScene ( fTime , fElapsedTime , pUserContext );
 }
 
 
@@ -173,7 +141,8 @@ void CALLBACK OnD3D11ReleasingSwapChain( void* pUserContext )
 //--------------------------------------------------------------------------------------
 void CALLBACK OnD3D11DestroyDevice( void* pUserContext )
 {
-	dc.~MyD3DCreator ();
+	//dc.~Cube ();
+	mScene.~MyScene ();
 }
 
 
@@ -191,14 +160,16 @@ LRESULT CALLBACK MsgProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam,
 		int xPos = GET_X_LPARAM ( lParam );
 		int yPos = GET_Y_LPARAM ( lParam );
 
-		dc.UpdateMousePos ( xPos , yPos );
+		mScene.UpdateMousePos ( xPos , yPos );
+		//dc.UpdateMousePos ( xPos , yPos );
 		//printf ( "mouse move %d %d",xPos,yPos );
 	}
 	if (uMsg == WM_MOUSELEAVE)
 	{
 		//printf ( "mouse leave" );
 		bTrackLeave = false;
-		dc.MouseLeave ();
+		mScene.MouseLeave ();
+		//dc.MouseLeave ();
 	}
 
     return 0;
@@ -222,16 +193,20 @@ void CALLBACK OnKeyboard( UINT nChar, bool bKeyDown, bool bAltDown, void* pUserC
 			cout <<"shift"<<endl;
 			break;
 		case 0x41:            //A
-			dc.UpdateCameraPos ( 'A' );
+			mScene.UpdateCameraPos ( 'A' );
+			//dc.UpdateCameraPos ( 'A' );
 			break;
 		case 0x53:            //S
-			dc.UpdateCameraPos ( 'S' );
+			mScene.UpdateCameraPos ( 'S' );
+			//dc.UpdateCameraPos ( 'S' );
 			break;
 		case 0x44:            //D
-			dc.UpdateCameraPos ( 'D' );
+			mScene.UpdateCameraPos ( 'D' );
+			//dc.UpdateCameraPos ( 'D' );
 			break; 
 		case 0x57:            //W
-			dc.UpdateCameraPos ( 'W' );
+			mScene.UpdateCameraPos ( 'W' );
+			//dc.UpdateCameraPos ( 'W' );
 			break; 
 		}
 	}
@@ -246,7 +221,8 @@ void CALLBACK OnMouse( bool bLeftButtonDown, bool bRightButtonDown, bool bMiddle
                        int xPos, int yPos, void* pUserContext )
 {
 	printf ( "mouse move OK!/n" );
-	dc.UpdateMousePos ( xPos , yPos );
+	mScene.UpdateMousePos ( xPos , yPos );
+	//dc.UpdateMousePos ( xPos , yPos );
 }
 
 

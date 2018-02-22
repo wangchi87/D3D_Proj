@@ -43,6 +43,12 @@
     <ClCompile Include="..\Src\Texture\DDSTextureLoader.cpp">
       <Filter>Tools\Texture</Filter>
     </ClCompile>
+    <ClCompile Include="..\Src\MyScene.cpp">
+      <Filter>Src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Src\Model\BaseModel.cpp">
+      <Filter>Tools\Model</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Src\resource.h">
@@ -65,6 +71,12 @@
     </ClInclude>
     <ClInclude Include="..\Src\Texture\DDSTextureLoader.h">
       <Filter>Tools\Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\MyScene.h">
+      <Filter>Src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Model\BaseModel.h">
+      <Filter>Tools\Model</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -9,6 +9,7 @@ FirstPersonCamera::FirstPersonCamera ()
 
 FirstPersonCamera::~FirstPersonCamera ()
 {
+	printf ( "camera release" );
 }
 
 // Initialise with vectors

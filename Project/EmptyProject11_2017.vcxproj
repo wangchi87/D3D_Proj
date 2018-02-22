@@ -378,15 +378,19 @@
     <ClCompile Include="..\Src\Camera\FirstPersonCamera.cpp" />
     <ClCompile Include="..\Src\D3DCreator.cpp" />
     <ClCompile Include="..\Src\EmptyProject11.cpp" />
+    <ClCompile Include="..\Src\Model\BaseModel.cpp" />
     <ClCompile Include="..\Src\Model\Mesh.cpp" />
     <ClCompile Include="..\Src\Model\ModelLoader.cpp" />
+    <ClCompile Include="..\Src\MyScene.cpp" />
     <ClCompile Include="..\Src\Texture\DDSTextureLoader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Src\Camera\FirstPersonCamera.h" />
     <ClInclude Include="..\Src\D3DCreator.h" />
+    <ClInclude Include="..\Src\Model\BaseModel.h" />
     <ClInclude Include="..\Src\Model\Mesh.h" />
     <ClInclude Include="..\Src\Model\ModelLoader.h" />
+    <ClInclude Include="..\Src\MyScene.h" />
     <ClInclude Include="..\Src\ProjectHeader.h" />
     <ClInclude Include="..\Src\resource.h" />
     <ClInclude Include="..\Src\Texture\DDSTextureLoader.h" />

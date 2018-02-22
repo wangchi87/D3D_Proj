@@ -2,10 +2,6 @@
 
 #include "ProjectHeader.h"
 
-#include "Camera\FirstPersonCamera.h"
-#include "Texture\DDSTextureLoader.h"
-
-
 
 struct SimpleVertex
 {
@@ -39,15 +35,15 @@ struct ConstantBufferProjection
 	XMMATRIX Projection;
 };
 
-class MyD3DCreator
+class Cube
 {
 	// input parameters from DXUT OnCreation Function
-	ID3D11Device* pd3dDevice;
+	ID3D11Device*				pd3dDevice;
 	const DXGI_SURFACE_DESC*	pBackBufferSurfaceDesc;
 	void* pUserContext;
 
 	ID3D11DeviceContext*		pd3dImmediateContext;
-	DWORD dwShaderFlags;
+	DWORD						dwShaderFlags;
 
 	ID3D11VertexShader*			g_pVertexShader;
 	ID3DBlob*					pVSBlob;
@@ -74,15 +70,15 @@ class MyD3DCreator
 	UINT						lastMousePosY;
 
 public:
-	MyD3DCreator () 
+	Cube () 
 	{
 		firstMouseEntry = true;
 		indexNum = 0;
-		lastFrameTime = 0;
+		lastFrameTime = DXUTGetTime ();
 	};
 
-	MyD3DCreator ( ID3D11Device* pd3dDevice );
-	MyD3DCreator( ID3D11Device* pd3dDevice , 
+	Cube ( ID3D11Device* pd3dDevice );
+	Cube( ID3D11Device* pd3dDevice , 
 				const DXGI_SURFACE_DESC* pBackBufferSurfaceDesc ,
 				void* pUserContext 
 				);
@@ -129,7 +125,7 @@ public:
 		lastMousePosY = yPos;
 	}
 
-	void UpdateProjectionMatrix ()
+	void UpdateWVPMatrix ()
 	{
 		ConstantBufferProjection cbp;
 		cbp.World = XMMatrixTranspose ( XMMatrixRotationY ( 0 ) );
@@ -182,6 +178,6 @@ public:
 	{
 		return pd3dImmediateContext;
 	}
-	~MyD3DCreator ();
+	~Cube ();
 };
 

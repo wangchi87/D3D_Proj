@@ -2,8 +2,12 @@
 
 
 
-void MyD3DCreator::InitCreator ( ID3D11Device * d3dDevice , const DXGI_SURFACE_DESC * BackBufferSurfaceDesc , void * UserContext )
+void Cube::InitCreator ( ID3D11Device * d3dDevice , const DXGI_SURFACE_DESC * BackBufferSurfaceDesc , void * UserContext )
 {
+	firstMouseEntry = true;
+	indexNum = 0;
+	lastFrameTime = DXUTGetTime ();
+
 	pd3dImmediateContext = DXUTGetD3D11DeviceContext ();
 	dwShaderFlags = D3DCOMPILE_ENABLE_STRICTNESS;
 	this->pd3dDevice = d3dDevice;
@@ -16,8 +20,12 @@ void MyD3DCreator::InitCreator ( ID3D11Device * d3dDevice , const DXGI_SURFACE_D
 #endif // DEBUG
 }
 
-MyD3DCreator::MyD3DCreator ( ID3D11Device* pd3dDevice )
+Cube::Cube ( ID3D11Device* pd3dDevice )
 {
+	firstMouseEntry = true;
+	indexNum = 0;
+	lastFrameTime = DXUTGetTime ();
+
 	pd3dImmediateContext = DXUTGetD3D11DeviceContext ();
 	dwShaderFlags = D3DCOMPILE_ENABLE_STRICTNESS;
 	this->pd3dDevice = pd3dDevice;
@@ -30,10 +38,14 @@ MyD3DCreator::MyD3DCreator ( ID3D11Device* pd3dDevice )
 }
 
 
-MyD3DCreator::MyD3DCreator ( ID3D11Device* pd3dDevice, 
+Cube::Cube ( ID3D11Device* pd3dDevice, 
 						const DXGI_SURFACE_DESC* pBackBufferSurfaceDesc,
 						void* pUserContext )
 {
+	firstMouseEntry = true;
+	indexNum = 0;
+	lastFrameTime = DXUTGetTime ();
+
 	pd3dImmediateContext = DXUTGetD3D11DeviceContext ();
 	dwShaderFlags = D3DCOMPILE_ENABLE_STRICTNESS;
 	this->pd3dDevice = pd3dDevice;
@@ -47,7 +59,7 @@ MyD3DCreator::MyD3DCreator ( ID3D11Device* pd3dDevice,
 
 }
 
-HRESULT MyD3DCreator:: InitVertexShader ()
+HRESULT Cube:: InitVertexShader ()
 {
 	HRESULT hr = S_OK;
 	// Compile the vertex shader
@@ -70,13 +82,14 @@ HRESULT MyD3DCreator:: InitVertexShader ()
 	if (FAILED ( hr ))
 	{
 		SAFE_RELEASE ( pVSBlob );
+		MessageBox ( nullptr ,L"Failed to create Vertex Shader." , L"Error" , MB_OK );
 		return hr;
 	}
 
 	return S_OK;
 }
 
-HRESULT MyD3DCreator::InitVertexLayout ()
+HRESULT Cube::InitVertexLayout ()
 {
 	HRESULT hr = S_OK;
 	
@@ -100,14 +113,15 @@ HRESULT MyD3DCreator::InitVertexLayout ()
 	);
 	SAFE_RELEASE ( pVSBlob );
 	if (FAILED ( hr ))
+	{
+		MessageBox ( nullptr , L"Failed to create Vertex Input Layout." , L"Error" , MB_OK );
 		return hr;
-
+	}
 	pd3dImmediateContext->IASetInputLayout ( g_pVertexLayout );
 	return S_OK;
 }
 
-
-HRESULT MyD3DCreator::InitPixelShader ( )
+HRESULT Cube::InitPixelShader ( )
 {
 	HRESULT hr = S_OK;
 
@@ -130,14 +144,14 @@ HRESULT MyD3DCreator::InitPixelShader ( )
 	);
 	SAFE_RELEASE ( pPSBlob );
 	if (FAILED ( hr ))
+	{
+		MessageBox ( nullptr , L"Failed to create Pixel Shader." , L"Error" , MB_OK );
 		return hr;
-
+	}
 	return S_OK;
 }
 
-
-
-HRESULT MyD3DCreator::InitVertexData ()
+HRESULT Cube::InitVertexData ()
 {
 	HRESULT hr = S_OK;
 
@@ -236,8 +250,7 @@ HRESULT MyD3DCreator::InitVertexData ()
 	return S_OK;
 }
 
-
-HRESULT MyD3DCreator::InitIndexBuffer ()
+HRESULT Cube::InitIndexBuffer ()
 {
 	HRESULT hr = S_OK;
 	// create index buffer
@@ -297,7 +310,7 @@ HRESULT MyD3DCreator::InitIndexBuffer ()
 	return S_OK;
 }
 
-HRESULT MyD3DCreator::InitConstBufferColor ()
+HRESULT Cube::InitConstBufferColor ()
 {
 	HRESULT hr = S_OK;
 
@@ -310,6 +323,7 @@ HRESULT MyD3DCreator::InitConstBufferColor ()
 	hr = pd3dDevice->CreateBuffer ( &bd , nullptr , &g_pConstantBuffer );
 	if (FAILED ( hr ))
 	{
+		MessageBox ( nullptr , L"Failed to create Constant Buffer." , L"Error" , MB_OK );
 		return hr;
 	}
 
@@ -320,7 +334,7 @@ HRESULT MyD3DCreator::InitConstBufferColor ()
 	return S_OK;
 }
 
-HRESULT MyD3DCreator::InitConstBufferProjection ()
+HRESULT Cube::InitConstBufferProjection ()
 {
 	HRESULT hr = S_OK;
 
@@ -333,6 +347,7 @@ HRESULT MyD3DCreator::InitConstBufferProjection ()
 	hr = pd3dDevice->CreateBuffer ( &bd , nullptr , &g_pConstantBuffer );
 	if (FAILED ( hr ))
 	{
+		MessageBox ( nullptr , L"Failed to create Constant Buffer." , L"Error" , MB_OK );
 		return hr;
 	}
 	/*
@@ -361,7 +376,7 @@ HRESULT MyD3DCreator::InitConstBufferProjection ()
 	return S_OK;
 }
 
-HRESULT MyD3DCreator::InitTexture ()
+HRESULT Cube::InitTexture ()
 {
 	HRESULT hr = S_OK;
 	
@@ -388,14 +403,8 @@ HRESULT MyD3DCreator::InitTexture ()
 	return S_OK;
 }
 
-void MyD3DCreator::RenderScene ( double fTime , float fElapsedTime , void* pUserContext )
+void Cube::RenderScene ( double fTime , float fElapsedTime , void* pUserContext )
 {
-	// Clear render target and the depth stencil 
-	auto pRTV = DXUTGetD3D11RenderTargetView ();
-	pd3dImmediateContext->ClearRenderTargetView ( pRTV , Colors::MidnightBlue );
-
-	auto pDSV = DXUTGetD3D11DepthStencilView ();
-	pd3dImmediateContext->ClearDepthStencilView ( pDSV , D3D11_CLEAR_DEPTH , 1.0 , 0 );
 
 	// Update our time
 	static float t = 0.0f;
@@ -414,17 +423,6 @@ void MyD3DCreator::RenderScene ( double fTime , float fElapsedTime , void* pUser
 	cbc.Color = XMFLOAT4 ( 0.2f, 0.5f,t, 1.0f );
 	pd3dImmediateContext->UpdateSubresource ( g_pConstantBuffer , 0 , nullptr , &cbc , 0 , 0 );*/
 
-	//ConstantBufferProjection cbp;
-	//cbp.World = XMMatrixTranspose ( XMMatrixRotationY (0) );
-
-	//cbp.View = camera.GetTransposedViewMatrix ();
-
-	////cbp.View = XMMatrixTranspose ( XMMatrixLookAtLH ( Eye , At , Up ) );
-
-	//// Initialize the projection matrix
-	//cbp.Projection = XMMatrixTranspose ( XMMatrixPerspectiveFovLH ( XM_PIDIV4 , pBackBufferSurfaceDesc->Width / ( FLOAT ) pBackBufferSurfaceDesc->Height , 0.01f , 100.0f ) );
-
-	//pd3dImmediateContext->UpdateSubresource ( g_pConstantBuffer , 0 , nullptr , &cbp , 0 , 0 );
 	UpdateWVPMatrix ();
 
 	pd3dImmediateContext->VSSetShader ( g_pVertexShader , nullptr , 0 );
@@ -439,9 +437,9 @@ void MyD3DCreator::RenderScene ( double fTime , float fElapsedTime , void* pUser
 	pd3dImmediateContext->DrawIndexed ( indexNum , 0 , 0 );
 }
 
-MyD3DCreator::~MyD3DCreator ()
+Cube::~Cube ()
 {
-	SAFE_RELEASE (g_pVertexShader);
+	SAFE_RELEASE ( g_pVertexShader );
 	SAFE_RELEASE ( g_pVertexLayout );
 	SAFE_RELEASE ( g_pPixelShader );
 
