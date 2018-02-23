@@ -81,14 +81,27 @@ void MyScene::InitCamera ()
 
 void MyScene::UpdateViewProjBuffer ()
 {
-	ConstBufMatrix1 viewMatrix;
-	viewMatrix.Mat = camera.GetTransposedViewMatrix ();
-	pd3dImmediateContext->UpdateSubresource ( constBufView , 0 , nullptr , &viewMatrix , 0 , 0 );
+	XMMATRIX viewMatrix;
+	XMMATRIX projMatrix;
 
-	ConstBufMatrix1 projectionMatrix;
+	viewMatrix = camera.GeViewMatrix ();
 	float fAspectRatio = pBackBufferSurfaceDesc->Width / ( FLOAT ) pBackBufferSurfaceDesc->Height;
-	projectionMatrix.Mat = XMMatrixTranspose ( XMMatrixPerspectiveFovLH ( XM_PIDIV4 , fAspectRatio , 0.01f , 100.0f ) );
-	pd3dImmediateContext->UpdateSubresource ( constBufProj , 0 , nullptr , &projectionMatrix , 0 , 0 );
+	projMatrix =  XMMatrixPerspectiveFovLH ( XM_PIDIV4 , fAspectRatio , 0.01f , 100.0f ) ;
+
+	/*ConstBufMatrix1 viewMat;
+	viewMat.Mat = camera.GetTransposedViewMatrix ();
+	pd3dImmediateContext->UpdateSubresource ( constBufView , 0 , nullptr , &viewMat , 0 , 0 );
+
+	ConstBufMatrix1 projectionMat;
+	
+	projectionMat.Mat = XMMatrixTranspose ( projMatrix );
+	pd3dImmediateContext->UpdateSubresource ( constBufProj , 0 , nullptr , &projectionMat , 0 , 0 );*/
+
+	for (auto i = 0; i < models.size (); i++)
+	{
+		models[ i ]->SetViewMatrix ( viewMatrix );
+		models[ i ]->SetProjMatrix ( projMatrix );
+	}
 }
 
 void MyScene::AddModel ()

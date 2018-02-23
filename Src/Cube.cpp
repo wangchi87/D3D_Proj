@@ -299,7 +299,39 @@ HRESULT Cube::InitTexture ()
 	return S_OK;
 }
 
-inline void Cube::UpdateWorldMatrix ()
+HRESULT Cube::InitEffects ()
+{
+	HRESULT hr;
+
+#if D3D_COMPILER_VERSION >= 46
+
+	// Read the D3DX effect file
+	WCHAR str[ MAX_PATH ];
+	V_RETURN ( DXUTFindDXSDKMediaFileCch ( str , MAX_PATH , L"cubeEffect.fx" ) );
+
+	V_RETURN ( D3DX11CompileEffectFromFile ( str , nullptr , D3D_COMPILE_STANDARD_FILE_INCLUDE , dwShaderFlags , 0 , pd3dDevice , &g_pEffect , nullptr ) );
+
+#else
+
+	ID3DBlob* pEffectBuffer = nullptr;
+	V_RETURN ( DXUTCompileFromFile ( L"cubeEffect.fx" , nullptr , "none" , "fx_5_0" , dwShaderFlags , 0 , &pEffectBuffer ) );
+	hr = D3DX11CreateEffectFromMemory ( pEffectBuffer->GetBufferPointer () , pEffectBuffer->GetBufferSize () , 0 , pd3dDevice , &g_pEffect );
+	SAFE_RELEASE ( pEffectBuffer );
+	if (FAILED ( hr ))
+		return hr;
+#endif
+	g_pTechnique = g_pEffect->GetTechniqueByName ( "Render" );
+
+	worldVariable = g_pEffect->GetVariableByName ( "World" )->AsMatrix ();
+	viewVariable = g_pEffect->GetVariableByName ( "View" )->AsMatrix ();
+	projVariable = g_pEffect->GetVariableByName ( "Projection" )->AsMatrix ();
+
+	//g_ptxDiffuseVariable = g_pEffect->GetVariableByName ( "txDiff" )->AsShaderResource ();
+
+	return S_OK;
+}
+
+void Cube::UpdateWorldMatrix ()
 {
 	// Update our time
 	static float t = 0.0f;
@@ -314,37 +346,52 @@ inline void Cube::UpdateWorldMatrix ()
 	//t = sinf ( t );
 
 	ConstBufMatrix1 worldMatrix;
-	worldMatrix.Mat = XMMatrixTranspose ( XMMatrixRotationY ( t ) );
+	worldMatrix.Mat = XMMatrixTranspose ( XMMatrixRotationY ( 0 ) );
 	pd3dImmediateContext->UpdateSubresource ( constBufWorld , 0 , nullptr , &worldMatrix , 0 , 0 );
 
-	//ConstantBufferProjection cbp;
-	//cbp.World = XMMatrixTranspose ( XMMatrixRotationY ( 0 ) );
-	//cbp.View = camera.GetTransposedViewMatrix ();
-	//float fAspectRatio = pBackBufferSurfaceDesc->Width / ( FLOAT ) pBackBufferSurfaceDesc->Height;
-	//// Initialize the projection matrix
-	//cbp.Projection = XMMatrixTranspose ( XMMatrixPerspectiveFovLH ( XM_PIDIV4 , fAspectRatio , 0.01f , 100.0f ) );
-	//pd3dImmediateContext->UpdateSubresource ( g_pConstantBuffer , 0 , nullptr , &cbp , 0 , 0 );
+	XMMATRIX worldMat;
+	worldMat =  ( XMMatrixRotationY ( t ) );
+	worldVariable->SetMatrix ( ( float* ) &worldMat );
+
+}
+
+void Cube::SetWorldMatrix ( ConstBufMatrix1 worldMatrix )
+{
+	pd3dImmediateContext->UpdateSubresource ( constBufWorld , 0 , nullptr , &worldMatrix , 0 , 0 );
 }
 
 void Cube::RenderScene ( double fTime , float fElapsedTime , void* pUserContext, ID3D11Buffer * constBufView , ID3D11Buffer * constBufProj )
 {
-
-	
 	UpdateWorldMatrix ();
 
-	pd3dImmediateContext->VSSetShader ( g_pVertexShader , nullptr , 0 );
-	pd3dImmediateContext->VSSetConstantBuffers ( 1 , 1 , &constBufWorld );
-	pd3dImmediateContext->VSSetConstantBuffers ( 2 , 1 , &constBufView );
-	pd3dImmediateContext->VSSetConstantBuffers ( 3 , 1 , &constBufProj );
-	//pd3dImmediateContext->VSSetConstantBuffers ( 0 , 1 , &g_pConstantBuffer );	
-	pd3dImmediateContext->PSSetShader ( g_pPixelShader , nullptr , 0 );
-	//pd3dImmediateContext->PSSetConstantBuffers ( 1 , 1 , &g_pConstantBuffer );
-	
-	// set texture
-	pd3dImmediateContext->PSSetShaderResources ( 0 , 1 , &g_pTextureRV );
-	pd3dImmediateContext->PSSetSamplers ( 0 , 1 , &g_pSamplerState );
+	//g_ptxDiffuseVariable->SetResource ( g_pTextureRV );
 
-	pd3dImmediateContext->DrawIndexed ( vertexIndicesNum , 0 , 0 );
+	D3DX11_TECHNIQUE_DESC techDesc;
+	HRESULT hr;
+	V ( g_pTechnique->GetDesc ( &techDesc ) );
+
+	for (UINT i = 0; i < techDesc.Passes; i++)
+	{
+		g_pTechnique->GetPassByIndex ( i )->Apply ( 0 , pd3dImmediateContext );
+		pd3dImmediateContext->DrawIndexed ( vertexIndicesNum , 0 , 0 );
+	}
+		
+	// *************************************************************************************
+	// old code: render with HLSL (NOT with effect)
+
+	//pd3dImmediateContext->VSSetShader ( g_pVertexShader , nullptr , 0 );
+	//pd3dImmediateContext->VSSetConstantBuffers ( 1 , 1 , &constBufWorld );
+	//pd3dImmediateContext->VSSetConstantBuffers ( 2 , 1 , &constBufView );
+	//pd3dImmediateContext->VSSetConstantBuffers ( 3 , 1 , &constBufProj );
+	////pd3dImmediateContext->VSSetConstantBuffers ( 0 , 1 , &g_pConstantBuffer );	
+	//pd3dImmediateContext->PSSetShader ( g_pPixelShader , nullptr , 0 );
+	////pd3dImmediateContext->PSSetConstantBuffers ( 1 , 1 , &g_pConstantBuffer );
+	//
+	//// set texture
+	//pd3dImmediateContext->PSSetShaderResources ( 0 , 1 , &g_pTextureRV );
+	//pd3dImmediateContext->PSSetSamplers ( 0 , 1 , &g_pSamplerState );
+
+	//pd3dImmediateContext->DrawIndexed ( vertexIndicesNum , 0 , 0 );
 }
 
 void Cube::Release ()

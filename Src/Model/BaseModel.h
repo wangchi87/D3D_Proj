@@ -54,6 +54,13 @@ protected:
 	ID3D11InputLayout*			g_pVertexLayout;
 	ID3D11Buffer*				constBufWorld;
 
+
+	ID3DX11Effect*					g_pEffect;
+	
+	ID3DX11EffectMatrixVariable*	worldVariable;
+	ID3DX11EffectMatrixVariable*	viewVariable;
+	ID3DX11EffectMatrixVariable*	projVariable;
+
 public:
 	BaseModel ();
 	BaseModel ( 
@@ -76,10 +83,21 @@ public:
 
 	virtual void AddResources () {}
 
+	virtual void SetWorldMatrix ( ConstBufMatrix1 worldMatrix );
+
+	virtual void SetViewMatrix ( XMMATRIX viewMatrix );
+
+	virtual void SetProjMatrix ( XMMATRIX projMatrix );
+
 	virtual void Release ()
 	{
 		SAFE_RELEASE ( g_pVertexLayout );
 		SAFE_RELEASE ( constBufWorld );
+
+		SAFE_RELEASE ( g_pEffect );
+		/*SAFE_RELEASE ( worldVariable );
+		SAFE_RELEASE ( viewVariable );
+		SAFE_RELEASE ( projVariable );*/
 	}
 	~BaseModel ();
 };

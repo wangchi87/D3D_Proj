@@ -18,6 +18,10 @@ class Cube: public BaseModel
 	ID3D11ShaderResourceView*	g_pTextureRV;
 	ID3D11SamplerState*			g_pSamplerState;
 
+	
+	ID3DX11EffectTechnique*					g_pTechnique;
+	ID3DX11EffectShaderResourceVariable*	g_ptxDiffuseVariable;
+
 public:
 	Cube () {vertexIndicesNum = 0;};
 
@@ -42,7 +46,13 @@ public:
 
 	HRESULT InitTexture ();
 
+	HRESULT InitEffects ();
+
 	void UpdateWorldMatrix ();
+
+	void SetWorldMatrix ( 
+		ConstBufMatrix1 worldMatrix 
+		) override;
 	
 	void RenderScene ( 
 		double fTime , 
@@ -61,6 +71,8 @@ public:
 		InitIndexBuffer ();
 		InitConstBufferWorld ();
 		InitTexture ();
+
+		InitEffects ();
 	}
 
 	void Release () override;

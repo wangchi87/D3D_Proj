@@ -94,4 +94,9 @@
       <Filter>Shaders</Filter>
     </FxCompile>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="cubeEffect.fx">
+      <Filter>Shaders</Filter>
+    </None>
+  </ItemGroup>
 </Project>

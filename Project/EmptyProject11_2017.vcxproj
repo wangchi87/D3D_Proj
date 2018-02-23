@@ -141,7 +141,7 @@
     </ClCompile>
     <Link>
       <AdditionalOptions> %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalDependencies>DXUT.lib;DXUTOpt.lib;d3dcompiler.lib;dxguid.lib;winmm.lib;comctl32.lib;usp10.lib;imm32.lib;version.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Effects11d.lib;DXUT.lib;DXUTOpt.lib;d3dcompiler.lib;dxguid.lib;winmm.lib;comctl32.lib;usp10.lib;imm32.lib;version.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <LargeAddressAware>true</LargeAddressAware>
@@ -402,6 +402,9 @@
     <ResourceCompile Include="..\Src\EmptyProject11.rc" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="cubeEffect.fx">
+      <FileType>Document</FileType>
+    </None>
     <FxCompile Include="shader.fx">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </FxCompile>

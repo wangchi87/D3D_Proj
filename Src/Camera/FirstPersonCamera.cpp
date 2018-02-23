@@ -59,14 +59,17 @@ FirstPersonCamera::FirstPersonCamera ( float posX , float posY , float posZ , fl
 
 XMMATRIX FirstPersonCamera::GetTransposedViewMatrix ()
 {
-	
-	//XMFLOAT3 front = XMFLOAT3 ( -0.0f , 0.0f , 5.0f );
-	//Front = XMLoadFloat3 ( &front );
-
 	XMVECTOR At = Position + Front;
 
 	return XMMatrixTranspose ( XMMatrixLookAtLH ( Position ,At , Up ) );
-	//return glm::lookAt ( Position , Position + Front , Up );
+
+}
+
+XMMATRIX FirstPersonCamera::GeViewMatrix ()
+{
+	XMVECTOR At = Position + Front;
+
+	return  ( XMMatrixLookAtLH ( Position , At , Up ) );
 }
 
 // Processes input received from any keyboard-like input system. Accepts input parameter in the form of camera defined ENUM (to abstract it from windowing systems)

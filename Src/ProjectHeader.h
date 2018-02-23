@@ -11,6 +11,8 @@ using namespace DirectX;
 #include <vector>
 using namespace std;
 
+#include "Effects11\d3dx11effect.h"
+
 // self-defined header
 
 #include "Camera\FirstPersonCamera.h"

@@ -28,6 +28,20 @@ void BaseModel::InitDeviceHandle ( ID3D11Device * d3dDevice , const DXGI_SURFACE
 
 }
 
+void BaseModel::SetWorldMatrix ( ConstBufMatrix1 worldMatrix ) 
+{
+}
+
+void BaseModel::SetViewMatrix ( XMMATRIX viewMatrix )
+{
+	viewVariable->SetMatrix ( ( float* ) &viewMatrix );
+}
+
+void BaseModel::SetProjMatrix ( XMMATRIX projMatrix )
+{
+	projVariable->SetMatrix ( ( float* ) &projMatrix );
+}
+
 
 BaseModel::~BaseModel ()
 {
