@@ -1,25 +1,50 @@
-﻿生成启动时间为 2018/2/23 17:23:16。
+﻿生成启动时间为 2018/2/24 11:28:06。
      1>项目“I:\网易\d3d_test\EmptyProject\Project\EmptyProject11_2017.vcxproj”在节点 2 上(Build 个目标)。
      1>InitializeBuildStatus:
          正在对“Debug\EmptyProject11.tlog\unsuccessfulbuild”执行 Touch 任务。
        ClCompile:
-         d:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Tools\MSVC\14.12.25827\bin\HostX86\x86\CL.exe /c /I..\Src /I..\Dependency /ZI /nologo /W4 /WX- /diagnostics:classic /Od /Oi /Oy- /D WIN32 /D _DEBUG /D DEBUG /D PROFILE /D _WINDOWS /D USE_DIRECT3D11_2 /D _WIN32_WINNT=0x0600 /D _UNICODE /D UNICODE /Gm- /EHsc /RTC1 /MDd /GS /arch:SSE2 /fp:fast /Zc:wchar_t /Zc:forScope /Zc:inline /openmp- /Fo"Debug\\" /Fd"Debug\vc141.pdb" /Gd /TP /analyze- /errorReport:prompt /permissive- ..\Src\MyScene.cpp
+         d:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Tools\MSVC\14.12.25827\bin\HostX86\x86\CL.exe /c /I..\Src /I..\Dependency /ZI /nologo /W4 /WX- /diagnostics:classic /Od /Oi /Oy- /D WIN32 /D _DEBUG /D DEBUG /D PROFILE /D _WINDOWS /D USE_DIRECT3D11_2 /D _WIN32_WINNT=0x0600 /D _UNICODE /D UNICODE /Gm- /EHsc /RTC1 /MDd /GS /arch:SSE2 /fp:fast /Zc:wchar_t /Zc:forScope /Zc:inline /openmp- /Fo"Debug\\" /Fd"Debug\vc141.pdb" /Gd /TP /analyze- /errorReport:prompt /permissive- ..\Src\Cube.cpp ..\Src\EmptyProject11.cpp ..\Src\Model\BaseModel.cpp ..\Src\MyScene.cpp
+         Cube.cpp
+     1>i:\网易\d3d_test\emptyproject\src\model\basemodel.h(66): warning C4458: “pUserContext”的声明隐藏了类成员
+         i:\网易\d3d_test\emptyproject\src\model\basemodel.h(31): note: 参见“BaseModel::pUserContext”的声明
+     1>i:\网易\d3d_test\emptyproject\src\model\basemodel.h(66): warning C4100: “pUserContext”: 未引用的形参
+     1>i:\网易\d3d_test\emptyproject\src\model\basemodel.h(65): warning C4100: “fElapsedTime”: 未引用的形参
+     1>i:\网易\d3d_test\emptyproject\src\model\basemodel.h(64): warning C4100: “fTime”: 未引用的形参
+     1>i:\网易\d3d_test\emptyproject\src\cube.cpp(345): warning C4458: “pUserContext”的声明隐藏了类成员
+         i:\网易\d3d_test\emptyproject\src\model\basemodel.h(31): note: 参见“BaseModel::pUserContext”的声明
+     1>i:\网易\d3d_test\emptyproject\src\cube.cpp(345): warning C4100: “pUserContext”: 未引用的形参
+     1>i:\网易\d3d_test\emptyproject\src\cube.cpp(345): warning C4100: “fElapsedTime”: 未引用的形参
+     1>i:\网易\d3d_test\emptyproject\src\cube.cpp(345): warning C4100: “fTime”: 未引用的形参
+         EmptyProject11.cpp
+     1>i:\网易\d3d_test\emptyproject\src\model\basemodel.h(66): warning C4458: “pUserContext”的声明隐藏了类成员
+         i:\网易\d3d_test\emptyproject\src\model\basemodel.h(31): note: 参见“BaseModel::pUserContext”的声明
+     1>i:\网易\d3d_test\emptyproject\src\model\basemodel.h(66): warning C4100: “pUserContext”: 未引用的形参
+     1>i:\网易\d3d_test\emptyproject\src\model\basemodel.h(65): warning C4100: “fElapsedTime”: 未引用的形参
+     1>i:\网易\d3d_test\emptyproject\src\model\basemodel.h(64): warning C4100: “fTime”: 未引用的形参
+     1>i:\网易\d3d_test\emptyproject\src\emptyproject11.cpp(59): warning C4996: 'freopen': This function or variable may be unsafe. Consider using freopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+         c:\program files (x86)\windows kits\10\include\10.0.16299.0\ucrt\stdio.h(242): note: 参见“freopen”的声明
+     1>i:\网易\d3d_test\emptyproject\src\emptyproject11.cpp(89): warning C4189: “hr”: 局部变量已初始化但不引用
+         BaseModel.cpp
+     1>i:\网易\d3d_test\emptyproject\src\model\basemodel.h(66): warning C4458: “pUserContext”的声明隐藏了类成员
+         i:\网易\d3d_test\emptyproject\src\model\basemodel.h(31): note: 参见“BaseModel::pUserContext”的声明
+     1>i:\网易\d3d_test\emptyproject\src\model\basemodel.h(66): warning C4100: “pUserContext”: 未引用的形参
+     1>i:\网易\d3d_test\emptyproject\src\model\basemodel.h(65): warning C4100: “fElapsedTime”: 未引用的形参
+     1>i:\网易\d3d_test\emptyproject\src\model\basemodel.h(64): warning C4100: “fTime”: 未引用的形参
          MyScene.cpp
-     1>i:\网易\d3d_test\emptyproject\src\model\basemodel.h(80): warning C4458: “pUserContext”的声明隐藏了类成员
-         i:\网易\d3d_test\emptyproject\src\model\basemodel.h(49): note: 参见“BaseModel::pUserContext”的声明
-     1>i:\网易\d3d_test\emptyproject\src\model\basemodel.h(82): warning C4100: “constBufProj”: 未引用的形参
-     1>i:\网易\d3d_test\emptyproject\src\model\basemodel.h(81): warning C4100: “constBufView”: 未引用的形参
-     1>i:\网易\d3d_test\emptyproject\src\model\basemodel.h(80): warning C4100: “pUserContext”: 未引用的形参
-     1>i:\网易\d3d_test\emptyproject\src\model\basemodel.h(79): warning C4100: “fElapsedTime”: 未引用的形参
-     1>i:\网易\d3d_test\emptyproject\src\model\basemodel.h(78): warning C4100: “fTime”: 未引用的形参
+     1>i:\网易\d3d_test\emptyproject\src\model\basemodel.h(66): warning C4458: “pUserContext”的声明隐藏了类成员
+         i:\网易\d3d_test\emptyproject\src\model\basemodel.h(31): note: 参见“BaseModel::pUserContext”的声明
+     1>i:\网易\d3d_test\emptyproject\src\model\basemodel.h(66): warning C4100: “pUserContext”: 未引用的形参
+     1>i:\网易\d3d_test\emptyproject\src\model\basemodel.h(65): warning C4100: “fElapsedTime”: 未引用的形参
+     1>i:\网易\d3d_test\emptyproject\src\model\basemodel.h(64): warning C4100: “fTime”: 未引用的形参
      1>i:\网易\d3d_test\emptyproject\src\myscene.cpp(8): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
      1>i:\网易\d3d_test\emptyproject\src\myscene.cpp(15): warning C4018: “<”: 有符号/无符号不匹配
-     1>i:\网易\d3d_test\emptyproject\src\myscene.cpp(100): warning C4018: “<”: 有符号/无符号不匹配
-     1>i:\网易\d3d_test\emptyproject\src\myscene.cpp(114): warning C4458: “pUserContext”的声明隐藏了类成员
+     1>i:\网易\d3d_test\emptyproject\src\myscene.cpp(98): warning C4018: “<”: 有符号/无符号不匹配
+     1>i:\网易\d3d_test\emptyproject\src\myscene.cpp(112): warning C4458: “pUserContext”的声明隐藏了类成员
          i:\网易\d3d_test\emptyproject\src\myscene.h(11): note: 参见“MyScene::pUserContext”的声明
-     1>i:\网易\d3d_test\emptyproject\src\myscene.cpp(126): warning C4018: “<”: 有符号/无符号不匹配
-     1>i:\网易\d3d_test\emptyproject\src\myscene.cpp(141): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
-     1>i:\网易\d3d_test\emptyproject\src\myscene.cpp(169): warning C4244: “参数”: 从“int”转换到“float”，可能丢失数据
+     1>i:\网易\d3d_test\emptyproject\src\myscene.cpp(124): warning C4018: “<”: 有符号/无符号不匹配
+     1>i:\网易\d3d_test\emptyproject\src\myscene.cpp(139): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
+     1>i:\网易\d3d_test\emptyproject\src\myscene.cpp(167): warning C4244: “参数”: 从“int”转换到“float”，可能丢失数据
+         正在生成代码...
        ResourceCompile:
          所有输出均为最新。
        Link:
@@ -28,6 +53,7 @@
          Debug\Cube.obj
          Debug\EmptyProject11.obj
          Debug\BaseModel.obj
+         Debug\GeometryGenerator.obj
          Debug\Mesh.obj
          Debug\ModelLoader.obj
          Debug\MyScene.obj
@@ -42,21 +68,37 @@
 
        “I:\网易\d3d_test\EmptyProject\Project\EmptyProject11_2017.vcxproj”(Build 目标) (1) ->
        (ClCompile 目标) -> 
-         i:\网易\d3d_test\emptyproject\src\model\basemodel.h(80): warning C4458: “pUserContext”的声明隐藏了类成员
-         i:\网易\d3d_test\emptyproject\src\model\basemodel.h(82): warning C4100: “constBufProj”: 未引用的形参
-         i:\网易\d3d_test\emptyproject\src\model\basemodel.h(81): warning C4100: “constBufView”: 未引用的形参
-         i:\网易\d3d_test\emptyproject\src\model\basemodel.h(80): warning C4100: “pUserContext”: 未引用的形参
-         i:\网易\d3d_test\emptyproject\src\model\basemodel.h(79): warning C4100: “fElapsedTime”: 未引用的形参
-         i:\网易\d3d_test\emptyproject\src\model\basemodel.h(78): warning C4100: “fTime”: 未引用的形参
+         i:\网易\d3d_test\emptyproject\src\model\basemodel.h(66): warning C4458: “pUserContext”的声明隐藏了类成员
+         i:\网易\d3d_test\emptyproject\src\model\basemodel.h(66): warning C4100: “pUserContext”: 未引用的形参
+         i:\网易\d3d_test\emptyproject\src\model\basemodel.h(65): warning C4100: “fElapsedTime”: 未引用的形参
+         i:\网易\d3d_test\emptyproject\src\model\basemodel.h(64): warning C4100: “fTime”: 未引用的形参
+         i:\网易\d3d_test\emptyproject\src\cube.cpp(345): warning C4458: “pUserContext”的声明隐藏了类成员
+         i:\网易\d3d_test\emptyproject\src\cube.cpp(345): warning C4100: “pUserContext”: 未引用的形参
+         i:\网易\d3d_test\emptyproject\src\cube.cpp(345): warning C4100: “fElapsedTime”: 未引用的形参
+         i:\网易\d3d_test\emptyproject\src\cube.cpp(345): warning C4100: “fTime”: 未引用的形参
+         i:\网易\d3d_test\emptyproject\src\model\basemodel.h(66): warning C4458: “pUserContext”的声明隐藏了类成员
+         i:\网易\d3d_test\emptyproject\src\model\basemodel.h(66): warning C4100: “pUserContext”: 未引用的形参
+         i:\网易\d3d_test\emptyproject\src\model\basemodel.h(65): warning C4100: “fElapsedTime”: 未引用的形参
+         i:\网易\d3d_test\emptyproject\src\model\basemodel.h(64): warning C4100: “fTime”: 未引用的形参
+         i:\网易\d3d_test\emptyproject\src\emptyproject11.cpp(59): warning C4996: 'freopen': This function or variable may be unsafe. Consider using freopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+         i:\网易\d3d_test\emptyproject\src\emptyproject11.cpp(89): warning C4189: “hr”: 局部变量已初始化但不引用
+         i:\网易\d3d_test\emptyproject\src\model\basemodel.h(66): warning C4458: “pUserContext”的声明隐藏了类成员
+         i:\网易\d3d_test\emptyproject\src\model\basemodel.h(66): warning C4100: “pUserContext”: 未引用的形参
+         i:\网易\d3d_test\emptyproject\src\model\basemodel.h(65): warning C4100: “fElapsedTime”: 未引用的形参
+         i:\网易\d3d_test\emptyproject\src\model\basemodel.h(64): warning C4100: “fTime”: 未引用的形参
+         i:\网易\d3d_test\emptyproject\src\model\basemodel.h(66): warning C4458: “pUserContext”的声明隐藏了类成员
+         i:\网易\d3d_test\emptyproject\src\model\basemodel.h(66): warning C4100: “pUserContext”: 未引用的形参
+         i:\网易\d3d_test\emptyproject\src\model\basemodel.h(65): warning C4100: “fElapsedTime”: 未引用的形参
+         i:\网易\d3d_test\emptyproject\src\model\basemodel.h(64): warning C4100: “fTime”: 未引用的形参
          i:\网易\d3d_test\emptyproject\src\myscene.cpp(8): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
          i:\网易\d3d_test\emptyproject\src\myscene.cpp(15): warning C4018: “<”: 有符号/无符号不匹配
-         i:\网易\d3d_test\emptyproject\src\myscene.cpp(100): warning C4018: “<”: 有符号/无符号不匹配
-         i:\网易\d3d_test\emptyproject\src\myscene.cpp(114): warning C4458: “pUserContext”的声明隐藏了类成员
-         i:\网易\d3d_test\emptyproject\src\myscene.cpp(126): warning C4018: “<”: 有符号/无符号不匹配
-         i:\网易\d3d_test\emptyproject\src\myscene.cpp(141): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
-         i:\网易\d3d_test\emptyproject\src\myscene.cpp(169): warning C4244: “参数”: 从“int”转换到“float”，可能丢失数据
+         i:\网易\d3d_test\emptyproject\src\myscene.cpp(98): warning C4018: “<”: 有符号/无符号不匹配
+         i:\网易\d3d_test\emptyproject\src\myscene.cpp(112): warning C4458: “pUserContext”的声明隐藏了类成员
+         i:\网易\d3d_test\emptyproject\src\myscene.cpp(124): warning C4018: “<”: 有符号/无符号不匹配
+         i:\网易\d3d_test\emptyproject\src\myscene.cpp(139): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
+         i:\网易\d3d_test\emptyproject\src\myscene.cpp(167): warning C4244: “参数”: 从“int”转换到“float”，可能丢失数据
 
-    13 个警告
+    29 个警告
     0 个错误
 
-已用时间 00:00:01.94
+已用时间 00:00:06.06

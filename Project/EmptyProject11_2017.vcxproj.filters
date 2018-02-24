@@ -49,6 +49,9 @@
     <ClCompile Include="..\Src\Cube.cpp">
       <Filter>Src</Filter>
     </ClCompile>
+    <ClCompile Include="..\Src\Model\GeometryGenerator.cpp">
+      <Filter>Tools\Model</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Src\resource.h">
@@ -77,6 +80,9 @@
     </ClInclude>
     <ClInclude Include="..\Src\Cube.h">
       <Filter>Src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Model\GeometryGenerator.h">
+      <Filter>Tools\Model</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

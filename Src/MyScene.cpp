@@ -91,9 +91,7 @@ void MyScene::UpdateViewProjBuffer ()
 	/*ConstBufMatrix1 viewMat;
 	viewMat.Mat = camera.GetTransposedViewMatrix ();
 	pd3dImmediateContext->UpdateSubresource ( constBufView , 0 , nullptr , &viewMat , 0 , 0 );
-
 	ConstBufMatrix1 projectionMat;
-	
 	projectionMat.Mat = XMMatrixTranspose ( projMatrix );
 	pd3dImmediateContext->UpdateSubresource ( constBufProj , 0 , nullptr , &projectionMat , 0 , 0 );*/
 
@@ -125,7 +123,7 @@ void MyScene::RenderScene ( double fTime , float fElapsedTime , void* pUserConte
 
 	for (auto i = 0; i < models.size (); i++)
 	{
-		models[ i ]->RenderScene (fTime,fElapsedTime, pUserContext, constBufView, constBufProj );
+		models[ i ]->RenderScene (fTime,fElapsedTime, pUserContext);
 	}
 }
 

@@ -2,24 +2,6 @@
 
 #include "ProjectHeader.h"
 
-struct SimpleVertex
-{
-	XMFLOAT3 Pos;
-	XMFLOAT4 Color;
-};
-
-struct VertexColorTex
-{
-	XMFLOAT3 Pos;
-	XMFLOAT4 Color;
-	XMFLOAT2 Tex;
-};
-
-struct VertexTex
-{
-	XMFLOAT3 Pos;
-	XMFLOAT2 Tex;
-};
 
 //struct ConstBufColor
 //{
@@ -49,11 +31,15 @@ protected:
 	void*						pUserContext;
 
 	DWORD						dwShaderFlags;
-	UINT						vertexIndicesNum;
+	
 
 	ID3D11InputLayout*			g_pVertexLayout;
 	ID3D11Buffer*				constBufWorld;
 
+	Vertex*						vertices;
+	UINT						vertexNum;
+	WORD*						indices;
+	UINT						vertexIndicesNum;
 
 	ID3DX11Effect*					g_pEffect;
 	
@@ -77,13 +63,11 @@ public:
 	virtual void RenderScene ( 
 		double fTime , 
 		float fElapsedTime , 
-		void* pUserContext , 
-		ID3D11Buffer * constBufView , 
-		ID3D11Buffer * constBufProj ) {}
+		void* pUserContext  ) {}
 
 	virtual void AddResources () {}
 
-	virtual void SetWorldMatrix ( ConstBufMatrix1 worldMatrix );
+	virtual void SetWorldMatrix ( XMMATRIX worldMatrix );
 
 	virtual void SetViewMatrix ( XMMATRIX viewMatrix );
 
@@ -95,6 +79,9 @@ public:
 		SAFE_RELEASE ( constBufWorld );
 
 		SAFE_RELEASE ( g_pEffect );
+
+		indices = nullptr;
+		vertices = nullptr;
 		/*SAFE_RELEASE ( worldVariable );
 		SAFE_RELEASE ( viewVariable );
 		SAFE_RELEASE ( projVariable );*/

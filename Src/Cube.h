@@ -2,11 +2,14 @@
 
 #include "ProjectHeader.h"
 #include "Model\BaseModel.h"
-
+#include "Model\GeometryGenerator.h"
 
 class Cube: public BaseModel
 {
-	
+	GeometryGenerator::MeshData box;
+	GeometryGenerator geoGen;
+
+
 	ID3D11VertexShader*			g_pVertexShader;
 	ID3DBlob*					pVSBlob;
 	
@@ -35,6 +38,8 @@ public:
 			pUserContext 
 			) {};
 
+	void InitCubeData ();
+
 	HRESULT InitVertexShader ( );
 	HRESULT InitVertexLayout ();
 	HRESULT InitPixelShader ( );
@@ -50,29 +55,26 @@ public:
 
 	void UpdateWorldMatrix ();
 
-	void SetWorldMatrix ( 
-		ConstBufMatrix1 worldMatrix 
-		) override;
-	
+
 	void RenderScene ( 
 		double fTime , 
 		float fElapsedTime , 
-		void* pUserContext, 
-		ID3D11Buffer * constBufView , 
-		ID3D11Buffer * constBufProj 
+		void* pUserContex
 	) override;
 
 	void AddResources () override
 	{
-		InitVertexShader ();
+		InitCubeData ();
+		InitEffects ();
+		//InitVertexShader ();
 		InitVertexLayout ();
-		InitPixelShader ();
+		//InitPixelShader ();
 		InitVertexData ();
 		InitIndexBuffer ();
 		InitConstBufferWorld ();
 		InitTexture ();
 
-		InitEffects ();
+		
 	}
 
 	void Release () override;

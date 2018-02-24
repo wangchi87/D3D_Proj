@@ -1,6 +1,19 @@
 #include "Cube.h"
 
+void Cube::InitCubeData ()
+{
+	
+	geoGen.CreateBox ( 1.0f , 1.0f , 1.0f , box );
 
+	//geoGen.CreateGeosphere ( 3 , 5 , box );
+
+	vertices = &box.Vertices[ 0 ];
+	indices = &box.Indices[ 0 ];
+
+	vertexNum = box.Vertices.size ();
+	vertexIndicesNum = box.Indices.size ();
+
+}
 HRESULT Cube:: InitVertexShader ()
 {
 	HRESULT hr = S_OK;
@@ -39,14 +52,15 @@ HRESULT Cube::InitVertexLayout ()
 	// Define the input layout
 	D3D11_INPUT_ELEMENT_DESC layout [] =
 	{
-		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-		{ "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-		{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 28, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0,  D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		{ "NORMAL",   0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		{ "TANGENTU", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 24, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT,    0, 36, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 	};
 	UINT numElements = ARRAYSIZE ( layout );
 
 	// Create the input layout
-	hr = pd3dDevice->CreateInputLayout (
+	/*hr = pd3dDevice->CreateInputLayout (
 		layout ,
 		numElements ,
 		pVSBlob->GetBufferPointer () ,
@@ -58,7 +72,14 @@ HRESULT Cube::InitVertexLayout ()
 	{
 		MessageBox ( nullptr , L"Failed to create Vertex Input Layout." , L"Error" , MB_OK );
 		return hr;
-	}
+	}*/
+
+	D3DX11_PASS_DESC PassDesc;
+	V_RETURN ( g_pTechnique->GetPassByIndex ( 0 )->GetDesc ( &PassDesc ) );
+	V_RETURN ( pd3dDevice->CreateInputLayout ( layout , numElements , PassDesc.pIAInputSignature ,
+		PassDesc.IAInputSignatureSize , &g_pVertexLayout ) );
+
+
 	pd3dImmediateContext->IASetInputLayout ( g_pVertexLayout );
 	return S_OK;
 }
@@ -98,74 +119,49 @@ HRESULT Cube::InitVertexData ()
 	HRESULT hr = S_OK;
 
 	// ******************** define vertex data ********************
-	VertexColorTex triangle [] =
+	
+
+	Vertex vct [] =
 	{
-		{ XMFLOAT3 ( 0.0f, 0.50f, 0.20f ), XMFLOAT4 ( 1.0f, 0.0f, 0.0f, 1.0f ),XMFLOAT2 ( 1.0f, 0.0f ) },
-	{ XMFLOAT3 ( 0.50f, -0.30f, 0.20f ), XMFLOAT4 ( 0.0f, 1.0f, 0.0f, 1.0f ),XMFLOAT2 ( 0.0f, 0.0f ) },
-	{ XMFLOAT3 ( -0.50f, -0.30f, 0.20f ), XMFLOAT4 ( 0.0f, 0.50f, 1.0f, 1.0f ),XMFLOAT2 ( 0.0f, 1.0f ) },
-	{ XMFLOAT3 ( -0.50f, 0.50f, 0.20f ), XMFLOAT4 ( 1.0f, 0.0f, 0.0f, 1.0f ),XMFLOAT2 ( 1.0f, 1.0f ) },
-	};
+		{ XMFLOAT3 ( -1.0f, 1.0f, -1.0f ), XMFLOAT3 ( 0.0f, 1.0f, 1.0f ),  XMFLOAT3 ( 0.0f, 1.0f, 1.0f ), XMFLOAT2 ( 1.0f, 0.0f ) },
+	{ XMFLOAT3 ( 1.0f, 1.0f, -1.0f ),XMFLOAT3 ( 0.0f, 1.0f, 1.0f ),  XMFLOAT3 ( 0.0f, 1.0f, 1.0f ), XMFLOAT2 ( 0.0f, 0.0f ) },
+	{ XMFLOAT3 ( 1.0f, 1.0f, 1.0f ),XMFLOAT3 ( 0.0f, 1.0f, 1.0f ),  XMFLOAT3 ( 0.0f, 1.0f, 1.0f ),XMFLOAT2 ( 0.0f, 1.0f ) },
+	{ XMFLOAT3 ( -1.0f, 1.0f, 1.0f ),XMFLOAT3 ( 0.0f, 1.0f, 1.0f ),  XMFLOAT3 ( 0.0f, 1.0f, 1.0f ),XMFLOAT2 ( 1.0f, 1.0f ) },
 
-	SimpleVertex cube [] =
-	{
-		{ XMFLOAT3 ( -1.0f, 1.0f, -1.0f ), XMFLOAT4 ( 0.0f, 0.0f, 1.0f, 1.0f ) },
-	{ XMFLOAT3 ( 1.0f, 1.0f, -1.0f ), XMFLOAT4 ( 0.0f, 1.0f, 0.0f, 1.0f ) },
-	{ XMFLOAT3 ( 1.0f, 1.0f, 1.0f ), XMFLOAT4 ( 0.0f, 1.0f, 1.0f, 1.0f ) },
-	{ XMFLOAT3 ( -1.0f, 1.0f, 1.0f ), XMFLOAT4 ( 1.0f, 0.0f, 0.0f, 1.0f ) },
-	{ XMFLOAT3 ( -1.0f, -1.0f, -1.0f ), XMFLOAT4 ( 1.0f, 0.0f, 1.0f, 1.0f ) },
-	{ XMFLOAT3 ( 1.0f, -1.0f, -1.0f ), XMFLOAT4 ( 1.0f, 1.0f, 0.0f, 1.0f ) },
-	{ XMFLOAT3 ( 1.0f, -1.0f, 1.0f ), XMFLOAT4 ( 1.0f, 1.0f, 1.0f, 1.0f ) },
-	{ XMFLOAT3 ( -1.0f, -1.0f, 1.0f ), XMFLOAT4 ( 0.0f, 0.0f, 0.0f, 1.0f ) },
-	};
+	{ XMFLOAT3 ( -1.0f, -1.0f, -1.0f ),XMFLOAT3 ( 0.0f, 1.0f, 1.0f ),  XMFLOAT3 ( 0.0f, 1.0f, 1.0f ), XMFLOAT2 ( 0.0f, 0.0f ) },
+	{ XMFLOAT3 ( 1.0f, -1.0f, -1.0f ),XMFLOAT3 ( 0.0f, 1.0f, 1.0f ),  XMFLOAT3 ( 0.0f, 1.0f, 1.0f ),XMFLOAT2 ( 1.0f, 0.0f ) },
+	{ XMFLOAT3 ( 1.0f, -1.0f, 1.0f ),XMFLOAT3 ( 0.0f, 1.0f, 1.0f ),  XMFLOAT3 ( 0.0f, 1.0f, 1.0f ), XMFLOAT2 ( 1.0f, 1.0f ) },
+	{ XMFLOAT3 ( -1.0f, -1.0f, 1.0f ),XMFLOAT3 ( 0.0f, 1.0f, 1.0f ),  XMFLOAT3 ( 0.0f, 1.0f, 1.0f ), XMFLOAT2 ( 0.0f, 1.0f ) },
 
-	VertexTex vt [] =
-	{
-		{ XMFLOAT3 ( -1.0f, 1.0f, -1.0f ), XMFLOAT2 ( 1.0f, 0.0f ) },
-		{ XMFLOAT3 ( 1.0f, 1.0f, -1.0f ), XMFLOAT2 ( 0.0f, 0.0f ) },
-		{ XMFLOAT3 ( 1.0f, 1.0f, 1.0f ), XMFLOAT2 ( 0.0f, 1.0f ) },
-	};
+	{ XMFLOAT3 ( -1.0f, -1.0f, 1.0f ),XMFLOAT3 ( 0.0f, 1.0f, 1.0f ),  XMFLOAT3 ( 0.0f, 1.0f, 1.0f ), XMFLOAT2 ( 0.0f, 1.0f ) },
+	{ XMFLOAT3 ( -1.0f, -1.0f, -1.0f ), XMFLOAT3 ( 0.0f, 1.0f, 1.0f ),  XMFLOAT3 ( 0.0f, 1.0f, 1.0f ),XMFLOAT2 ( 1.0f, 1.0f ) },
+	{ XMFLOAT3 ( -1.0f, 1.0f, -1.0f ),XMFLOAT3 ( 0.0f, 1.0f, 1.0f ),  XMFLOAT3 ( 0.0f, 1.0f, 1.0f ), XMFLOAT2 ( 1.0f, 0.0f ) },
+	{ XMFLOAT3 ( -1.0f, 1.0f, 1.0f ), XMFLOAT3 ( 0.0f, 1.0f, 1.0f ),  XMFLOAT3 ( 0.0f, 1.0f, 1.0f ),XMFLOAT2 ( 0.0f, 0.0f ) },
 
-	VertexColorTex vct [] =
-	{
-		{ XMFLOAT3 ( -1.0f, 1.0f, -1.0f ), XMFLOAT4 ( 0.0f, 1.0f, 1.0f, 1.0f ), XMFLOAT2 ( 1.0f, 0.0f ) },
-	{ XMFLOAT3 ( 1.0f, 1.0f, -1.0f ),XMFLOAT4 ( 0.0f, 0.0f, 1.0f, 1.0f ), XMFLOAT2 ( 0.0f, 0.0f ) },
-	{ XMFLOAT3 ( 1.0f, 1.0f, 1.0f ),XMFLOAT4 ( 0.0f, 0.0f, 1.0f, 1.0f ), XMFLOAT2 ( 0.0f, 1.0f ) },
-	{ XMFLOAT3 ( -1.0f, 1.0f, 1.0f ), XMFLOAT4 ( 1.0f, 0.0f, 1.0f, 1.0f ),XMFLOAT2 ( 1.0f, 1.0f ) },
+	{ XMFLOAT3 ( 1.0f, -1.0f, 1.0f ),XMFLOAT3 ( 0.0f, 1.0f, 1.0f ),  XMFLOAT3 ( 0.0f, 1.0f, 1.0f ),XMFLOAT2 ( 1.0f, 1.0f ) },
+	{ XMFLOAT3 ( 1.0f, -1.0f, -1.0f ),XMFLOAT3 ( 0.0f, 1.0f, 1.0f ),  XMFLOAT3 ( 0.0f, 1.0f, 1.0f ), XMFLOAT2 ( 0.0f, 1.0f ) },
+	{ XMFLOAT3 ( 1.0f, 1.0f, -1.0f ),XMFLOAT3 ( 0.0f, 1.0f, 1.0f ),  XMFLOAT3 ( 0.0f, 1.0f, 1.0f ),XMFLOAT2 ( 0.0f, 0.0f ) },
+	{ XMFLOAT3 ( 1.0f, 1.0f, 1.0f ), XMFLOAT3 ( 0.0f, 1.0f, 1.0f ),  XMFLOAT3 ( 0.0f, 1.0f, 1.0f ),XMFLOAT2 ( 1.0f, 0.0f ) },
 
-	{ XMFLOAT3 ( -1.0f, -1.0f, -1.0f ),XMFLOAT4 ( 1.0f, 0.0f, 1.0f, 1.0f ), XMFLOAT2 ( 0.0f, 0.0f ) },
-	{ XMFLOAT3 ( 1.0f, -1.0f, -1.0f ), XMFLOAT4 ( 0.0f, 0.0f, 1.0f, 1.0f ),XMFLOAT2 ( 1.0f, 0.0f ) },
-	{ XMFLOAT3 ( 1.0f, -1.0f, 1.0f ),XMFLOAT4 ( 0.0f, 0.0f, 1.0f, 1.0f ), XMFLOAT2 ( 1.0f, 1.0f ) },
-	{ XMFLOAT3 ( -1.0f, -1.0f, 1.0f ),XMFLOAT4 ( 0.0f, 0.0f, 1.0f, 1.0f ), XMFLOAT2 ( 0.0f, 1.0f ) },
+	{ XMFLOAT3 ( -1.0f, -1.0f, -1.0f ),XMFLOAT3 ( 0.0f, 1.0f, 1.0f ),  XMFLOAT3 ( 0.0f, 1.0f, 1.0f ),XMFLOAT2 ( 0.0f, 1.0f ) },
+	{ XMFLOAT3 ( 1.0f, -1.0f, -1.0f ), XMFLOAT3 ( 0.0f, 1.0f, 1.0f ),  XMFLOAT3 ( 0.0f, 1.0f, 1.0f ),XMFLOAT2 ( 1.0f, 1.0f ) },
+	{ XMFLOAT3 ( 1.0f, 1.0f, -1.0f ), XMFLOAT3 ( 0.0f, 1.0f, 1.0f ),  XMFLOAT3 ( 0.0f, 1.0f, 1.0f ),XMFLOAT2 ( 1.0f, 0.0f ) },
+	{ XMFLOAT3 ( -1.0f, 1.0f, -1.0f ),XMFLOAT3 ( 0.0f, 1.0f, 1.0f ),  XMFLOAT3 ( 0.0f, 1.0f, 1.0f ), XMFLOAT2 ( 0.0f, 0.0f ) },
 
-	{ XMFLOAT3 ( -1.0f, -1.0f, 1.0f ),XMFLOAT4 ( 0.0f, 0.0f, 1.0f, 1.0f ), XMFLOAT2 ( 0.0f, 1.0f ) },
-	{ XMFLOAT3 ( -1.0f, -1.0f, -1.0f ), XMFLOAT4 ( 0.0f, 0.0f, 1.0f, 1.0f ),XMFLOAT2 ( 1.0f, 1.0f ) },
-	{ XMFLOAT3 ( -1.0f, 1.0f, -1.0f ),XMFLOAT4 ( 0.0f, 1.0f, 1.0f, 1.0f ), XMFLOAT2 ( 1.0f, 0.0f ) },
-	{ XMFLOAT3 ( -1.0f, 1.0f, 1.0f ), XMFLOAT4 ( 0.0f, 0.0f, 1.0f, 1.0f ),XMFLOAT2 ( 0.0f, 0.0f ) },
-
-	{ XMFLOAT3 ( 1.0f, -1.0f, 1.0f ), XMFLOAT4 ( 0.0f, 0.0f, 1.0f, 1.0f ),XMFLOAT2 ( 1.0f, 1.0f ) },
-	{ XMFLOAT3 ( 1.0f, -1.0f, -1.0f ),XMFLOAT4 ( 0.0f, 1.0f, 1.0f, 1.0f ), XMFLOAT2 ( 0.0f, 1.0f ) },
-	{ XMFLOAT3 ( 1.0f, 1.0f, -1.0f ),XMFLOAT4 ( 0.0f, 0.0f, 1.0f, 1.0f ), XMFLOAT2 ( 0.0f, 0.0f ) },
-	{ XMFLOAT3 ( 1.0f, 1.0f, 1.0f ), XMFLOAT4 ( 0.0f, 0.0f, 1.0f, 1.0f ),XMFLOAT2 ( 1.0f, 0.0f ) },
-
-	{ XMFLOAT3 ( -1.0f, -1.0f, -1.0f ), XMFLOAT4 ( 1.0f, 0.0f, 1.0f, 1.0f ),XMFLOAT2 ( 0.0f, 1.0f ) },
-	{ XMFLOAT3 ( 1.0f, -1.0f, -1.0f ), XMFLOAT4 ( 0.0f, 0.0f, 1.0f, 1.0f ),XMFLOAT2 ( 1.0f, 1.0f ) },
-	{ XMFLOAT3 ( 1.0f, 1.0f, -1.0f ), XMFLOAT4 ( 0.0f, 1.0f, 1.0f, 1.0f ),XMFLOAT2 ( 1.0f, 0.0f ) },
-	{ XMFLOAT3 ( -1.0f, 1.0f, -1.0f ),XMFLOAT4 ( 0.0f, 0.0f, 1.0f, 1.0f ), XMFLOAT2 ( 0.0f, 0.0f ) },
-
-	{ XMFLOAT3 ( -1.0f, -1.0f, 1.0f ), XMFLOAT4 ( 1.0f, 0.0f, 1.0f, 1.0f ),XMFLOAT2 ( 1.0f, 1.0f ) },
-	{ XMFLOAT3 ( 1.0f, -1.0f, 1.0f ), XMFLOAT4 ( 0.0f, 0.0f, 1.0f, 1.0f ),XMFLOAT2 ( 0.0f, 1.0f ) },
-	{ XMFLOAT3 ( 1.0f, 1.0f, 1.0f ),XMFLOAT4 ( 1.0f, 0.0f, 1.0f, 1.0f ), XMFLOAT2 ( 0.0f, 0.0f ) },
-	{ XMFLOAT3 ( -1.0f, 1.0f, 1.0f ),XMFLOAT4 ( 0.0f, 1.0f, 1.0f, 1.0f ), XMFLOAT2 ( 1.0f, 0.0f ) },
+	{ XMFLOAT3 ( -1.0f, -1.0f, 1.0f ), XMFLOAT3 ( 0.0f, 1.0f, 1.0f ),  XMFLOAT3 ( 0.0f, 1.0f, 1.0f ), XMFLOAT2 ( 1.0f, 1.0f ) },
+	{ XMFLOAT3 ( 1.0f, -1.0f, 1.0f ), XMFLOAT3 ( 0.0f, 1.0f, 1.0f ),  XMFLOAT3 ( 0.0f, 1.0f, 1.0f ),XMFLOAT2 ( 0.0f, 1.0f ) },
+	{ XMFLOAT3 ( 1.0f, 1.0f, 1.0f ),XMFLOAT3 ( 0.0f, 1.0f, 1.0f ),  XMFLOAT3 ( 0.0f, 1.0f, 1.0f ), XMFLOAT2 ( 0.0f, 0.0f ) },
+	{ XMFLOAT3 ( -1.0f, 1.0f, 1.0f ),XMFLOAT3 ( 0.0f, 1.0f, 1.0f ),  XMFLOAT3 ( 0.0f, 1.0f, 1.0f ), XMFLOAT2 ( 1.0f, 0.0f ) },
 	};
 
 	// *********************** remember to change this ********************
-	void *						vertices;
-	UINT						vertexStructSize;
-	UINT						vertexNum;
+	//void *						vertices;
+	//UINT						vertexStructSize;
+	//UINT						vertexNum;
 
-	vertexStructSize = sizeof ( VertexColorTex );
-	vertexNum = ARRAYSIZE ( vct );
-	vertices = vct;
+	//vertexStructSize = sizeof ( Vertex );
+	//vertexNum = ARRAYSIZE ( vct );
+	//vertices = vct;
 	// *********************** remember to change this ********************
 
 	// ************************************* end of defining vertex data ***********************************
@@ -174,7 +170,7 @@ HRESULT Cube::InitVertexData ()
 	ZeroMemory ( &bd , sizeof ( bd ) );
 	bd.Usage = D3D11_USAGE_DEFAULT;
 
-	bd.ByteWidth = vertexStructSize * vertexNum;
+	bd.ByteWidth = sizeof ( Vertex ) * vertexNum;
 
 	bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 	bd.CPUAccessFlags = 0;
@@ -184,7 +180,7 @@ HRESULT Cube::InitVertexData ()
 	InitData.pSysMem = vertices;
 	V_RETURN ( pd3dDevice->CreateBuffer ( &bd , &InitData , &g_pVertexBuffer ) );
 
-	UINT stride = vertexStructSize;
+	UINT stride = sizeof ( Vertex );
 	UINT offset = 0;
 
 	pd3dImmediateContext->IASetVertexBuffers ( 0 , 1 , &g_pVertexBuffer , &stride , &offset );
@@ -196,13 +192,8 @@ HRESULT Cube::InitIndexBuffer ()
 {
 	HRESULT hr = S_OK;
 	// create index buffer
-	WORD triIndices [] =
-	{
-		0,2,1,
-		1,2,3,
-	};
-
-	WORD cubeIndices [] =
+	
+	UINT cubeIndices [] =
 	{
 		3,1,0,
 		2,1,3,
@@ -224,8 +215,8 @@ HRESULT Cube::InitIndexBuffer ()
 	};
 
 	// *********** change this ************
-	WORD *indices = cubeIndices;
-	vertexIndicesNum = ARRAYSIZE ( cubeIndices );
+	//UINT *indices = cubeIndices;
+	//vertexIndicesNum = ARRAYSIZE ( cubeIndices );
 	// *********** change this ************
 
 	D3D11_BUFFER_DESC bd;
@@ -282,19 +273,19 @@ HRESULT Cube::InitTexture ()
 		return hr;
 
 	// create Sampler
-	D3D11_SAMPLER_DESC sampDesc;
-	ZeroMemory ( &sampDesc , sizeof ( sampDesc ) );
-	sampDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
-	sampDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
-	sampDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
-	sampDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
-	sampDesc.ComparisonFunc = D3D11_COMPARISON_NEVER;
-	sampDesc.MinLOD = 0;
-	sampDesc.MaxLOD = D3D11_FLOAT32_MAX;
+	//D3D11_SAMPLER_DESC sampDesc;
+	//ZeroMemory ( &sampDesc , sizeof ( sampDesc ) );
+	//sampDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
+	//sampDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
+	//sampDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
+	//sampDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
+	//sampDesc.ComparisonFunc = D3D11_COMPARISON_NEVER;
+	//sampDesc.MinLOD = 0;
+	//sampDesc.MaxLOD = D3D11_FLOAT32_MAX;
 
-	hr = pd3dDevice->CreateSamplerState ( &sampDesc , &g_pSamplerState );
-	if (FAILED ( hr ))
-		return hr;
+	//hr = pd3dDevice->CreateSamplerState ( &sampDesc , &g_pSamplerState );
+	//if (FAILED ( hr ))
+	//	return hr;
 
 	return S_OK;
 }
@@ -304,15 +295,12 @@ HRESULT Cube::InitEffects ()
 	HRESULT hr;
 
 #if D3D_COMPILER_VERSION >= 46
-
 	// Read the D3DX effect file
 	WCHAR str[ MAX_PATH ];
 	V_RETURN ( DXUTFindDXSDKMediaFileCch ( str , MAX_PATH , L"cubeEffect.fx" ) );
 
 	V_RETURN ( D3DX11CompileEffectFromFile ( str , nullptr , D3D_COMPILE_STANDARD_FILE_INCLUDE , dwShaderFlags , 0 , pd3dDevice , &g_pEffect , nullptr ) );
-
 #else
-
 	ID3DBlob* pEffectBuffer = nullptr;
 	V_RETURN ( DXUTCompileFromFile ( L"cubeEffect.fx" , nullptr , "none" , "fx_5_0" , dwShaderFlags , 0 , &pEffectBuffer ) );
 	hr = D3DX11CreateEffectFromMemory ( pEffectBuffer->GetBufferPointer () , pEffectBuffer->GetBufferSize () , 0 , pd3dDevice , &g_pEffect );
@@ -320,13 +308,14 @@ HRESULT Cube::InitEffects ()
 	if (FAILED ( hr ))
 		return hr;
 #endif
+	
 	g_pTechnique = g_pEffect->GetTechniqueByName ( "Render" );
 
 	worldVariable = g_pEffect->GetVariableByName ( "World" )->AsMatrix ();
 	viewVariable = g_pEffect->GetVariableByName ( "View" )->AsMatrix ();
 	projVariable = g_pEffect->GetVariableByName ( "Projection" )->AsMatrix ();
 
-	//g_ptxDiffuseVariable = g_pEffect->GetVariableByName ( "txDiff" )->AsShaderResource ();
+	g_ptxDiffuseVariable = g_pEffect->GetVariableByName ( "g_txDiffuse" )->AsShaderResource ();
 
 	return S_OK;
 }
@@ -342,29 +331,22 @@ void Cube::UpdateWorldMatrix ()
 			timeStart = timeCur;
 		t = ( timeCur - timeStart ) / 500.0f;
 	}
-
 	//t = sinf ( t );
+	/*ConstBufMatrix1 worldMat;
+	worldMat.Mat = XMMatrixTranspose ( XMMatrixTranslation ( 3 , 1 , 2 ) );
+	pd3dImmediateContext->UpdateSubresource ( constBufWorld , 0 , nullptr , &worldMat , 0 , 0 );*/
 
-	ConstBufMatrix1 worldMatrix;
-	worldMatrix.Mat = XMMatrixTranspose ( XMMatrixRotationY ( 0 ) );
-	pd3dImmediateContext->UpdateSubresource ( constBufWorld , 0 , nullptr , &worldMatrix , 0 , 0 );
-
-	XMMATRIX worldMat;
-	worldMat =  ( XMMatrixRotationY ( t ) );
-	worldVariable->SetMatrix ( ( float* ) &worldMat );
-
+	// NOTE : you really can NOT add Transpose to the matrix when using Effect shader!!
+	XMMATRIX worldMatrix;
+	worldMatrix =  ( XMMatrixRotationY ( t ) );
+	SetWorldMatrix ( worldMatrix );
 }
 
-void Cube::SetWorldMatrix ( ConstBufMatrix1 worldMatrix )
-{
-	pd3dImmediateContext->UpdateSubresource ( constBufWorld , 0 , nullptr , &worldMatrix , 0 , 0 );
-}
-
-void Cube::RenderScene ( double fTime , float fElapsedTime , void* pUserContext, ID3D11Buffer * constBufView , ID3D11Buffer * constBufProj )
+void Cube::RenderScene ( double fTime , float fElapsedTime , void* pUserContext )
 {
 	UpdateWorldMatrix ();
 
-	//g_ptxDiffuseVariable->SetResource ( g_pTextureRV );
+	g_ptxDiffuseVariable->SetResource ( g_pTextureRV );
 
 	D3DX11_TECHNIQUE_DESC techDesc;
 	HRESULT hr;
@@ -397,14 +379,14 @@ void Cube::RenderScene ( double fTime , float fElapsedTime , void* pUserContext,
 void Cube::Release ()
 {
 	BaseModel::Release ();
-	SAFE_RELEASE ( g_pVertexShader );
-	SAFE_RELEASE ( g_pPixelShader );
+	//SAFE_RELEASE ( g_pVertexShader );
+	//SAFE_RELEASE ( g_pPixelShader );
 
 	SAFE_RELEASE ( g_pVertexBuffer );
 	SAFE_RELEASE ( g_pIndexBuffer );
 
 	SAFE_RELEASE ( g_pTextureRV );
-	SAFE_RELEASE ( g_pSamplerState );
+	//SAFE_RELEASE ( g_pSamplerState );
 
 	//#if defined(DEBUG) || defined(_DEBUG)  
 	//	ID3D11Debug *d3dDebug;
@@ -419,11 +401,4 @@ void Cube::Release ()
 }
 
 Cube::~Cube ()
-{
-	/*SAFE_RELEASE ( g_pVertexShader );
-	SAFE_RELEASE ( g_pPixelShader );
-	SAFE_RELEASE ( g_pVertexBuffer );
-	SAFE_RELEASE ( g_pIndexBuffer );
-	SAFE_RELEASE ( g_pTextureRV );
-	SAFE_RELEASE ( g_pSamplerState );*/
-}
+{}
