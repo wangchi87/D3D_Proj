@@ -6,9 +6,9 @@ void Cube::InitCubeData ()
 	GeometryGenerator geoGen;
 	geoGen.CreateBox ( 1.0f , 2.0f , 4.0f , box );
 
-	geoGen.CreateGeosphere ( 3 , 5 , box );
+	/*geoGen.CreateGeosphere ( 3 , 5 , box );
 
-	geoGen.CreateGrid ( 5 , 10 , 10 , 15 , box );
+	geoGen.CreateGrid ( 5 , 10 , 10 , 15 , box );*/
 
 	vertexNum = box.Vertices.size ();
 	vertexIndicesNum = box.Indices.size ();
@@ -142,10 +142,10 @@ HRESULT Cube::InitVertexData ()
 	InitData.pSysMem = vertices;
 	V_RETURN ( pd3dDevice->CreateBuffer ( &bd , &InitData , &g_pVertexBuffer ) );
 
-	UINT stride = sizeof ( Vertex );
+	/*UINT stride = sizeof ( Vertex );
 	UINT offset = 0;
 
-	pd3dImmediateContext->IASetVertexBuffers ( 0 , 1 , &g_pVertexBuffer , &stride , &offset );
+	pd3dImmediateContext->IASetVertexBuffers ( 0 , 1 , &g_pVertexBuffer , &stride , &offset );*/
 
 	return S_OK;
 }
@@ -169,7 +169,7 @@ HRESULT Cube::InitIndexBuffer ()
 	if (FAILED ( hr ))
 		return hr;
 
-	pd3dImmediateContext->IASetIndexBuffer ( g_pIndexBuffer , DXGI_FORMAT_R16_UINT , 0 );
+	//pd3dImmediateContext->IASetIndexBuffer ( g_pIndexBuffer , DXGI_FORMAT_R16_UINT , 0 );
 
 	pd3dImmediateContext->IASetPrimitiveTopology ( D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST );
 
@@ -180,7 +180,7 @@ HRESULT Cube::InitConstBufferWorld ()
 {
 	HRESULT hr = S_OK;
 
-	D3D11_BUFFER_DESC bd;
+	/*D3D11_BUFFER_DESC bd;
 	ZeroMemory ( &bd , sizeof ( bd ) );
 	bd.Usage = D3D11_USAGE_DEFAULT;
 	bd.CPUAccessFlags = 0;
@@ -191,7 +191,7 @@ HRESULT Cube::InitConstBufferWorld ()
 	{
 		MessageBox ( nullptr , L"Failed to create Constant Buffer." , L"Error" , MB_OK );
 		return hr;
-	}
+	}*/
 
 	return S_OK;
 }
@@ -280,6 +280,13 @@ void Cube::RenderScene ( double fTime , float fElapsedTime , void* pUserContext 
 	UpdateWorldMatrix ();
 
 	g_ptxDiffuseVariable->SetResource ( g_pTextureRV );
+
+	UINT stride = sizeof ( Vertex );
+	UINT offset = 0;
+
+	pd3dImmediateContext->IASetVertexBuffers ( 0 , 1 , &g_pVertexBuffer , &stride , &offset );
+	pd3dImmediateContext->IASetIndexBuffer ( g_pIndexBuffer , DXGI_FORMAT_R16_UINT , 0 );
+
 
 	D3DX11_TECHNIQUE_DESC techDesc;
 	HRESULT hr;

@@ -31,9 +31,6 @@
     <ClCompile Include="..\Src\Camera\FirstPersonCamera.cpp">
       <Filter>Tools\Camera</Filter>
     </ClCompile>
-    <ClCompile Include="..\Src\Model\Mesh.cpp">
-      <Filter>Tools\Model</Filter>
-    </ClCompile>
     <ClCompile Include="..\Src\Model\ModelLoader.cpp">
       <Filter>Tools\Model</Filter>
     </ClCompile>
@@ -52,6 +49,9 @@
     <ClCompile Include="..\Src\Model\GeometryGenerator.cpp">
       <Filter>Tools\Model</Filter>
     </ClCompile>
+    <ClCompile Include="..\Src\Model\BasicGeometry.cpp">
+      <Filter>Tools\Model</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Src\resource.h">
@@ -62,9 +62,6 @@
     </ClInclude>
     <ClInclude Include="..\Src\ProjectHeader.h">
       <Filter>Src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Src\Model\Mesh.h">
-      <Filter>Tools\Model</Filter>
     </ClInclude>
     <ClInclude Include="..\Src\Model\ModelLoader.h">
       <Filter>Tools\Model</Filter>
@@ -82,6 +79,9 @@
       <Filter>Src</Filter>
     </ClInclude>
     <ClInclude Include="..\Src\Model\GeometryGenerator.h">
+      <Filter>Tools\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Model\BasicGeometry.h">
       <Filter>Tools\Model</Filter>
     </ClInclude>
   </ItemGroup>

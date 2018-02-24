@@ -37,5 +37,7 @@ struct Vertex
 	XMFLOAT2 TexC;
 };
 
+#include "Model\GeometryGenerator.h"
+
 #endif // PROJECT_HEADER
 

@@ -58,26 +58,7 @@ void MyScene::InitCamera ()
 
 	camera.InitCamera ( Eye , Up );
 	
-	HRESULT hr = S_OK;
-	D3D11_BUFFER_DESC bd;
-	ZeroMemory ( &bd , sizeof ( bd ) );
-	bd.Usage = D3D11_USAGE_DEFAULT;
-	bd.ByteWidth = sizeof ( ConstBufMatrix1 );
-	bd.CPUAccessFlags = 0;
-	bd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-
-	hr = pd3dDevice->CreateBuffer ( &bd , nullptr , &constBufProj );
-	if (FAILED ( hr ))
-	{
-		MessageBox ( nullptr , L"Failed to create Constant Projection Buffer." , L"Error" , MB_OK );
-	}
-
-	hr = pd3dDevice->CreateBuffer ( &bd , nullptr , &constBufView );
-	if (FAILED ( hr ))
-	{
-		MessageBox ( nullptr , L"Failed to create Constant View Buffer." , L"Error" , MB_OK );
-	}
-
+	
 }
 
 void MyScene::UpdateViewProjBuffer ()
@@ -105,9 +86,23 @@ void MyScene::UpdateViewProjBuffer ()
 
 void MyScene::AddModel ()
 {
-	BaseModel *myCube = new Cube( pd3dDevice , pBackBufferSurfaceDesc , pUserContext );
-	myCube->AddResources ();
+	MeshData model;
+	GeometryGenerator geoGen;
+	geoGen.CreateBox ( 14.0f , 2.0f , 1.0f , model );
+
+	//geoGen.CreateGrid ( 5 , 10 , 10 , 15 , model );
+
+	BaseModel *myCube = new BasicGeometry ( pd3dDevice , pBackBufferSurfaceDesc , pUserContext );
+
+	myCube->Initiallise ( L"cubeEffect.fx" , model , L"seafloor.dds" );
 	models.push_back ( myCube );
+
+	geoGen.CreateGeosphere ( 3 , 5 , model );
+
+	BaseModel *mySphere = new BasicGeometry ( pd3dDevice , pBackBufferSurfaceDesc , pUserContext );
+
+	mySphere->Initiallise ( L"cubeEffect.fx" , model , L"desert_sky.dds" );
+	models.push_back ( mySphere );
 }
 
 void MyScene::RenderScene ( double fTime , float fElapsedTime , void* pUserContext )

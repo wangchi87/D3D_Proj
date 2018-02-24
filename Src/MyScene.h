@@ -3,6 +3,8 @@
 #include "ProjectHeader.h"
 #include "Cube.h"
 
+#include "Model\BasicGeometry.h"
+
 class MyScene
 {
 	ID3D11Device*				pd3dDevice;

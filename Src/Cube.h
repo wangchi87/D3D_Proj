@@ -2,13 +2,11 @@
 
 #include "ProjectHeader.h"
 #include "Model\BaseModel.h"
-#include "Model\GeometryGenerator.h"
+
 
 class Cube: public BaseModel
 {
 	
-
-
 	ID3D11VertexShader*			g_pVertexShader;
 	ID3DBlob*					pVSBlob;
 	
@@ -63,14 +61,14 @@ public:
 
 	void AddResources () override
 	{
-		InitCubeData ();
+		//InitCubeData ();
 		InitEffects ();
 		//InitVertexShader ();
 		InitVertexLayout ();
 		//InitPixelShader ();
 		InitVertexData ();
 		InitIndexBuffer ();
-		InitConstBufferWorld ();
+		//InitConstBufferWorld ();
 		InitTexture ();
 
 		

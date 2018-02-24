@@ -1,20 +1,18 @@
-﻿生成启动时间为 2018/2/24 12:59:08。
+﻿生成启动时间为 2018/2/24 18:05:43。
      1>项目“I:\网易\d3d_test\EmptyProject\Project\EmptyProject11_2017.vcxproj”在节点 2 上(Build 个目标)。
      1>InitializeBuildStatus:
          正在对“Debug\EmptyProject11.tlog\unsuccessfulbuild”执行 Touch 任务。
        ClCompile:
-         d:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Tools\MSVC\14.12.25827\bin\HostX86\x86\CL.exe /c /I..\Src /I..\Dependency /ZI /nologo /W4 /WX- /diagnostics:classic /Od /Oi /Oy- /D WIN32 /D _DEBUG /D DEBUG /D PROFILE /D _WINDOWS /D USE_DIRECT3D11_2 /D _WIN32_WINNT=0x0600 /D _UNICODE /D UNICODE /Gm- /EHsc /RTC1 /MDd /GS /arch:SSE2 /fp:fast /Zc:wchar_t /Zc:forScope /Zc:inline /openmp- /Fo"Debug\\" /Fd"Debug\vc141.pdb" /Gd /TP /analyze- /errorReport:prompt /permissive- ..\Src\Cube.cpp
-         Cube.cpp
-     1>i:\网易\d3d_test\emptyproject\src\model\basemodel.h(66): warning C4458: “pUserContext”的声明隐藏了类成员
-         i:\网易\d3d_test\emptyproject\src\model\basemodel.h(31): note: 参见“BaseModel::pUserContext”的声明
-     1>i:\网易\d3d_test\emptyproject\src\model\basemodel.h(66): warning C4100: “pUserContext”: 未引用的形参
-     1>i:\网易\d3d_test\emptyproject\src\model\basemodel.h(65): warning C4100: “fElapsedTime”: 未引用的形参
-     1>i:\网易\d3d_test\emptyproject\src\model\basemodel.h(64): warning C4100: “fTime”: 未引用的形参
-     1>i:\网易\d3d_test\emptyproject\src\cube.cpp(278): warning C4458: “pUserContext”的声明隐藏了类成员
-         i:\网易\d3d_test\emptyproject\src\model\basemodel.h(31): note: 参见“BaseModel::pUserContext”的声明
-     1>i:\网易\d3d_test\emptyproject\src\cube.cpp(278): warning C4100: “pUserContext”: 未引用的形参
-     1>i:\网易\d3d_test\emptyproject\src\cube.cpp(278): warning C4100: “fElapsedTime”: 未引用的形参
-     1>i:\网易\d3d_test\emptyproject\src\cube.cpp(278): warning C4100: “fTime”: 未引用的形参
+         d:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Tools\MSVC\14.12.25827\bin\HostX86\x86\CL.exe /c /I..\Src /I..\Dependency /ZI /nologo /W4 /WX- /diagnostics:classic /Od /Oi /Oy- /D WIN32 /D _DEBUG /D DEBUG /D PROFILE /D _WINDOWS /D USE_DIRECT3D11_2 /D _WIN32_WINNT=0x0600 /D _UNICODE /D UNICODE /Gm- /EHsc /RTC1 /MDd /GS /arch:SSE2 /fp:fast /Zc:wchar_t /Zc:forScope /Zc:inline /openmp- /Fo"Debug\\" /Fd"Debug\vc141.pdb" /Gd /TP /analyze- /errorReport:prompt /permissive- ..\Src\MyScene.cpp
+         MyScene.cpp
+     1>i:\网易\d3d_test\emptyproject\src\myscene.cpp(9): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+     1>i:\网易\d3d_test\emptyproject\src\myscene.cpp(16): warning C4018: “<”: 有符号/无符号不匹配
+     1>i:\网易\d3d_test\emptyproject\src\myscene.cpp(80): warning C4018: “<”: 有符号/无符号不匹配
+     1>i:\网易\d3d_test\emptyproject\src\myscene.cpp(108): warning C4458: “pUserContext”的声明隐藏了类成员
+         i:\网易\d3d_test\emptyproject\src\myscene.h(13): note: 参见“MyScene::pUserContext”的声明
+     1>i:\网易\d3d_test\emptyproject\src\myscene.cpp(120): warning C4018: “<”: 有符号/无符号不匹配
+     1>i:\网易\d3d_test\emptyproject\src\myscene.cpp(135): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
+     1>i:\网易\d3d_test\emptyproject\src\myscene.cpp(163): warning C4244: “参数”: 从“int”转换到“float”，可能丢失数据
        ResourceCompile:
          所有输出均为最新。
        Link:
@@ -23,8 +21,8 @@
          Debug\Cube.obj
          Debug\EmptyProject11.obj
          Debug\BaseModel.obj
+         Debug\BasicGeometry.obj
          Debug\GeometryGenerator.obj
-         Debug\Mesh.obj
          Debug\ModelLoader.obj
          Debug\MyScene.obj
          Debug\DDSTextureLoader.obj
@@ -38,16 +36,15 @@
 
        “I:\网易\d3d_test\EmptyProject\Project\EmptyProject11_2017.vcxproj”(Build 目标) (1) ->
        (ClCompile 目标) -> 
-         i:\网易\d3d_test\emptyproject\src\model\basemodel.h(66): warning C4458: “pUserContext”的声明隐藏了类成员
-         i:\网易\d3d_test\emptyproject\src\model\basemodel.h(66): warning C4100: “pUserContext”: 未引用的形参
-         i:\网易\d3d_test\emptyproject\src\model\basemodel.h(65): warning C4100: “fElapsedTime”: 未引用的形参
-         i:\网易\d3d_test\emptyproject\src\model\basemodel.h(64): warning C4100: “fTime”: 未引用的形参
-         i:\网易\d3d_test\emptyproject\src\cube.cpp(278): warning C4458: “pUserContext”的声明隐藏了类成员
-         i:\网易\d3d_test\emptyproject\src\cube.cpp(278): warning C4100: “pUserContext”: 未引用的形参
-         i:\网易\d3d_test\emptyproject\src\cube.cpp(278): warning C4100: “fElapsedTime”: 未引用的形参
-         i:\网易\d3d_test\emptyproject\src\cube.cpp(278): warning C4100: “fTime”: 未引用的形参
+         i:\网易\d3d_test\emptyproject\src\myscene.cpp(9): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+         i:\网易\d3d_test\emptyproject\src\myscene.cpp(16): warning C4018: “<”: 有符号/无符号不匹配
+         i:\网易\d3d_test\emptyproject\src\myscene.cpp(80): warning C4018: “<”: 有符号/无符号不匹配
+         i:\网易\d3d_test\emptyproject\src\myscene.cpp(108): warning C4458: “pUserContext”的声明隐藏了类成员
+         i:\网易\d3d_test\emptyproject\src\myscene.cpp(120): warning C4018: “<”: 有符号/无符号不匹配
+         i:\网易\d3d_test\emptyproject\src\myscene.cpp(135): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
+         i:\网易\d3d_test\emptyproject\src\myscene.cpp(163): warning C4244: “参数”: 从“int”转换到“float”，可能丢失数据
 
-    8 个警告
+    7 个警告
     0 个错误
 
-已用时间 00:00:02.03
+已用时间 00:00:02.23
