@@ -4,6 +4,7 @@
 
 BaseModel::BaseModel ()
 {
+	
 	vertexIndicesNum = 0; 
 }
 

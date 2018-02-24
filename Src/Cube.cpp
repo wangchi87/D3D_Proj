@@ -2,16 +2,26 @@
 
 void Cube::InitCubeData ()
 {
-	
-	geoGen.CreateBox ( 1.0f , 1.0f , 1.0f , box );
+	MeshData box;
+	GeometryGenerator geoGen;
+	geoGen.CreateBox ( 1.0f , 2.0f , 4.0f , box );
 
-	//geoGen.CreateGeosphere ( 3 , 5 , box );
+	geoGen.CreateGeosphere ( 3 , 5 , box );
 
-	vertices = &box.Vertices[ 0 ];
-	indices = &box.Indices[ 0 ];
+	geoGen.CreateGrid ( 5 , 10 , 10 , 15 , box );
 
 	vertexNum = box.Vertices.size ();
 	vertexIndicesNum = box.Indices.size ();
+
+	vertices = new Vertex[ vertexNum ];
+
+	for (WORD i = 0; i < vertexNum; i++)
+		vertices[ i ] = box.Vertices[ i ];
+
+	indices = new WORD [ vertexIndicesNum ];
+
+	for (WORD i = 0; i < vertexIndicesNum; i++)
+		indices[ i ] = box.Indices[ i ];
 
 }
 HRESULT Cube:: InitVertexShader ()
@@ -118,54 +128,6 @@ HRESULT Cube::InitVertexData ()
 {
 	HRESULT hr = S_OK;
 
-	// ******************** define vertex data ********************
-	
-
-	Vertex vct [] =
-	{
-		{ XMFLOAT3 ( -1.0f, 1.0f, -1.0f ), XMFLOAT3 ( 0.0f, 1.0f, 1.0f ),  XMFLOAT3 ( 0.0f, 1.0f, 1.0f ), XMFLOAT2 ( 1.0f, 0.0f ) },
-	{ XMFLOAT3 ( 1.0f, 1.0f, -1.0f ),XMFLOAT3 ( 0.0f, 1.0f, 1.0f ),  XMFLOAT3 ( 0.0f, 1.0f, 1.0f ), XMFLOAT2 ( 0.0f, 0.0f ) },
-	{ XMFLOAT3 ( 1.0f, 1.0f, 1.0f ),XMFLOAT3 ( 0.0f, 1.0f, 1.0f ),  XMFLOAT3 ( 0.0f, 1.0f, 1.0f ),XMFLOAT2 ( 0.0f, 1.0f ) },
-	{ XMFLOAT3 ( -1.0f, 1.0f, 1.0f ),XMFLOAT3 ( 0.0f, 1.0f, 1.0f ),  XMFLOAT3 ( 0.0f, 1.0f, 1.0f ),XMFLOAT2 ( 1.0f, 1.0f ) },
-
-	{ XMFLOAT3 ( -1.0f, -1.0f, -1.0f ),XMFLOAT3 ( 0.0f, 1.0f, 1.0f ),  XMFLOAT3 ( 0.0f, 1.0f, 1.0f ), XMFLOAT2 ( 0.0f, 0.0f ) },
-	{ XMFLOAT3 ( 1.0f, -1.0f, -1.0f ),XMFLOAT3 ( 0.0f, 1.0f, 1.0f ),  XMFLOAT3 ( 0.0f, 1.0f, 1.0f ),XMFLOAT2 ( 1.0f, 0.0f ) },
-	{ XMFLOAT3 ( 1.0f, -1.0f, 1.0f ),XMFLOAT3 ( 0.0f, 1.0f, 1.0f ),  XMFLOAT3 ( 0.0f, 1.0f, 1.0f ), XMFLOAT2 ( 1.0f, 1.0f ) },
-	{ XMFLOAT3 ( -1.0f, -1.0f, 1.0f ),XMFLOAT3 ( 0.0f, 1.0f, 1.0f ),  XMFLOAT3 ( 0.0f, 1.0f, 1.0f ), XMFLOAT2 ( 0.0f, 1.0f ) },
-
-	{ XMFLOAT3 ( -1.0f, -1.0f, 1.0f ),XMFLOAT3 ( 0.0f, 1.0f, 1.0f ),  XMFLOAT3 ( 0.0f, 1.0f, 1.0f ), XMFLOAT2 ( 0.0f, 1.0f ) },
-	{ XMFLOAT3 ( -1.0f, -1.0f, -1.0f ), XMFLOAT3 ( 0.0f, 1.0f, 1.0f ),  XMFLOAT3 ( 0.0f, 1.0f, 1.0f ),XMFLOAT2 ( 1.0f, 1.0f ) },
-	{ XMFLOAT3 ( -1.0f, 1.0f, -1.0f ),XMFLOAT3 ( 0.0f, 1.0f, 1.0f ),  XMFLOAT3 ( 0.0f, 1.0f, 1.0f ), XMFLOAT2 ( 1.0f, 0.0f ) },
-	{ XMFLOAT3 ( -1.0f, 1.0f, 1.0f ), XMFLOAT3 ( 0.0f, 1.0f, 1.0f ),  XMFLOAT3 ( 0.0f, 1.0f, 1.0f ),XMFLOAT2 ( 0.0f, 0.0f ) },
-
-	{ XMFLOAT3 ( 1.0f, -1.0f, 1.0f ),XMFLOAT3 ( 0.0f, 1.0f, 1.0f ),  XMFLOAT3 ( 0.0f, 1.0f, 1.0f ),XMFLOAT2 ( 1.0f, 1.0f ) },
-	{ XMFLOAT3 ( 1.0f, -1.0f, -1.0f ),XMFLOAT3 ( 0.0f, 1.0f, 1.0f ),  XMFLOAT3 ( 0.0f, 1.0f, 1.0f ), XMFLOAT2 ( 0.0f, 1.0f ) },
-	{ XMFLOAT3 ( 1.0f, 1.0f, -1.0f ),XMFLOAT3 ( 0.0f, 1.0f, 1.0f ),  XMFLOAT3 ( 0.0f, 1.0f, 1.0f ),XMFLOAT2 ( 0.0f, 0.0f ) },
-	{ XMFLOAT3 ( 1.0f, 1.0f, 1.0f ), XMFLOAT3 ( 0.0f, 1.0f, 1.0f ),  XMFLOAT3 ( 0.0f, 1.0f, 1.0f ),XMFLOAT2 ( 1.0f, 0.0f ) },
-
-	{ XMFLOAT3 ( -1.0f, -1.0f, -1.0f ),XMFLOAT3 ( 0.0f, 1.0f, 1.0f ),  XMFLOAT3 ( 0.0f, 1.0f, 1.0f ),XMFLOAT2 ( 0.0f, 1.0f ) },
-	{ XMFLOAT3 ( 1.0f, -1.0f, -1.0f ), XMFLOAT3 ( 0.0f, 1.0f, 1.0f ),  XMFLOAT3 ( 0.0f, 1.0f, 1.0f ),XMFLOAT2 ( 1.0f, 1.0f ) },
-	{ XMFLOAT3 ( 1.0f, 1.0f, -1.0f ), XMFLOAT3 ( 0.0f, 1.0f, 1.0f ),  XMFLOAT3 ( 0.0f, 1.0f, 1.0f ),XMFLOAT2 ( 1.0f, 0.0f ) },
-	{ XMFLOAT3 ( -1.0f, 1.0f, -1.0f ),XMFLOAT3 ( 0.0f, 1.0f, 1.0f ),  XMFLOAT3 ( 0.0f, 1.0f, 1.0f ), XMFLOAT2 ( 0.0f, 0.0f ) },
-
-	{ XMFLOAT3 ( -1.0f, -1.0f, 1.0f ), XMFLOAT3 ( 0.0f, 1.0f, 1.0f ),  XMFLOAT3 ( 0.0f, 1.0f, 1.0f ), XMFLOAT2 ( 1.0f, 1.0f ) },
-	{ XMFLOAT3 ( 1.0f, -1.0f, 1.0f ), XMFLOAT3 ( 0.0f, 1.0f, 1.0f ),  XMFLOAT3 ( 0.0f, 1.0f, 1.0f ),XMFLOAT2 ( 0.0f, 1.0f ) },
-	{ XMFLOAT3 ( 1.0f, 1.0f, 1.0f ),XMFLOAT3 ( 0.0f, 1.0f, 1.0f ),  XMFLOAT3 ( 0.0f, 1.0f, 1.0f ), XMFLOAT2 ( 0.0f, 0.0f ) },
-	{ XMFLOAT3 ( -1.0f, 1.0f, 1.0f ),XMFLOAT3 ( 0.0f, 1.0f, 1.0f ),  XMFLOAT3 ( 0.0f, 1.0f, 1.0f ), XMFLOAT2 ( 1.0f, 0.0f ) },
-	};
-
-	// *********************** remember to change this ********************
-	//void *						vertices;
-	//UINT						vertexStructSize;
-	//UINT						vertexNum;
-
-	//vertexStructSize = sizeof ( Vertex );
-	//vertexNum = ARRAYSIZE ( vct );
-	//vertices = vct;
-	// *********************** remember to change this ********************
-
-	// ************************************* end of defining vertex data ***********************************
-
 	D3D11_BUFFER_DESC bd;
 	ZeroMemory ( &bd , sizeof ( bd ) );
 	bd.Usage = D3D11_USAGE_DEFAULT;
@@ -191,33 +153,6 @@ HRESULT Cube::InitVertexData ()
 HRESULT Cube::InitIndexBuffer ()
 {
 	HRESULT hr = S_OK;
-	// create index buffer
-	
-	UINT cubeIndices [] =
-	{
-		3,1,0,
-		2,1,3,
-
-		6,4,5,
-		7,4,6,
-
-		11,9,8,
-		10,9,11,
-
-		14,12,13,
-		15,12,14,
-
-		19,17,16,
-		18,17,19,
-
-		22,20,21,
-		23,20,22
-	};
-
-	// *********** change this ************
-	//UINT *indices = cubeIndices;
-	//vertexIndicesNum = ARRAYSIZE ( cubeIndices );
-	// *********** change this ************
 
 	D3D11_BUFFER_DESC bd;
 	ZeroMemory ( &bd , sizeof ( bd ) );
@@ -232,9 +167,7 @@ HRESULT Cube::InitIndexBuffer ()
 
 	hr = pd3dDevice->CreateBuffer ( &bd , &InitData , &g_pIndexBuffer );
 	if (FAILED ( hr ))
-	{
 		return hr;
-	}
 
 	pd3dImmediateContext->IASetIndexBuffer ( g_pIndexBuffer , DXGI_FORMAT_R16_UINT , 0 );
 
@@ -386,6 +319,8 @@ void Cube::Release ()
 	SAFE_RELEASE ( g_pIndexBuffer );
 
 	SAFE_RELEASE ( g_pTextureRV );
+
+
 	//SAFE_RELEASE ( g_pSamplerState );
 
 	//#if defined(DEBUG) || defined(_DEBUG)  
@@ -401,4 +336,84 @@ void Cube::Release ()
 }
 
 Cube::~Cube ()
-{}
+{
+	printf ( "cube" );
+}
+
+
+// ******************** define vertex data ********************
+
+//
+//Vertex vct [] =
+//{
+//	{ XMFLOAT3 ( -1.0f, 1.0f, -1.0f ), XMFLOAT3 ( 0.0f, 1.0f, 1.0f ),  XMFLOAT3 ( 0.0f, 1.0f, 1.0f ), XMFLOAT2 ( 1.0f, 0.0f ) },
+//{ XMFLOAT3 ( 1.0f, 1.0f, -1.0f ),XMFLOAT3 ( 0.0f, 1.0f, 1.0f ),  XMFLOAT3 ( 0.0f, 1.0f, 1.0f ), XMFLOAT2 ( 0.0f, 0.0f ) },
+//{ XMFLOAT3 ( 1.0f, 1.0f, 1.0f ),XMFLOAT3 ( 0.0f, 1.0f, 1.0f ),  XMFLOAT3 ( 0.0f, 1.0f, 1.0f ),XMFLOAT2 ( 0.0f, 1.0f ) },
+//{ XMFLOAT3 ( -1.0f, 1.0f, 1.0f ),XMFLOAT3 ( 0.0f, 1.0f, 1.0f ),  XMFLOAT3 ( 0.0f, 1.0f, 1.0f ),XMFLOAT2 ( 1.0f, 1.0f ) },
+//
+//{ XMFLOAT3 ( -1.0f, -1.0f, -1.0f ),XMFLOAT3 ( 0.0f, 1.0f, 1.0f ),  XMFLOAT3 ( 0.0f, 1.0f, 1.0f ), XMFLOAT2 ( 0.0f, 0.0f ) },
+//{ XMFLOAT3 ( 1.0f, -1.0f, -1.0f ),XMFLOAT3 ( 0.0f, 1.0f, 1.0f ),  XMFLOAT3 ( 0.0f, 1.0f, 1.0f ),XMFLOAT2 ( 1.0f, 0.0f ) },
+//{ XMFLOAT3 ( 1.0f, -1.0f, 1.0f ),XMFLOAT3 ( 0.0f, 1.0f, 1.0f ),  XMFLOAT3 ( 0.0f, 1.0f, 1.0f ), XMFLOAT2 ( 1.0f, 1.0f ) },
+//{ XMFLOAT3 ( -1.0f, -1.0f, 1.0f ),XMFLOAT3 ( 0.0f, 1.0f, 1.0f ),  XMFLOAT3 ( 0.0f, 1.0f, 1.0f ), XMFLOAT2 ( 0.0f, 1.0f ) },
+//
+//{ XMFLOAT3 ( -1.0f, -1.0f, 1.0f ),XMFLOAT3 ( 0.0f, 1.0f, 1.0f ),  XMFLOAT3 ( 0.0f, 1.0f, 1.0f ), XMFLOAT2 ( 0.0f, 1.0f ) },
+//{ XMFLOAT3 ( -1.0f, -1.0f, -1.0f ), XMFLOAT3 ( 0.0f, 1.0f, 1.0f ),  XMFLOAT3 ( 0.0f, 1.0f, 1.0f ),XMFLOAT2 ( 1.0f, 1.0f ) },
+//{ XMFLOAT3 ( -1.0f, 1.0f, -1.0f ),XMFLOAT3 ( 0.0f, 1.0f, 1.0f ),  XMFLOAT3 ( 0.0f, 1.0f, 1.0f ), XMFLOAT2 ( 1.0f, 0.0f ) },
+//{ XMFLOAT3 ( -1.0f, 1.0f, 1.0f ), XMFLOAT3 ( 0.0f, 1.0f, 1.0f ),  XMFLOAT3 ( 0.0f, 1.0f, 1.0f ),XMFLOAT2 ( 0.0f, 0.0f ) },
+//
+//{ XMFLOAT3 ( 1.0f, -1.0f, 1.0f ),XMFLOAT3 ( 0.0f, 1.0f, 1.0f ),  XMFLOAT3 ( 0.0f, 1.0f, 1.0f ),XMFLOAT2 ( 1.0f, 1.0f ) },
+//{ XMFLOAT3 ( 1.0f, -1.0f, -1.0f ),XMFLOAT3 ( 0.0f, 1.0f, 1.0f ),  XMFLOAT3 ( 0.0f, 1.0f, 1.0f ), XMFLOAT2 ( 0.0f, 1.0f ) },
+//{ XMFLOAT3 ( 1.0f, 1.0f, -1.0f ),XMFLOAT3 ( 0.0f, 1.0f, 1.0f ),  XMFLOAT3 ( 0.0f, 1.0f, 1.0f ),XMFLOAT2 ( 0.0f, 0.0f ) },
+//{ XMFLOAT3 ( 1.0f, 1.0f, 1.0f ), XMFLOAT3 ( 0.0f, 1.0f, 1.0f ),  XMFLOAT3 ( 0.0f, 1.0f, 1.0f ),XMFLOAT2 ( 1.0f, 0.0f ) },
+//
+//{ XMFLOAT3 ( -1.0f, -1.0f, -1.0f ),XMFLOAT3 ( 0.0f, 1.0f, 1.0f ),  XMFLOAT3 ( 0.0f, 1.0f, 1.0f ),XMFLOAT2 ( 0.0f, 1.0f ) },
+//{ XMFLOAT3 ( 1.0f, -1.0f, -1.0f ), XMFLOAT3 ( 0.0f, 1.0f, 1.0f ),  XMFLOAT3 ( 0.0f, 1.0f, 1.0f ),XMFLOAT2 ( 1.0f, 1.0f ) },
+//{ XMFLOAT3 ( 1.0f, 1.0f, -1.0f ), XMFLOAT3 ( 0.0f, 1.0f, 1.0f ),  XMFLOAT3 ( 0.0f, 1.0f, 1.0f ),XMFLOAT2 ( 1.0f, 0.0f ) },
+//{ XMFLOAT3 ( -1.0f, 1.0f, -1.0f ),XMFLOAT3 ( 0.0f, 1.0f, 1.0f ),  XMFLOAT3 ( 0.0f, 1.0f, 1.0f ), XMFLOAT2 ( 0.0f, 0.0f ) },
+//
+//{ XMFLOAT3 ( -1.0f, -1.0f, 1.0f ), XMFLOAT3 ( 0.0f, 1.0f, 1.0f ),  XMFLOAT3 ( 0.0f, 1.0f, 1.0f ), XMFLOAT2 ( 1.0f, 1.0f ) },
+//{ XMFLOAT3 ( 1.0f, -1.0f, 1.0f ), XMFLOAT3 ( 0.0f, 1.0f, 1.0f ),  XMFLOAT3 ( 0.0f, 1.0f, 1.0f ),XMFLOAT2 ( 0.0f, 1.0f ) },
+//{ XMFLOAT3 ( 1.0f, 1.0f, 1.0f ),XMFLOAT3 ( 0.0f, 1.0f, 1.0f ),  XMFLOAT3 ( 0.0f, 1.0f, 1.0f ), XMFLOAT2 ( 0.0f, 0.0f ) },
+//{ XMFLOAT3 ( -1.0f, 1.0f, 1.0f ),XMFLOAT3 ( 0.0f, 1.0f, 1.0f ),  XMFLOAT3 ( 0.0f, 1.0f, 1.0f ), XMFLOAT2 ( 1.0f, 0.0f ) },
+//};
+
+// *********************** remember to change this ********************
+//void *						vertices;
+//UINT						vertexStructSize;
+//UINT						vertexNum;
+
+//vertexStructSize = sizeof ( Vertex );
+//vertexNum = ARRAYSIZE ( vct );
+//vertices = vct;
+// *********************** remember to change this ********************
+
+// ************************************* end of defining vertex data ***********************************
+
+
+// create index buffer
+
+//WORD cubeIndices [] =
+//{
+//	3,1,0,
+//	2,1,3,
+//
+//	6,4,5,
+//	7,4,6,
+//
+//	11,9,8,
+//	10,9,11,
+//
+//	14,12,13,
+//	15,12,14,
+//
+//	19,17,16,
+//	18,17,19,
+//
+//	22,20,21,
+//	23,20,22
+//};
+
+// *********** change this ************
+//WORD *indices = cubeIndices;
+//vertexIndicesNum = ARRAYSIZE ( cubeIndices );
+// *********** change this ************

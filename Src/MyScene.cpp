@@ -4,6 +4,7 @@
 
 MyScene::MyScene ()
 {
+	//_CrtSetBreakAlloc ( 996 );
 	firstMouseEntry = true;
 	lastFrameTime = DXUTGetTime();
 }

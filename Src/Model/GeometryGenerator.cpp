@@ -10,6 +10,13 @@ void GeometryGenerator::CreateBox(float width, float height, float depth, MeshDa
 	//
 	// Create the vertices.
 	//
+	meshData.Vertices.clear ();
+	meshData.Indices.clear ();
+
+	//24个顶点
+	meshData.Vertices.resize ( 24 );
+	//36个索引
+	meshData.Indices.resize ( 36 );
 
 	Vertex v[ 24 ];
 
@@ -59,7 +66,7 @@ void GeometryGenerator::CreateBox(float width, float height, float depth, MeshDa
 	// Create the indices.
 	//
 
-	UINT i[ 36 ];
+	WORD i[ 36 ];
 
 	// Fill in the front face index data
 	i[ 0 ] = 0; i[ 1 ] = 1; i[ 2 ] = 2;
@@ -88,7 +95,7 @@ void GeometryGenerator::CreateBox(float width, float height, float depth, MeshDa
 	meshData.Indices.assign ( &i[ 0 ] , &i[ 36 ] );
 }
 
-void GeometryGenerator::CreateSphere(float radius, UINT sliceCount, UINT stackCount, MeshData& meshData)
+void GeometryGenerator::CreateSphere(float radius, WORD sliceCount, WORD stackCount, MeshData& meshData)
 {
 	meshData.Vertices.clear();
 	meshData.Indices.clear();
@@ -109,12 +116,12 @@ void GeometryGenerator::CreateSphere(float radius, UINT sliceCount, UINT stackCo
 	float thetaStep = 2.0f*XM_PI/sliceCount;
 
 	// Compute vertices for each stack ring (do not count the poles as rings).
-	for(UINT i = 1; i <= stackCount-1; ++i)
+	for(WORD i = 1; i <= stackCount-1; ++i)
 	{
 		float phi = i*phiStep;
 
 		// Vertices of ring.
-		for(UINT j = 0; j <= sliceCount; ++j)
+		for(WORD j = 0; j <= sliceCount; ++j)
 		{
 			float theta = j*thetaStep;
 
@@ -150,7 +157,7 @@ void GeometryGenerator::CreateSphere(float radius, UINT sliceCount, UINT stackCo
 	// and connects the top pole to the first ring.
 	//
 
-	for(UINT i = 1; i <= sliceCount; ++i)
+	for(WORD i = 1; i <= sliceCount; ++i)
 	{
 		meshData.Indices.push_back(0);
 		meshData.Indices.push_back(i+1);
@@ -163,11 +170,11 @@ void GeometryGenerator::CreateSphere(float radius, UINT sliceCount, UINT stackCo
 
 	// Offset the indices to the index of the first vertex in the first ring.
 	// This is just skipping the top pole vertex.
-	UINT baseIndex = 1;
-	UINT ringVertexCount = sliceCount+1;
-	for(UINT i = 0; i < stackCount-2; ++i)
+	WORD baseIndex = 1;
+	WORD ringVertexCount = sliceCount+1;
+	for(WORD i = 0; i < stackCount-2; ++i)
 	{
-		for(UINT j = 0; j < sliceCount; ++j)
+		for(WORD j = 0; j < sliceCount; ++j)
 		{
 			meshData.Indices.push_back(baseIndex + i*ringVertexCount + j);
 			meshData.Indices.push_back(baseIndex + i*ringVertexCount + j+1);
@@ -185,12 +192,12 @@ void GeometryGenerator::CreateSphere(float radius, UINT sliceCount, UINT stackCo
 	//
 
 	// South pole vertex was added last.
-	UINT southPoleIndex = (UINT)meshData.Vertices.size()-1;
+	WORD southPoleIndex = (WORD)meshData.Vertices.size()-1;
 
 	// Offset the indices to the index of the first vertex in the last ring.
 	baseIndex = southPoleIndex - ringVertexCount;
 	
-	for(UINT i = 0; i < sliceCount; ++i)
+	for(WORD i = 0; i < sliceCount; ++i)
 	{
 		meshData.Indices.push_back(southPoleIndex);
 		meshData.Indices.push_back(baseIndex+i);
@@ -217,8 +224,8 @@ void GeometryGenerator::Subdivide(MeshData& meshData)
 	// *-----*-----*
 	// v0    m2     v2
 
-	UINT numTris = inputCopy.Indices.size()/3;
-	for(UINT i = 0; i < numTris; ++i)
+	WORD numTris = inputCopy.Indices.size()/3;
+	for(WORD i = 0; i < numTris; ++i)
 	{
 		Vertex v0 = inputCopy.Vertices[ inputCopy.Indices[i*3+0] ];
 		Vertex v1 = inputCopy.Vertices[ inputCopy.Indices[i*3+1] ];
@@ -277,7 +284,7 @@ void GeometryGenerator::Subdivide(MeshData& meshData)
 	}
 }
 
-void GeometryGenerator::CreateGeosphere(float radius, UINT numSubdivisions, MeshData& meshData)
+void GeometryGenerator::CreateGeosphere(float radius, WORD numSubdivisions, MeshData& meshData)
 {
 	// Put a cap on the number of subdivisions.
 	numSubdivisions = numSubdivisions < 5u ? numSubdivisions : 5u; 
@@ -308,17 +315,17 @@ void GeometryGenerator::CreateGeosphere(float radius, UINT numSubdivisions, Mesh
 	meshData.Vertices.resize(12);
 	meshData.Indices.resize(60);
 
-	for(UINT i = 0; i < 12; ++i)
+	for(WORD i = 0; i < 12; ++i)
 		meshData.Vertices[i].Position = pos[i];
 
-	for(UINT i = 0; i < 60; ++i)
+	for(WORD i = 0; i < 60; ++i)
 		meshData.Indices[i] = k[i];
 
-	for(UINT i = 0; i < numSubdivisions; ++i)
+	for(WORD i = 0; i < numSubdivisions; ++i)
 		Subdivide(meshData);
 
 	// Project vertices onto sphere and scale.
-	for(UINT i = 0; i < meshData.Vertices.size(); ++i)
+	for(WORD i = 0; i < meshData.Vertices.size(); ++i)
 	{
 		// Project onto unit sphere.
 		XMVECTOR n = XMVector3Normalize(XMLoadFloat3(&meshData.Vertices[i].Position));
@@ -349,7 +356,7 @@ void GeometryGenerator::CreateGeosphere(float radius, UINT numSubdivisions, Mesh
 	}
 }
 
-void GeometryGenerator::CreateCylinder(float bottomRadius, float topRadius, float height, UINT sliceCount, UINT stackCount, MeshData& meshData)
+void GeometryGenerator::CreateCylinder(float bottomRadius, float topRadius, float height, WORD sliceCount, WORD stackCount, MeshData& meshData)
 {
 	meshData.Vertices.clear();
 	meshData.Indices.clear();
@@ -363,17 +370,17 @@ void GeometryGenerator::CreateCylinder(float bottomRadius, float topRadius, floa
 	// Amount to increment radius as we move up each stack level from bottom to top.
 	float radiusStep = (topRadius - bottomRadius) / stackCount;
 
-	UINT ringCount = stackCount+1;
+	WORD ringCount = stackCount+1;
 
 	// Compute vertices for each stack ring starting at the bottom and moving up.
-	for(UINT i = 0; i < ringCount; ++i)
+	for(WORD i = 0; i < ringCount; ++i)
 	{
 		float y = -0.5f*height + i*stackHeight;
 		float r = bottomRadius + i*radiusStep;
 
 		// vertices of ring
 		float dTheta = 2.0f*XM_PI/sliceCount;
-		for(UINT j = 0; j <= sliceCount; ++j)
+		for(WORD j = 0; j <= sliceCount; ++j)
 		{
 			Vertex vertex;
 
@@ -421,12 +428,12 @@ void GeometryGenerator::CreateCylinder(float bottomRadius, float topRadius, floa
 
 	// Add one because we duplicate the first and last vertex per ring
 	// since the texture coordinates are different.
-	UINT ringVertexCount = sliceCount+1;
+	WORD ringVertexCount = sliceCount+1;
 
 	// Compute indices for each stack.
-	for(UINT i = 0; i < stackCount; ++i)
+	for(WORD i = 0; i < stackCount; ++i)
 	{
-		for(UINT j = 0; j < sliceCount; ++j)
+		for(WORD j = 0; j < sliceCount; ++j)
 		{
 			meshData.Indices.push_back(i*ringVertexCount + j);
 			meshData.Indices.push_back((i+1)*ringVertexCount + j);
@@ -443,15 +450,15 @@ void GeometryGenerator::CreateCylinder(float bottomRadius, float topRadius, floa
 }
 
 void GeometryGenerator::BuildCylinderTopCap(float bottomRadius, float topRadius, float height, 
-											UINT sliceCount, UINT stackCount, MeshData& meshData)
+											WORD sliceCount, WORD stackCount, MeshData& meshData)
 {
-	UINT baseIndex = (UINT)meshData.Vertices.size();
+	WORD baseIndex = (WORD)meshData.Vertices.size();
 
 	float y = 0.5f*height;
 	float dTheta = 2.0f*XM_PI/sliceCount;
 
 	// Duplicate cap ring vertices because the texture coordinates and normals differ.
-	for(UINT i = 0; i <= sliceCount; ++i)
+	for(WORD i = 0; i <= sliceCount; ++i)
 	{
 		float x = topRadius*cosf(i*dTheta);
 		float z = topRadius*sinf(i*dTheta);
@@ -468,9 +475,9 @@ void GeometryGenerator::BuildCylinderTopCap(float bottomRadius, float topRadius,
 	meshData.Vertices.push_back( Vertex(0.0f, y, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.5f, 0.5f) );
 
 	// Index of center vertex.
-	UINT centerIndex = (UINT)meshData.Vertices.size()-1;
+	WORD centerIndex = (WORD)meshData.Vertices.size()-1;
 
-	for(UINT i = 0; i < sliceCount; ++i)
+	for(WORD i = 0; i < sliceCount; ++i)
 	{
 		meshData.Indices.push_back(centerIndex);
 		meshData.Indices.push_back(baseIndex + i+1);
@@ -479,18 +486,18 @@ void GeometryGenerator::BuildCylinderTopCap(float bottomRadius, float topRadius,
 }
 
 void GeometryGenerator::BuildCylinderBottomCap(float bottomRadius, float topRadius, float height, 
-											   UINT sliceCount, UINT stackCount, MeshData& meshData)
+											   WORD sliceCount, WORD stackCount, MeshData& meshData)
 {
 	// 
 	// Build bottom cap.
 	//
 
-	UINT baseIndex = (UINT)meshData.Vertices.size();
+	WORD baseIndex = (WORD)meshData.Vertices.size();
 	float y = -0.5f*height;
 
 	// vertices of ring
 	float dTheta = 2.0f*XM_PI/sliceCount;
-	for(UINT i = 0; i <= sliceCount; ++i)
+	for(WORD i = 0; i <= sliceCount; ++i)
 	{
 		float x = bottomRadius*cosf(i*dTheta);
 		float z = bottomRadius*sinf(i*dTheta);
@@ -507,9 +514,9 @@ void GeometryGenerator::BuildCylinderBottomCap(float bottomRadius, float topRadi
 	meshData.Vertices.push_back( Vertex(0.0f, y, 0.0f, 0.0f, -1.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.5f, 0.5f) );
 
 	// Cache the index of center vertex.
-	UINT centerIndex = (UINT)meshData.Vertices.size()-1;
+	WORD centerIndex = (WORD)meshData.Vertices.size()-1;
 
-	for(UINT i = 0; i < sliceCount; ++i)
+	for(WORD i = 0; i < sliceCount; ++i)
 	{
 		meshData.Indices.push_back(centerIndex);
 		meshData.Indices.push_back(baseIndex + i);
@@ -517,10 +524,10 @@ void GeometryGenerator::BuildCylinderBottomCap(float bottomRadius, float topRadi
 	}
 }
 
-void GeometryGenerator::CreateGrid(float width, float depth, UINT m, UINT n, MeshData& meshData)
+void GeometryGenerator::CreateGrid(float width, float depth, WORD m, WORD n, MeshData& meshData)
 {
-	UINT vertexCount = m*n;
-	UINT faceCount   = (m-1)*(n-1)*2;
+	WORD vertexCount = m*n;
+	WORD faceCount   = (m-1)*(n-1)*2;
 
 	//
 	// Create the vertices.
@@ -536,10 +543,10 @@ void GeometryGenerator::CreateGrid(float width, float depth, UINT m, UINT n, Mes
 	float dv = 1.0f / (m-1);
 
 	meshData.Vertices.resize(vertexCount);
-	for(UINT i = 0; i < m; ++i)
+	for(WORD i = 0; i < m; ++i)
 	{
 		float z = halfDepth - i*dz;
-		for(UINT j = 0; j < n; ++j)
+		for(WORD j = 0; j < n; ++j)
 		{
 			float x = -halfWidth + j*dx;
 
@@ -560,10 +567,10 @@ void GeometryGenerator::CreateGrid(float width, float depth, UINT m, UINT n, Mes
 	meshData.Indices.resize(faceCount*3); // 3 indices per face
 
 	// Iterate over each quad and compute indices.
-	UINT k = 0;
-	for(UINT i = 0; i < m-1; ++i)
+	WORD k = 0;
+	for(WORD i = 0; i < m-1; ++i)
 	{
-		for(UINT j = 0; j < n-1; ++j)
+		for(WORD j = 0; j < n-1; ++j)
 		{
 			meshData.Indices[k]   = i*n+j;
 			meshData.Indices[k+1] = i*n+j+1;

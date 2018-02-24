@@ -77,11 +77,11 @@ public:
 	{
 		SAFE_RELEASE ( g_pVertexLayout );
 		SAFE_RELEASE ( constBufWorld );
-
 		SAFE_RELEASE ( g_pEffect );
 
-		indices = nullptr;
-		vertices = nullptr;
+		delete [] vertices;
+		delete [] indices;
+
 		/*SAFE_RELEASE ( worldVariable );
 		SAFE_RELEASE ( viewVariable );
 		SAFE_RELEASE ( projVariable );*/
