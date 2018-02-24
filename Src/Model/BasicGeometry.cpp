@@ -96,7 +96,7 @@ void BasicGeometry::RenderScene ( double fTime , float fElapsedTime , void* pUse
 	// write vertices and indices data to GPU
 	BaseModel::RenderScene ( fTime , fElapsedTime , pUserContext );
 
-	UpdateWorldMatrix ();
+	//UpdateWorldMatrix ();
 
 	if ( g_pTextureRV != nullptr )
 		g_ptxDiffuseVariable->SetResource ( g_pTextureRV );

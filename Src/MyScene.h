@@ -1,9 +1,9 @@
 #pragma once
 
 #include "ProjectHeader.h"
-#include "Cube.h"
 
 #include "Model\BasicGeometry.h"
+#include "Model\Snowman.h"
 
 class MyScene
 {
@@ -29,6 +29,7 @@ class MyScene
 
 	vector<BaseModel*>			models;
 
+	Snowman						snowman;
 public:
 	MyScene ();
 	~MyScene ();

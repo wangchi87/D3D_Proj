@@ -4,7 +4,7 @@
 
 MyScene::MyScene ()
 {
-	//_CrtSetBreakAlloc ( 996 );
+	//_CrtSetBreakAlloc ( 1127 );
 	firstMouseEntry = true;
 	lastFrameTime = DXUTGetTime();
 }
@@ -27,8 +27,11 @@ MyScene::~MyScene ()
 		}
 	models.clear ();
 
-	SAFE_RELEASE ( constBufProj );
-	SAFE_RELEASE ( constBufView );
+	snowman.Release ();
+	snowman.~Snowman ();
+
+	//SAFE_RELEASE ( constBufProj );
+	//SAFE_RELEASE ( constBufView );
 }
 
 void MyScene::InitScene ( 
@@ -57,8 +60,7 @@ void MyScene::InitCamera ()
 	XMVECTOR Up = XMVectorSet ( 0.0f , 1.0f , 0.0f , 0.0f );
 
 	camera.InitCamera ( Eye , Up );
-	
-	
+
 }
 
 void MyScene::UpdateViewProjBuffer ()
@@ -82,6 +84,9 @@ void MyScene::UpdateViewProjBuffer ()
 		models[ i ]->SetViewMatrix ( viewMatrix );
 		models[ i ]->SetProjMatrix ( projMatrix );
 	}
+
+	snowman.SetViewMatrix ( viewMatrix );
+	snowman.SetProjMatrix ( projMatrix );
 }
 
 void MyScene::AddModel ()
@@ -95,6 +100,7 @@ void MyScene::AddModel ()
 	BaseModel *myCube = new BasicGeometry ( pd3dDevice , pBackBufferSurfaceDesc , pUserContext );
 
 	myCube->Initiallise ( L"cubeEffect.fx" , model , L"seafloor.dds" );
+	myCube->SetWorldMatrix ( XMMatrixIdentity () );
 	models.push_back ( myCube );
 
 	geoGen.CreateGeosphere ( 3 , 5 , model );
@@ -102,7 +108,11 @@ void MyScene::AddModel ()
 	BaseModel *mySphere = new BasicGeometry ( pd3dDevice , pBackBufferSurfaceDesc , pUserContext );
 
 	mySphere->Initiallise ( L"cubeEffect.fx" , model , L"desert_sky.dds" );
+	mySphere->SetWorldMatrix ( XMMatrixIdentity () );
 	models.push_back ( mySphere );
+
+	snowman.Initialise( pd3dDevice , pBackBufferSurfaceDesc , pUserContext );
+
 }
 
 void MyScene::RenderScene ( double fTime , float fElapsedTime , void* pUserContext )
@@ -117,10 +127,12 @@ void MyScene::RenderScene ( double fTime , float fElapsedTime , void* pUserConte
 	// set view and projection buffer
 	UpdateViewProjBuffer ();
 
-	for (auto i = 0; i < models.size (); i++)
+	snowman.RenderSnowman ( fTime , fElapsedTime , pUserContext );
+
+	/*for (auto i = 0; i < models.size (); i++)
 	{
 		models[ i ]->RenderScene (fTime,fElapsedTime, pUserContext);
-	}
+	}*/
 }
 
 void MyScene::MouseLeave ()
