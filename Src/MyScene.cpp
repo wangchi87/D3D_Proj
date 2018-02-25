@@ -34,9 +34,6 @@ MyScene::~MyScene ()
 
 	snowmanOnBox.Release ();
 	snowmanOnBox.~Snowman ();
-
-	//SAFE_RELEASE ( constBufProj );
-	//SAFE_RELEASE ( constBufView );
 }
 
 void MyScene::InitScene ( 
@@ -112,7 +109,7 @@ void MyScene::UpdateWorldMatrix ()
 		camera.Position = boxPos;
 
 	// set snow man position
-	worldMatrix = ( XMMatrixRotationY ( totalTime ) ) * XMMatrixTranslation ( xPos , 5 , yPos );
+	worldMatrix = ( XMMatrixRotationY ( totalTime ) ) * XMMatrixTranslation ( xPos , 3 , yPos );
 	snowmanOnBox.ApplyExtraWorldMatrix ( worldMatrix );
 
 	worldMatrix = XMMatrixIdentity();
@@ -132,13 +129,6 @@ void MyScene::UpdateViewProjMatrix ()
 	viewMatrix = camera.GeViewMatrix ();
 	float fAspectRatio = pBackBufferSurfaceDesc->Width / ( FLOAT ) pBackBufferSurfaceDesc->Height;
 	projMatrix =  XMMatrixPerspectiveFovLH ( XM_PIDIV4 , fAspectRatio , 0.01f , 1000.0f ) ;
-
-	/*ConstBufMatrix1 viewMat;
-	viewMat.Mat = camera.GetTransposedViewMatrix ();
-	pd3dImmediateContext->UpdateSubresource ( constBufView , 0 , nullptr , &viewMat , 0 , 0 );
-	ConstBufMatrix1 projectionMat;
-	projectionMat.Mat = XMMatrixTranspose ( projMatrix );
-	pd3dImmediateContext->UpdateSubresource ( constBufProj , 0 , nullptr , &projectionMat , 0 , 0 );*/
 
 	for (auto i = 0; i < models.size (); i++)
 	{
@@ -205,8 +195,10 @@ void MyScene::RenderScene ( double fTime , float fElapsedTime , void* pUserConte
 	// set view and projection buffer
 	UpdateViewProjMatrix ();
 
-	//snowman.RenderSnowman ( fTime , fElapsedTime , pUserContext );
-	//snowmanOnBox.RenderSnowman ( fTime , fElapsedTime , pUserContext );
+	snowman.RenderSnowman ( fTime , fElapsedTime , pUserContext );
+
+	if (!isCameraOnBoard)
+		snowmanOnBox.RenderSnowman ( fTime , fElapsedTime , pUserContext );
 
 	for (auto i = 0; i < models.size (); i++)
 	{

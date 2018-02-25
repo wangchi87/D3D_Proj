@@ -21,21 +21,9 @@ using namespace std;
 
 
 // global variables
-//Cube dc;
-MyScene mScene;
-
-static BOOL bTrackLeave = FALSE;
-TRACKMOUSEEVENT tEventTrack;
-
-//ID3D11VertexShader*			g_pVertexShader = nullptr;
-//ID3D11PixelShader*			g_pPixelShader = nullptr;
-//ID3D11InputLayout*			g_pVertexLayout = nullptr;
-//ID3D11Buffer*				g_pVertexBuffer = nullptr;
-//ID3D11Buffer*				g_pIndexBuffer = nullptr;
-//ID3D11Buffer*				g_pConstantBuffer = nullptr;
-//XMMATRIX                g_World;
-//XMMATRIX                g_View;
-//XMMATRIX                g_Projection;
+static BOOL			bTrackLeave = FALSE;
+MyScene				mScene;
+TRACKMOUSEEVENT		tEventTrack;
 
 
 void RequestMouseLeaveMsg ()
@@ -137,7 +125,6 @@ void CALLBACK OnD3D11ReleasingSwapChain( void* pUserContext )
 //--------------------------------------------------------------------------------------
 void CALLBACK OnD3D11DestroyDevice( void* pUserContext )
 {
-	//dc.~Cube ();
 	mScene.~MyScene ();
 }
 
@@ -148,7 +135,7 @@ void CALLBACK OnD3D11DestroyDevice( void* pUserContext )
 LRESULT CALLBACK MsgProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam,
                           bool* pbNoFurtherProcessing, void* pUserContext )
 {
-	//printf ( "msg %d \n", uMsg );
+
 	if (uMsg == WM_MOUSEMOVE)
 	{
 		RequestMouseLeaveMsg ();
@@ -157,15 +144,11 @@ LRESULT CALLBACK MsgProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam,
 		int yPos = GET_Y_LPARAM ( lParam );
 
 		mScene.UpdateMousePos ( xPos , yPos );
-		//dc.UpdateMousePos ( xPos , yPos );
-		//printf ( "mouse move %d %d",xPos,yPos );
 	}
 	if (uMsg == WM_MOUSELEAVE)
 	{
-		//printf ( "mouse leave" );
 		bTrackLeave = false;
 		mScene.MouseLeave ();
-		//dc.MouseLeave ();
 	}
 
     return 0;
@@ -268,7 +251,7 @@ int WINAPI wWinMain( _In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
     DXUTCreateWindow( L"EmptyProject11" );
 
     // Only require 10-level hardware or later
-    DXUTCreateDevice( D3D_FEATURE_LEVEL_10_0, true, 800, 600 );
+    DXUTCreateDevice( D3D_FEATURE_LEVEL_10_0, true, 1200, 1000 );
     DXUTMainLoop(); // Enter into the DXUT ren  der loop
 
     // Perform any application-level cleanup here

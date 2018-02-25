@@ -14,10 +14,6 @@ class MyScene
 
 	DWORD						dwShaderFlags;
 
-	// const buffer for view and projection buffer
-	ID3D11Buffer*				constBufView;
-	ID3D11Buffer*				constBufProj;
-
 	XMMATRIX					g_View;
 	XMMATRIX					g_Projection;
 	
