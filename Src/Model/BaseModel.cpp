@@ -107,7 +107,6 @@ void BaseModel::InitTexture ( const wchar_t* fileName )
 	hr = CreateDDSTextureFromFile ( pd3dDevice , fileName , nullptr , &g_pTextureRV );
 ;	if (FAILED ( hr ))
 		MessageBox ( nullptr ,L"Can not load texture." , L"Error" , MB_OK );
-
 }
 
 

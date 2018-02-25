@@ -96,7 +96,7 @@ void MyScene::UpdateWorldMatrix ()
 	XMMATRIX worldMatrix;
 
 	// a rotation matrix around Y axis
-	worldMatrix = ( XMMatrixRotationY ( t ) ) * XMMatrixTranslation ( xPos , -6 , yPos );
+	worldMatrix = ( XMMatrixRotationY ( t ) ) * XMMatrixTranslation ( xPos , -10 , yPos );
 
 	BaseModel * box = models[ 0 ];
 	box->SetWorldMatrix ( worldMatrix );
@@ -117,7 +117,7 @@ void MyScene::UpdateViewProjMatrix ()
 
 	viewMatrix = camera.GeViewMatrix ();
 	float fAspectRatio = pBackBufferSurfaceDesc->Width / ( FLOAT ) pBackBufferSurfaceDesc->Height;
-	projMatrix =  XMMatrixPerspectiveFovLH ( XM_PIDIV4 , fAspectRatio , 0.01f , 100.0f ) ;
+	projMatrix =  XMMatrixPerspectiveFovLH ( XM_PIDIV4 , fAspectRatio , 0.01f , 1000.0f ) ;
 
 	/*ConstBufMatrix1 viewMat;
 	viewMat.Mat = camera.GetTransposedViewMatrix ();
@@ -143,7 +143,7 @@ void MyScene::AddModel ()
 {
 	MeshData model;
 	GeometryGenerator geoGen;
-	geoGen.CreateBox ( 4.0f , 4.0f , 4.0f , model );
+	geoGen.CreateBox ( 8.0f , 8.0f , 8.0f , model );
 
 	//geoGen.CreateGrid ( 5 , 10 , 10 , 15 , model );
 
@@ -153,13 +153,21 @@ void MyScene::AddModel ()
 	myCube->SetWorldMatrix ( XMMatrixIdentity() );
 	models.push_back ( myCube );
 
-	geoGen.CreateGeosphere ( 3 , 5 , model );
+	geoGen.CreateGrid ( 200 , 200 , 100 , 100 , model );
 
-	//BaseModel *mySphere = new BasicGeometry ( pd3dDevice , pBackBufferSurfaceDesc , pUserContext );
+	BaseModel *myGrid = new BasicGeometry ( pd3dDevice , pBackBufferSurfaceDesc , pUserContext );
 
-	//mySphere->Initiallise ( L"cubeEffect.fx" , model , L"desert_sky.dds" );
-	//mySphere->SetWorldMatrix ( XMMatrixIdentity () );
-	//models.push_back ( mySphere );
+	myGrid->Initiallise ( L"grassEffect.fx" , model , L"ground.dds" );
+	myGrid->SetWorldMatrix ( XMMatrixTranslation ( 0 , -15 , 0 ) );
+	models.push_back ( myGrid );
+
+	geoGen.CreateGeosphere ( 200 , 5,  model );
+
+	BaseModel *mySky = new BasicGeometry ( pd3dDevice , pBackBufferSurfaceDesc , pUserContext );
+
+	mySky->Initiallise ( L"skyEffect.fx" , model , L"seafloor.dds" );
+	mySky->SetWorldMatrix ( XMMatrixTranslation ( 0 , 0 , 0 ) );
+	models.push_back ( mySky );
 
 	snowman.Initialise( pd3dDevice , pBackBufferSurfaceDesc , pUserContext );
 	snowmanOnBox.Initialise ( pd3dDevice , pBackBufferSurfaceDesc , pUserContext );
@@ -178,8 +186,8 @@ void MyScene::RenderScene ( double fTime , float fElapsedTime , void* pUserConte
 	// set view and projection buffer
 	UpdateViewProjMatrix ();
 
-	snowman.RenderSnowman ( fTime , fElapsedTime , pUserContext );
-	snowmanOnBox.RenderSnowman ( fTime , fElapsedTime , pUserContext );
+	//snowman.RenderSnowman ( fTime , fElapsedTime , pUserContext );
+	//snowmanOnBox.RenderSnowman ( fTime , fElapsedTime , pUserContext );
 
 	for (auto i = 0; i < models.size (); i++)
 	{
@@ -221,7 +229,7 @@ void MyScene::UpdateMousePos ( int xPos , int yPos )
 		firstMouseEntry = false;
 	}
 
-	int xOffSet = xPos - lastMousePosX;
+	int xOffSet = -xPos + lastMousePosX;
 	int yOffSet = -yPos + lastMousePosY;
 
 	camera.ProcessMouseMovement ( xOffSet , yOffSet , true );

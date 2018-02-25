@@ -524,6 +524,25 @@ void GeometryGenerator::BuildCylinderBottomCap(float bottomRadius, float topRadi
 	}
 }
 
+inline float GetHillHeight ( float x , float z )
+{
+	return 0.03f*( z*sinf ( 0.1f*x ) + x * cosf ( 0.1f*z ) );
+}
+
+inline XMFLOAT3 GetHillNormal ( float x , float z )
+{
+	// n = (-df/dx, 1, -df/dz)
+	XMFLOAT3 n (
+		-0.03f*z*cosf ( 0.1f*x ) - 0.3f*cosf ( 0.1f*z ) ,
+		1.0f ,
+		-0.3f*sinf ( 0.1f*x ) + 0.03f*x*sinf ( 0.1f*z ) );
+
+	XMVECTOR unitNormal = XMVector3Normalize ( XMLoadFloat3 ( &n ) );
+	XMStoreFloat3 ( &n , unitNormal );
+
+	return n;
+}
+
 void GeometryGenerator::CreateGrid(float width, float depth, WORD m, WORD n, MeshData& meshData)
 {
 	WORD vertexCount = m*n;
@@ -549,10 +568,11 @@ void GeometryGenerator::CreateGrid(float width, float depth, WORD m, WORD n, Mes
 		for(WORD j = 0; j < n; ++j)
 		{
 			float x = -halfWidth + j*dx;
+			float y = GetHillHeight ( x , z );
 
-			meshData.Vertices[i*n+j].Position = XMFLOAT3(x, 0.0f, z);
-			meshData.Vertices[i*n+j].Normal   = XMFLOAT3(0.0f, 1.0f, 0.0f);
-			meshData.Vertices[i*n+j].TangentU = XMFLOAT3(1.0f, 0.0f, 0.0f);
+			meshData.Vertices[ i*n + j ].Position = XMFLOAT3 ( x , y , z );
+			meshData.Vertices[ i*n + j ].Normal = GetHillNormal ( x , z );
+			meshData.Vertices[ i*n + j ].TangentU = XMFLOAT3 ( 1.0f , 0.0f , 0.0f );
 
 			// Stretch texture over grid.
 			meshData.Vertices[i*n+j].TexC.x = j*du;
@@ -623,3 +643,4 @@ void GeometryGenerator::CreateFullscreenQuad(MeshData& meshData)
 	meshData.Indices[4] = 2;
 	meshData.Indices[5] = 3;
 }
+
