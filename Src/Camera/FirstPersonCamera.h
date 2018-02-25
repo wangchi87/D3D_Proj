@@ -19,7 +19,7 @@ enum Camera_Movement {
 // Default camera values
 const float YAW = 90.0f;
 const float PITCH = 0.0f;
-const float SPEED = 10.0f;
+const float SPEED = 1000.0f;
 const float SENSITIVTY = 0.1f;
 const float ZOOM = 45.0f;
 
@@ -68,7 +68,7 @@ public:
 	// Processes input received from a mouse scroll-wheel event. Only requires input on the vertical wheel-axis
 	void ProcessMouseScroll ( float yoffset );
 
-
+	XMVECTOR GetCameraPos () { return Position; }
 
 private:
 

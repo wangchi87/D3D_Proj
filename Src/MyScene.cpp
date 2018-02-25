@@ -6,7 +6,9 @@ MyScene::MyScene ()
 {
 	//_CrtSetBreakAlloc ( 1127 );
 	firstMouseEntry = true;
-	lastFrameTime = DXUTGetTime();
+	deltaTime = 0;
+	totalTime = 0;
+	isCameraOnBoard = false;
 }
 
 
@@ -65,49 +67,61 @@ void MyScene::InitCamera ()
 	camera.InitCamera ( Eye , Up );
 
 }
+inline float PointsDistance ( XMVECTOR a , XMVECTOR b )
+{
+	XMVECTOR distance = a - b;
+
+	distance = XMVector3Length ( distance );
+
+	float data; 
+	XMStoreFloat (&data, distance );
+
+	return data;
+}
 
 void MyScene::UpdateWorldMatrix ()
 {
 	// Update our time
-	static float t = 0.0f;
+	
 	static float angle = 0.0f;
 	{
-		static ULONGLONG timeStart = 0;
-		static ULONGLONG lastTime = 0;
-		ULONGLONG timeCur = GetTickCount64 ();
-		if (timeStart == 0)
-			timeStart = timeCur;
-		t = ( timeCur - timeStart ) / 500.0f;
-
-		float deltaTime = timeCur - lastTime;
-		lastTime = timeCur;
-
 		if (angle <= 360)
-			angle += deltaTime * 0.00005;
+			angle += deltaTime * 0.01;
 		else
 			angle -= 360;
 	}
 
-	float xPos = 15 * sin ( angle * DEG_TO_RAD );
-	float yPos = 15 * cos ( angle * DEG_TO_RAD );
+	float xPos = 30 * sin ( angle * DEG_TO_RAD );
+	float yPos = 30 * cos ( angle * DEG_TO_RAD );
 
+	cameraPos = camera.GetCameraPos ();
 
 	// NOTE : you really can NOT add Transpose to the matrix when using Effect shader!!  ( XMMatrixRotationY ( t ) );//
 	XMMATRIX worldMatrix;
 
-	// a rotation matrix around Y axis
-	worldMatrix = ( XMMatrixRotationY ( t ) ) * XMMatrixTranslation ( xPos , -10 , yPos );
+	// set rorating box position (a rotation matrix around Y axis)
+	worldMatrix = ( XMMatrixRotationY ( totalTime ) ) * XMMatrixTranslation ( xPos , -10 , yPos );
 
 	BaseModel * box = models[ 0 ];
 	box->SetWorldMatrix ( worldMatrix );
 
-	worldMatrix = ( XMMatrixRotationY ( t ) ) * XMMatrixTranslation ( xPos , 5 , yPos );
+	boxPos = XMVectorSet ( xPos , 0.0f , yPos , 0.0f );
+	
+	// if F is pressed and the camera is very close to the box, then get camera on board
+	if(isCameraOnBoard)
+		camera.Position = boxPos;
+
+	// set snow man position
+	worldMatrix = ( XMMatrixRotationY ( totalTime ) ) * XMMatrixTranslation ( xPos , 5 , yPos );
 	snowmanOnBox.ApplyExtraWorldMatrix ( worldMatrix );
 
-	// a Identity matrix
-	worldMatrix = XMMatrixRotationY ( 0 );
+	worldMatrix = XMMatrixIdentity();
 	snowman.ApplyExtraWorldMatrix ( worldMatrix );
 
+	// sky sphere translates with camera
+
+	BaseModel* skySphere = models[ 2 ];
+	skySphere->SetWorldMatrix ( XMMatrixTranslationFromVector ( cameraPos ) );
 }
 
 void MyScene::UpdateViewProjMatrix ()
@@ -145,14 +159,14 @@ void MyScene::AddModel ()
 	GeometryGenerator geoGen;
 	geoGen.CreateBox ( 8.0f , 8.0f , 8.0f , model );
 
-	//geoGen.CreateGrid ( 5 , 10 , 10 , 15 , model );
-
+	// models[0] is the BOX
 	BaseModel *myCube = new BasicGeometry ( pd3dDevice , pBackBufferSurfaceDesc , pUserContext );
 
 	myCube->Initiallise ( L"cubeEffect.fx" , model , L"seafloor.dds" );
 	myCube->SetWorldMatrix ( XMMatrixIdentity() );
 	models.push_back ( myCube );
 
+	// models[1] is the GROUND
 	geoGen.CreateGrid ( 200 , 200 , 100 , 100 , model );
 
 	BaseModel *myGrid = new BasicGeometry ( pd3dDevice , pBackBufferSurfaceDesc , pUserContext );
@@ -161,6 +175,7 @@ void MyScene::AddModel ()
 	myGrid->SetWorldMatrix ( XMMatrixTranslation ( 0 , -15 , 0 ) );
 	models.push_back ( myGrid );
 
+	// models[2] is the SKY-SPHERE
 	geoGen.CreateGeosphere ( 200 , 5,  model );
 
 	BaseModel *mySky = new BasicGeometry ( pd3dDevice , pBackBufferSurfaceDesc , pUserContext );
@@ -175,6 +190,10 @@ void MyScene::AddModel ()
 
 void MyScene::RenderScene ( double fTime , float fElapsedTime , void* pUserContext )
 {
+	totalTime = fTime;
+	deltaTime = fElapsedTime;
+	//printf ( "fTime %f  fElapsedTime %f \n " , fTime , fElapsedTime );
+
 	// Clear render target and the depth stencil 
 	auto pRTV = DXUTGetD3D11RenderTargetView ();
 	pd3dImmediateContext->ClearRenderTargetView ( pRTV , Colors::MidnightBlue );
@@ -204,10 +223,6 @@ void MyScene::MouseLeave ()
 void MyScene::UpdateCameraPos ( char c )
 {
 
-	float currentFrame = DXUTGetTime ();
-	float deltaTime = currentFrame - lastFrameTime;
-	lastFrameTime = currentFrame;
-
 	if (c == 'W')
 		camera.ProcessKeyboard ( FORWARD , deltaTime );
 	if (c == 'S')
@@ -220,7 +235,6 @@ void MyScene::UpdateCameraPos ( char c )
 
 void MyScene::UpdateMousePos ( int xPos , int yPos )
 {
-	
 
 	if (firstMouseEntry)
 	{
@@ -236,6 +250,29 @@ void MyScene::UpdateMousePos ( int xPos , int yPos )
 
 	lastMousePosX = xPos;
 	lastMousePosY = yPos;
+}
+
+void MyScene::CameraTryOnBoard ()
+{
+	if (isCameraOnBoard)
+	{
+		// deattach the camera from box
+		isCameraOnBoard = false;
+	}
+	else
+	{
+		cameraPos = camera.GetCameraPos ();
+		float dis = PointsDistance ( cameraPos , boxPos );
+		//printf ( "dis: %f \n" , dis );
+		if (dis < 15)
+		{
+			isCameraOnBoard = true;
+		}
+		else
+		{
+			printf ( "camera is too far from the box, distance is : %f \n" , dis );
+		}
+	}
 }
 
 

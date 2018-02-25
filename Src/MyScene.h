@@ -21,16 +21,28 @@ class MyScene
 	XMMATRIX					g_View;
 	XMMATRIX					g_Projection;
 	
+	// variable for first person camera
 	FirstPersonCamera			camera;
 	bool						firstMouseEntry;
-	float						lastFrameTime;
 	UINT						lastMousePosX;
 	UINT						lastMousePosY;
 
+	// geometry models
 	vector<BaseModel*>			models;
 
 	Snowman						snowman;
 	Snowman						snowmanOnBox;
+
+	// time elapsed between two frames
+	float						deltaTime;
+	// total running time
+	float						totalTime;
+
+	// variables for camera roaming on box
+	bool						isCameraOnBoard;
+	XMVECTOR					boxPos;
+	XMVECTOR					cameraPos;
+
 public:
 	MyScene ();
 	~MyScene ();
@@ -54,5 +66,7 @@ public:
 	void UpdateCameraPos ( char c );
 
 	void UpdateMousePos ( int xPos , int yPos );
+
+	void CameraTryOnBoard ();
 };
 

@@ -78,6 +78,8 @@ void FirstPersonCamera::ProcessKeyboard ( Camera_Movement direction , float delt
 {
 	float velocity = MovementSpeed * deltaTime;
 
+	//printf ( "camera move speed: %f \n" , velocity );
+
 	if (direction == FORWARD)
 		Position += Front * velocity;
 	if (direction == BACKWARD)

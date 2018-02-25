@@ -88,9 +88,6 @@ HRESULT CALLBACK OnD3D11CreateDevice ( ID3D11Device* pd3dDevice , const DXGI_SUR
 {
 	HRESULT hr = S_OK;
 	
-	/*dc.InitCreator ( pd3dDevice , pBackBufferSurfaceDesc , pUserContext );
-	dc.AddResources ();*/
-
 	mScene.InitScene ( pd3dDevice , pBackBufferSurfaceDesc , pUserContext );
 	mScene.AddModel ();
 
@@ -188,25 +185,21 @@ void CALLBACK OnKeyboard( UINT nChar, bool bKeyDown, bool bAltDown, void* pUserC
 		{
 		case VK_F1: // Change as needed                
 			break;
-		case VK_SHIFT:
-			cout <<"shift"<<endl;
-			break;
 		case 0x41:            //A
 			mScene.UpdateCameraPos ( 'A' );
-			//dc.UpdateCameraPos ( 'A' );
 			break;
 		case 0x53:            //S
 			mScene.UpdateCameraPos ( 'S' );
-			//dc.UpdateCameraPos ( 'S' );
 			break;
 		case 0x44:            //D
 			mScene.UpdateCameraPos ( 'D' );
-			//dc.UpdateCameraPos ( 'D' );
 			break; 
 		case 0x57:            //W
 			mScene.UpdateCameraPos ( 'W' );
-			//dc.UpdateCameraPos ( 'W' );
 			break; 
+		case 0x46:            //F
+			mScene.CameraTryOnBoard ( );
+			break;
 		}
 	}
 }
