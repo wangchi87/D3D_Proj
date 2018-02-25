@@ -52,6 +52,9 @@
     <ClCompile Include="..\Src\Model\BasicGeometry.cpp">
       <Filter>Tools\Model</Filter>
     </ClCompile>
+    <ClCompile Include="..\Src\Model\Snowman.cpp">
+      <Filter>Tools\Model</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Src\resource.h">
@@ -82,6 +85,9 @@
       <Filter>Tools\Model</Filter>
     </ClInclude>
     <ClInclude Include="..\Src\Model\BasicGeometry.h">
+      <Filter>Tools\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Model\Snowman.h">
       <Filter>Tools\Model</Filter>
     </ClInclude>
   </ItemGroup>

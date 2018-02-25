@@ -66,6 +66,10 @@ public:
 
 	virtual void AddResources () {}
 
+	void ApplyExtraWorldMatrix ( XMMATRIX extraWorldMatrix );
+
+	XMMATRIX GetWorldMatrix ();
+
 	virtual void SetWorldMatrix ( XMMATRIX worldMatrix );
 
 	virtual void SetViewMatrix ( XMMATRIX viewMatrix );

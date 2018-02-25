@@ -30,6 +30,7 @@ class MyScene
 	vector<BaseModel*>			models;
 
 	Snowman						snowman;
+	Snowman						snowmanOnBox;
 public:
 	MyScene ();
 	~MyScene ();
@@ -40,7 +41,9 @@ public:
 
 	void InitCamera ();
 
-	void UpdateViewProjBuffer ();
+	void UpdateWorldMatrix ();
+
+	void UpdateViewProjMatrix ();
 
 	void AddModel ();
 

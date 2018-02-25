@@ -44,6 +44,20 @@ void BaseModel::RenderScene ( double fTime , float fElapsedTime , void * pUserCo
 	pd3dImmediateContext->IASetIndexBuffer ( g_pIndexBuffer , DXGI_FORMAT_R16_UINT , 0 );
 }
 
+void BaseModel::ApplyExtraWorldMatrix ( XMMATRIX extraWorldMatrix )
+{
+	XMMATRIX oldMatrix = GetWorldMatrix ();
+	XMMATRIX newMatrix = oldMatrix * extraWorldMatrix;
+	SetWorldMatrix ( newMatrix );
+}
+
+XMMATRIX BaseModel::GetWorldMatrix ()
+{
+	float data[ 16 ];
+	worldVariable->GetMatrix ( data );
+	return XMMATRIX ( data );
+}
+
 void BaseModel::SetWorldMatrix ( XMMATRIX worldMatrix )
 {
 	worldVariable->SetMatrix ( ( float* ) &worldMatrix );

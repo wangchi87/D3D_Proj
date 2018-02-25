@@ -57,6 +57,8 @@ void Snowman::ConfigHead ()
 	XMMATRIX worldMatrix = XMMatrixTranslation ( 0 , 2 , 0 );
 	Head->SetWorldMatrix ( worldMatrix );
 
+	componentPos.push_back ( worldMatrix );
+
 	models.push_back ( Head );
 }
 
@@ -73,7 +75,7 @@ void Snowman::ConfigBody ()
 
 	XMMATRIX worldMatrix = XMMatrixTranslation ( 0 , -4 , 0 );
 	Body->SetWorldMatrix ( worldMatrix );
-
+	componentPos.push_back ( worldMatrix );
 	models.push_back ( Body );
 }
 
@@ -91,7 +93,7 @@ void Snowman::ConfigEye ()
 
 	XMMATRIX worldMatrix = XMMatrixTranslation ( 1.2 , 2.9 , -2.3 );
 	leftEye->SetWorldMatrix ( worldMatrix );
-
+	componentPos.push_back ( worldMatrix );
 	models.push_back ( leftEye );
 
 	// right eye
@@ -101,7 +103,7 @@ void Snowman::ConfigEye ()
 
 	worldMatrix = XMMatrixTranslation ( -1.2, 2.9 , -2.3 );
 	rightEye->SetWorldMatrix ( worldMatrix );
-
+	componentPos.push_back ( worldMatrix );
 	models.push_back ( rightEye );
 }
 
@@ -119,7 +121,7 @@ void Snowman::ConfigNose ()
 
 	XMMATRIX worldMatrix = XMMatrixRotationX ( 70 * DEG_TO_RAD ) * XMMatrixTranslation ( 0 , 2 , -2.3 );
 	nose->SetWorldMatrix ( worldMatrix );
-
+	componentPos.push_back ( worldMatrix );
 	models.push_back ( nose );
 }
 
@@ -137,7 +139,7 @@ void Snowman::ConfigHand ()
 
 	XMMATRIX worldMatrix = XMMatrixRotationZ ( 45 * DEG_TO_RAD ) * XMMatrixTranslation ( -6 , -3 , 0 );
 	leftHand->SetWorldMatrix ( worldMatrix );
-
+	componentPos.push_back ( worldMatrix );
 	models.push_back ( leftHand );
 
 	// right eye
@@ -147,15 +149,17 @@ void Snowman::ConfigHand ()
 
 	worldMatrix = XMMatrixRotationZ ( -45 * DEG_TO_RAD ) * XMMatrixTranslation ( 6 , -3 , 0 );
 	rightHand->SetWorldMatrix ( worldMatrix );
-
+	componentPos.push_back ( worldMatrix );
 	models.push_back ( rightHand );
 }
 
-void Snowman::SetWorldMatrix ( XMMATRIX worldMatrix )
+void Snowman::ApplyExtraWorldMatrix ( XMMATRIX worldMatrix )
 {
+	
 	for (auto i = 0; i < models.size (); i++)
 	{
-		models[ i ]->SetWorldMatrix ( worldMatrix );
+		XMMATRIX newPos = componentPos[ i ] * worldMatrix;
+		models[ i ]->SetWorldMatrix( newPos );
 	}
 }
 

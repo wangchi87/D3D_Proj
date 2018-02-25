@@ -11,6 +11,7 @@ class Snowman
 	void*						pUserContext;
 
 	vector<BaseModel*>			models;
+	vector<XMMATRIX>			componentPos;
 
 public:
 	Snowman ();
@@ -37,7 +38,7 @@ public:
 	void ConfigNose ();
 	void ConfigHand ();
 
-	void SetWorldMatrix ( XMMATRIX worldMatrix ) ;
+	void ApplyExtraWorldMatrix ( XMMATRIX worldMatrix ) ;
 
 	void SetViewMatrix ( XMMATRIX viewMatrix ) ;
 

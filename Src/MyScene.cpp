@@ -30,6 +30,9 @@ MyScene::~MyScene ()
 	snowman.Release ();
 	snowman.~Snowman ();
 
+	snowmanOnBox.Release ();
+	snowmanOnBox.~Snowman ();
+
 	//SAFE_RELEASE ( constBufProj );
 	//SAFE_RELEASE ( constBufView );
 }
@@ -63,7 +66,51 @@ void MyScene::InitCamera ()
 
 }
 
-void MyScene::UpdateViewProjBuffer ()
+void MyScene::UpdateWorldMatrix ()
+{
+	// Update our time
+	static float t = 0.0f;
+	static float angle = 0.0f;
+	{
+		static ULONGLONG timeStart = 0;
+		static ULONGLONG lastTime = 0;
+		ULONGLONG timeCur = GetTickCount64 ();
+		if (timeStart == 0)
+			timeStart = timeCur;
+		t = ( timeCur - timeStart ) / 500.0f;
+
+		float deltaTime = timeCur - lastTime;
+		lastTime = timeCur;
+
+		if (angle <= 360)
+			angle += deltaTime * 0.00005;
+		else
+			angle -= 360;
+	}
+
+	float xPos = 15 * sin ( angle * DEG_TO_RAD );
+	float yPos = 15 * cos ( angle * DEG_TO_RAD );
+
+
+	// NOTE : you really can NOT add Transpose to the matrix when using Effect shader!!  ( XMMatrixRotationY ( t ) );//
+	XMMATRIX worldMatrix;
+
+	// a rotation matrix around Y axis
+	worldMatrix = ( XMMatrixRotationY ( t ) ) * XMMatrixTranslation ( xPos , -6 , yPos );
+
+	BaseModel * box = models[ 0 ];
+	box->SetWorldMatrix ( worldMatrix );
+
+	worldMatrix = ( XMMatrixRotationY ( t ) ) * XMMatrixTranslation ( xPos , 5 , yPos );
+	snowmanOnBox.ApplyExtraWorldMatrix ( worldMatrix );
+
+	// a Identity matrix
+	worldMatrix = XMMatrixRotationY ( 0 );
+	snowman.ApplyExtraWorldMatrix ( worldMatrix );
+
+}
+
+void MyScene::UpdateViewProjMatrix ()
 {
 	XMMATRIX viewMatrix;
 	XMMATRIX projMatrix;
@@ -87,32 +134,35 @@ void MyScene::UpdateViewProjBuffer ()
 
 	snowman.SetViewMatrix ( viewMatrix );
 	snowman.SetProjMatrix ( projMatrix );
+
+	snowmanOnBox.SetViewMatrix ( viewMatrix );
+	snowmanOnBox.SetProjMatrix ( projMatrix );
 }
 
 void MyScene::AddModel ()
 {
 	MeshData model;
 	GeometryGenerator geoGen;
-	geoGen.CreateBox ( 14.0f , 2.0f , 1.0f , model );
+	geoGen.CreateBox ( 4.0f , 4.0f , 4.0f , model );
 
 	//geoGen.CreateGrid ( 5 , 10 , 10 , 15 , model );
 
 	BaseModel *myCube = new BasicGeometry ( pd3dDevice , pBackBufferSurfaceDesc , pUserContext );
 
 	myCube->Initiallise ( L"cubeEffect.fx" , model , L"seafloor.dds" );
-	myCube->SetWorldMatrix ( XMMatrixIdentity () );
+	myCube->SetWorldMatrix ( XMMatrixIdentity() );
 	models.push_back ( myCube );
 
 	geoGen.CreateGeosphere ( 3 , 5 , model );
 
-	BaseModel *mySphere = new BasicGeometry ( pd3dDevice , pBackBufferSurfaceDesc , pUserContext );
+	//BaseModel *mySphere = new BasicGeometry ( pd3dDevice , pBackBufferSurfaceDesc , pUserContext );
 
-	mySphere->Initiallise ( L"cubeEffect.fx" , model , L"desert_sky.dds" );
-	mySphere->SetWorldMatrix ( XMMatrixIdentity () );
-	models.push_back ( mySphere );
+	//mySphere->Initiallise ( L"cubeEffect.fx" , model , L"desert_sky.dds" );
+	//mySphere->SetWorldMatrix ( XMMatrixIdentity () );
+	//models.push_back ( mySphere );
 
 	snowman.Initialise( pd3dDevice , pBackBufferSurfaceDesc , pUserContext );
-
+	snowmanOnBox.Initialise ( pd3dDevice , pBackBufferSurfaceDesc , pUserContext );
 }
 
 void MyScene::RenderScene ( double fTime , float fElapsedTime , void* pUserContext )
@@ -124,15 +174,17 @@ void MyScene::RenderScene ( double fTime , float fElapsedTime , void* pUserConte
 	auto pDSV = DXUTGetD3D11DepthStencilView ();
 	pd3dImmediateContext->ClearDepthStencilView ( pDSV , D3D11_CLEAR_DEPTH , 1.0 , 0 );
 
+	UpdateWorldMatrix ();
 	// set view and projection buffer
-	UpdateViewProjBuffer ();
+	UpdateViewProjMatrix ();
 
 	snowman.RenderSnowman ( fTime , fElapsedTime , pUserContext );
+	snowmanOnBox.RenderSnowman ( fTime , fElapsedTime , pUserContext );
 
-	/*for (auto i = 0; i < models.size (); i++)
+	for (auto i = 0; i < models.size (); i++)
 	{
 		models[ i ]->RenderScene (fTime,fElapsedTime, pUserContext);
-	}*/
+	}
 }
 
 void MyScene::MouseLeave ()

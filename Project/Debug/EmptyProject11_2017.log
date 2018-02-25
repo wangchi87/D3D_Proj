@@ -1,4 +1,4 @@
-﻿生成启动时间为 2018/2/24 18:05:43。
+﻿生成启动时间为 2018/2/25 11:56:58。
      1>项目“I:\网易\d3d_test\EmptyProject\Project\EmptyProject11_2017.vcxproj”在节点 2 上(Build 个目标)。
      1>InitializeBuildStatus:
          正在对“Debug\EmptyProject11.tlog\unsuccessfulbuild”执行 Touch 任务。
@@ -7,12 +7,14 @@
          MyScene.cpp
      1>i:\网易\d3d_test\emptyproject\src\myscene.cpp(9): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
      1>i:\网易\d3d_test\emptyproject\src\myscene.cpp(16): warning C4018: “<”: 有符号/无符号不匹配
-     1>i:\网易\d3d_test\emptyproject\src\myscene.cpp(80): warning C4018: “<”: 有符号/无符号不匹配
-     1>i:\网易\d3d_test\emptyproject\src\myscene.cpp(108): warning C4458: “pUserContext”的声明隐藏了类成员
+     1>i:\网易\d3d_test\emptyproject\src\myscene.cpp(82): warning C4244: “初始化”: 从“ULONGLONG”转换到“float”，可能丢失数据
+     1>i:\网易\d3d_test\emptyproject\src\myscene.cpp(86): warning C4244: “+=”: 从“double”转换到“float”，可能丢失数据
+     1>i:\网易\d3d_test\emptyproject\src\myscene.cpp(129): warning C4018: “<”: 有符号/无符号不匹配
+     1>i:\网易\d3d_test\emptyproject\src\myscene.cpp(168): warning C4458: “pUserContext”的声明隐藏了类成员
          i:\网易\d3d_test\emptyproject\src\myscene.h(13): note: 参见“MyScene::pUserContext”的声明
-     1>i:\网易\d3d_test\emptyproject\src\myscene.cpp(120): warning C4018: “<”: 有符号/无符号不匹配
-     1>i:\网易\d3d_test\emptyproject\src\myscene.cpp(135): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
-     1>i:\网易\d3d_test\emptyproject\src\myscene.cpp(163): warning C4244: “参数”: 从“int”转换到“float”，可能丢失数据
+     1>i:\网易\d3d_test\emptyproject\src\myscene.cpp(184): warning C4018: “<”: 有符号/无符号不匹配
+     1>i:\网易\d3d_test\emptyproject\src\myscene.cpp(199): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
+     1>i:\网易\d3d_test\emptyproject\src\myscene.cpp(227): warning C4244: “参数”: 从“int”转换到“float”，可能丢失数据
        ResourceCompile:
          所有输出均为最新。
        Link:
@@ -24,6 +26,7 @@
          Debug\BasicGeometry.obj
          Debug\GeometryGenerator.obj
          Debug\ModelLoader.obj
+         Debug\Snowman.obj
          Debug\MyScene.obj
          Debug\DDSTextureLoader.obj
          EmptyProject11_2017.vcxproj -> I:\网易\d3d_test\EmptyProject\Project\..\Bin\EmptyProject11.exe
@@ -38,13 +41,15 @@
        (ClCompile 目标) -> 
          i:\网易\d3d_test\emptyproject\src\myscene.cpp(9): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
          i:\网易\d3d_test\emptyproject\src\myscene.cpp(16): warning C4018: “<”: 有符号/无符号不匹配
-         i:\网易\d3d_test\emptyproject\src\myscene.cpp(80): warning C4018: “<”: 有符号/无符号不匹配
-         i:\网易\d3d_test\emptyproject\src\myscene.cpp(108): warning C4458: “pUserContext”的声明隐藏了类成员
-         i:\网易\d3d_test\emptyproject\src\myscene.cpp(120): warning C4018: “<”: 有符号/无符号不匹配
-         i:\网易\d3d_test\emptyproject\src\myscene.cpp(135): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
-         i:\网易\d3d_test\emptyproject\src\myscene.cpp(163): warning C4244: “参数”: 从“int”转换到“float”，可能丢失数据
+         i:\网易\d3d_test\emptyproject\src\myscene.cpp(82): warning C4244: “初始化”: 从“ULONGLONG”转换到“float”，可能丢失数据
+         i:\网易\d3d_test\emptyproject\src\myscene.cpp(86): warning C4244: “+=”: 从“double”转换到“float”，可能丢失数据
+         i:\网易\d3d_test\emptyproject\src\myscene.cpp(129): warning C4018: “<”: 有符号/无符号不匹配
+         i:\网易\d3d_test\emptyproject\src\myscene.cpp(168): warning C4458: “pUserContext”的声明隐藏了类成员
+         i:\网易\d3d_test\emptyproject\src\myscene.cpp(184): warning C4018: “<”: 有符号/无符号不匹配
+         i:\网易\d3d_test\emptyproject\src\myscene.cpp(199): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
+         i:\网易\d3d_test\emptyproject\src\myscene.cpp(227): warning C4244: “参数”: 从“int”转换到“float”，可能丢失数据
 
-    7 个警告
+    9 个警告
     0 个错误
 
-已用时间 00:00:02.23
+已用时间 00:00:02.00
