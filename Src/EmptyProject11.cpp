@@ -183,6 +183,12 @@ void CALLBACK OnKeyboard( UINT nChar, bool bKeyDown, bool bAltDown, void* pUserC
 		case 0x46:            //F
 			mScene.CameraTryOnBoard ( );
 			break;
+		case 0x5A:			  //Z
+			mScene.IncreaseMaterialRoughness ();
+			break;
+		case 0x43:			  //C
+			mScene.DecreaseMaterialRoughness ();
+			break;
 		}
 	}
 }

@@ -87,6 +87,8 @@ public:
 
 	virtual void SetLightDirection ( XMVECTOR lightDir ) {};
 
+	virtual void SetMaterialRoughness ( float rough ) {};
+
 	virtual void Release ();
 
 	void ApplyExtraWorldMatrix ( XMMATRIX extraWorldMatrix );

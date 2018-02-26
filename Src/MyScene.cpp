@@ -9,6 +9,8 @@ MyScene::MyScene ()
 	deltaTime = 0;
 	totalTime = 0;
 	isCameraOnBoard = false;
+	materialRoughness = 0.3;
+
 }
 
 
@@ -178,12 +180,12 @@ void MyScene::AddModel ()
 	// models[0] is the BOX
 	BaseModel *myCube = new BasicGeometry ( pd3dDevice , pBackBufferSurfaceDesc , pUserContext );
 
-	myCube->Initiallise ( L"lightingTexEffect.fx" , model , L"seafloor.dds" );
+	myCube->Initiallise ( L"lightingTexEffect.fx" , model , L"container.dds" );
 	myCube->SetWorldMatrix ( XMMatrixIdentity() );
 	models.push_back ( myCube );
 
 	// models[1] is the GROUND
-	geoGen.CreateGrid ( 200 , 200 , 100 , 100 , model );
+	geoGen.CreateGrid ( 400 , 400 , 50 , 50 , model );
 
 	BaseModel *myGrid = new BasicGeometry ( pd3dDevice , pBackBufferSurfaceDesc , pUserContext );
 
@@ -192,7 +194,7 @@ void MyScene::AddModel ()
 	models.push_back ( myGrid );
 
 	// models[2] is the SKY-SPHERE
-	geoGen.CreateGeosphere ( 200 , 3,  model );
+	geoGen.CreateGeosphere ( 500 , 3,  model );
 
 	BaseModel *mySky = new BasicGeometry ( pd3dDevice , pBackBufferSurfaceDesc , pUserContext );
 
@@ -205,8 +207,16 @@ void MyScene::AddModel ()
 	BaseModel *mySphere1 = new BasicGeometry ( pd3dDevice , pBackBufferSurfaceDesc , pUserContext );
 
 	mySphere1->Initiallise ( L"basicTexEffect.fx" , model , L"sun.dds" );
-	mySphere1->SetWorldMatrix ( XMMatrixTranslation ( -30 , 40 , 0 ) );
+	mySphere1->SetWorldMatrix ( XMMatrixTranslation ( -90 , 120 , 0 ) );
 	models.push_back ( mySphere1 );
+
+	
+	BaseModel *mySphere2 = new BasicGeometry ( pd3dDevice , pBackBufferSurfaceDesc , pUserContext );
+
+	mySphere2->Initiallise ( L"lightingTexEffect.fx" , model , L"aluminum.dds" );
+	mySphere2->SetWorldMatrix ( XMMatrixTranslation ( 30 , 20 , 0 ) );
+	models.push_back ( mySphere2 );
+
 
 	snowman.Initialise( pd3dDevice , pBackBufferSurfaceDesc , pUserContext );
 	snowmanOnBox.Initialise ( pd3dDevice , pBackBufferSurfaceDesc , pUserContext );
@@ -231,10 +241,10 @@ void MyScene::RenderScene ( double fTime , float fElapsedTime , void* pUserConte
 	// set view and projection buffer
 	UpdateViewProjMatrix ();
 
-	//snowman.RenderSnowman ( fTime , fElapsedTime , pUserContext );
+	snowman.RenderSnowman ( fTime , fElapsedTime , pUserContext );
 
-	//if (!isCameraOnBoard)
-	//	snowmanOnBox.RenderSnowman ( fTime , fElapsedTime , pUserContext );
+	if (!isCameraOnBoard)
+		snowmanOnBox.RenderSnowman ( fTime , fElapsedTime , pUserContext );
 
 	for (auto i = 0; i < models.size (); i++)
 	{
@@ -247,6 +257,7 @@ void MyScene::MouseLeave ()
 
 	firstMouseEntry = true;
 }
+
 
 void MyScene::UpdateCameraPos ( char c )
 {
@@ -300,6 +311,30 @@ void MyScene::CameraTryOnBoard ()
 		{
 			printf ( "camera is too far from the box, distance is : %f \n" , dis );
 		}
+	}
+}
+
+void MyScene::IncreaseMaterialRoughness ()
+{
+	materialRoughness += 0.03;
+	if (materialRoughness > 1)
+		materialRoughness = 1;
+
+	for (auto i = 0; i < models.size (); i++)
+	{
+		models[ i ]->SetMaterialRoughness( materialRoughness );
+	}
+}
+
+void MyScene::DecreaseMaterialRoughness ()
+{
+	materialRoughness -= 0.03;
+	if (materialRoughness <= 0.05)
+		materialRoughness = 0.05;
+
+	for (auto i = 0; i < models.size (); i++)
+	{
+		models[ i ]->SetMaterialRoughness ( materialRoughness );
 	}
 }
 

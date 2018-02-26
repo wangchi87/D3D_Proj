@@ -13,7 +13,7 @@ class BasicGeometry: public BaseModel
 
 	ID3DX11EffectVectorVariable*			cameraPosVariable;
 	ID3DX11EffectVectorVariable*			lightDirectionVariable;
-
+	ID3DX11EffectScalarVariable*			materialRoughnessVariable;
 
 public:
 	BasicGeometry () { vertexIndicesNum = 0; };
@@ -51,7 +51,10 @@ public:
 		InitIndexBuffer ();
 	}
 	void SetCameraPos ( XMVECTOR camPos ) override;
+
 	void SetLightDirection ( XMVECTOR lightDir ) override;
+
+	void SetMaterialRoughness ( float rough ) override; 
 
 	void Release () override;
 

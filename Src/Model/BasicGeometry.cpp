@@ -55,6 +55,9 @@ HRESULT BasicGeometry::InitEffects ()
 	cameraPosVariable = g_pEffect->GetVariableByName ( "CameraPos" )->AsVector();
 	lightDirectionVariable = g_pEffect->GetVariableByName ( "LightDir" )->AsVector ();
 
+	materialRoughnessVariable = g_pEffect->GetVariableByName ( "MaterialRoughness" )->AsScalar ();
+	materialRoughnessVariable->SetFloat ( 0.3 );
+
 	g_ptxDiffuseVariable = g_pEffect->GetVariableByName ( "g_txDiffuse" )->AsShaderResource ();
 
 	return S_OK;
@@ -90,6 +93,11 @@ void BasicGeometry::SetCameraPos ( XMVECTOR camPos )
 void BasicGeometry::SetLightDirection ( XMVECTOR lightDir )
 {
 	lightDirectionVariable->SetFloatVector ( ( float* ) &lightDir );
+}
+
+void BasicGeometry::SetMaterialRoughness ( float rough )
+{
+	materialRoughnessVariable->SetFloat ( rough );
 }
 
 void BasicGeometry::Release ()

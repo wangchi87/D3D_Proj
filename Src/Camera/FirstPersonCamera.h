@@ -27,21 +27,30 @@ class FirstPersonCamera
 {
 public:
 	// Camera Attributes
-	XMVECTOR Position;
-	XMVECTOR Front;
-	XMVECTOR Up;
-	XMVECTOR Right;
-	XMVECTOR WorldUp;
+	XMVECTOR	Position;
+	XMVECTOR	Front;
+	XMVECTOR	Up;
+	XMVECTOR	Right;
+	XMVECTOR	WorldUp;
 
 	// Eular Angles
-	float Yaw;
-	float Pitch;
+	float	Yaw;
+	float	Pitch;
 
 	// Camera options
 
-	float MovementSpeed;
-	float MouseSensitivity;
-	float Zoom;
+	float	MovementSpeed;
+	float	MouseSensitivity;
+	float	Zoom;
+
+	// camera position boarder
+
+	float	upperBoarder;
+	float	bottomBoarder;
+	float	leftBoarder;
+	float	rightBoarder;
+	float	frontBoarder;
+	float	backBoarder;
 
 	FirstPersonCamera ();
 	~FirstPersonCamera ();
@@ -58,6 +67,9 @@ public:
 
 	// Returns the view matrix 
 	XMMATRIX GeViewMatrix ();
+
+	// Check camera is out of boarder
+	bool CheckCameraOutOfBoarder ();
 
 	// Processes input received from any keyboard-like input system. Accepts input parameter in the form of camera defined ENUM (to abstract it from windowing systems)
 	void ProcessKeyboard ( Camera_Movement direction , float deltaTime );

@@ -4,6 +4,19 @@
 
 FirstPersonCamera::FirstPersonCamera ()
 {
+	upperBoarder = 350;
+	bottomBoarder = 0;
+	leftBoarder = -180;
+	rightBoarder = 180;
+	frontBoarder = 180;
+	backBoarder = -180;
+
+	Yaw = YAW;
+	Pitch = PITCH;
+
+	MovementSpeed = SPEED;
+	MouseSensitivity = SENSITIVTY;
+	Zoom = ZOOM;
 }
 
 
@@ -25,6 +38,13 @@ void FirstPersonCamera::InitCamera ( XMVECTOR position , XMVECTOR up )
 	MovementSpeed = SPEED;
 	MouseSensitivity = SENSITIVTY;
 	Zoom = ZOOM;
+
+	upperBoarder = 350;
+	bottomBoarder = -10;
+	leftBoarder = -180;
+	rightBoarder = 180;
+	frontBoarder = 180;
+	backBoarder = -180;
 
 	updateCameraVectors ();
 }
@@ -74,11 +94,27 @@ XMMATRIX FirstPersonCamera::GeViewMatrix ()
 
 // Processes input received from any keyboard-like input system. Accepts input parameter in the form of camera defined ENUM (to abstract it from windowing systems)
 
+bool FirstPersonCamera::CheckCameraOutOfBoarder ()
+{
+	XMFLOAT3 cp;
+	XMStoreFloat3 ( &cp , Position );
+
+	if (cp.x < leftBoarder || cp.x > rightBoarder)
+		return true;
+	if (cp.z < backBoarder || cp.z > frontBoarder)
+		return true;
+	if (cp.y > upperBoarder || cp.y < bottomBoarder)
+		return true;
+
+	return false;
+}
+
+
 void FirstPersonCamera::ProcessKeyboard ( Camera_Movement direction , float deltaTime )
 {
 	float velocity = MovementSpeed * deltaTime;
 
-	//printf ( "camera move speed: %f \n" , velocity );
+	XMVECTOR oldCameraPos = Position;
 
 	if (direction == FORWARD)
 		Position += Front * velocity;
@@ -88,6 +124,9 @@ void FirstPersonCamera::ProcessKeyboard ( Camera_Movement direction , float delt
 		Position += Right * velocity;
 	if (direction == RIGHT)
 		Position -= Right * velocity;
+
+	if (CheckCameraOutOfBoarder ())
+		Position = oldCameraPos;
 }
 
 // Processes input received from a mouse input system. Expects the offset value in both the x and y direction.

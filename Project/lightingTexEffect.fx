@@ -23,6 +23,7 @@ cbuffer Lighting
 {
 	vector LightDir;
 	vector CameraPos;
+	float  MaterialRoughness;
 };
 
 
@@ -66,35 +67,85 @@ PS_INPUT VS ( VS_INPUT input )
 	return output;
 }
 
+float Blinn_Phong_BRDF(float3 lightDir, float3 normal, float3 viewDir, float roughness)
+{
+	float Ks = 0.7;
+	float Kd = 0.3;
+
+	float3 lightDirection = - normalize(lightDir);
+	
+	float3 halfVector = normalize (lightDirection + viewDir);
+		
+	float cos_ni = dot(normal, lightDirection);
+	
+	if (cos_ni < 0)
+		return 0;
+	
+	float cos_nh = dot(normal, halfVector);
+		
+	float diffuse = Kd *  max(cos_ni, 0);
+	
+	float specular = Ks * pow(max(cos_nh, 0), roughness);
+	
+	return diffuse + specular;
+}
+
+float Cook_Torrance_BRDF(float3 lightDir, float3 normal, float3 viewDir, float roughness)
+{
+	// fresnel reflectance at zero degree of incidence
+	float F0 = 0.7;
+
+	float3 lightDirection = - normalize(lightDir);
+	float3 halfVector = normalize (lightDirection + viewDir);
+		
+	float cos_ni = dot(normal, lightDirection);
+	
+	if (cos_ni < 0)
+		return 0 ;
+	
+	float cos_nv = dot(normal, viewDir);
+	float cos_nh = dot(normal, halfVector);
+	float cos_hv = dot(halfVector,viewDir);
+		
+	// masking and shadowing term
+	float nh2 = 2 * cos_nh;
+	float g1 = (nh2 * cos_nv) / cos_hv;
+	float g2 = (nh2 * cos_ni) / cos_hv;
+	float G = min(1.0, min(g1,g2));
+	
+	// Beckmann micro-facet normal distribution term
+	float r1 = 1.0f/( 4.0 * roughness * roughness * pow(cos_nh,4) );
+	float r2 = (cos_nh * cos_nh - 1.0 ) / (roughness * roughness * cos_nh * cos_nh );
+	float D = r1 * exp(r2);
+	
+	float F = pow( (1-cos_hv), 5 );
+	F = F * ( 1- F0 );
+	F = F + F0;
+	
+	float BRDF = (G * D * F)/(4 * cos_ni * cos_nv);
+	
+	// add a diffuse term to compensate for multi-scattering term
+	return BRDF + (1-F)/3.14;
+}
+
+
 float4 PS ( PS_INPUT input ) : SV_Target
 {
-	// blinn-phong BRDF model;
-	float Ks = 0.9;
-	float Kd = 0.1;
-	float shininess = 2;
-	float3 globalAmbient = float3(0.0f,0.0f,0.9f);
+	float Kd = 0.3;
+	
+	float3 globalAmbient = Kd * float3(0.50f,0.50f,0.50f);
+	
 	float3 lightColor = float3(1.0f,1.0f,0.2f);
 	
-	float3 lightDirection = - normalize(LightDir);
+	float BRDF = 0;
 	
-	float3 halfVector = normalize (lightDirection + input.viewDirection);
+	//BRDF = Blinn_Phong_BRDF( LightDir, input.Normal, input.viewDirection, 2.0f );
 	
-	if( dot(halfVector, lightDirection) < 0 )
-		return float4(1.0f, 1.0f, 1.0f, 1.0f ) ;
-	if( dot(halfVector, input.viewDirection) <0 )
-		return float4(1.0f, 1.0f, 1.0f, 1.0f ) ;
-
-		
-	float cos_ni = dot(input.Normal, lightDirection);
+	BRDF = Cook_Torrance_BRDF( LightDir, input.Normal, input.viewDirection, MaterialRoughness);
 	
-	float cos_nh = dot(input.Normal, halfVector);
-		
-	float3 diffuseColor = Kd * globalAmbient + Kd * lightColor * max(cos_ni, 0);
+	float3 attenuatedLight = lightColor * BRDF + globalAmbient;
 	
-	float3 specularColor = Ks * lightColor * pow(max(cos_nh, 0), shininess);
-	
-	return saturate( g_txDiffuse.Sample ( samLinear, input.Tex ) * float4((diffuseColor + specularColor),1.0f) );
-
+	return saturate( g_txDiffuse.Sample ( samLinear, input.Tex ) * float4(attenuatedLight, 1.0f) );
 }
 
 technique11 Render

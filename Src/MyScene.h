@@ -39,6 +39,11 @@ class MyScene
 	XMVECTOR					boxPos;
 	XMVECTOR					cameraPos;
 
+	// model material roughness( 0-1,the larger, the rougher)
+	float						materialRoughness;
+
+
+
 public:
 	MyScene ();
 	~MyScene ();
@@ -67,6 +72,8 @@ public:
 
 	void CameraTryOnBoard ();
 
+	void IncreaseMaterialRoughness ();
 
+	void DecreaseMaterialRoughness ();
 };
 
