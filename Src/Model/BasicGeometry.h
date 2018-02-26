@@ -8,7 +8,12 @@ class BasicGeometry: public BaseModel
 {
 
 	ID3DX11EffectTechnique*					g_pTechnique;
+
 	ID3DX11EffectShaderResourceVariable*	g_ptxDiffuseVariable;
+
+	ID3DX11EffectVectorVariable*			cameraPosVariable;
+	ID3DX11EffectVectorVariable*			lightDirectionVariable;
+
 
 public:
 	BasicGeometry () { vertexIndicesNum = 0; };
@@ -29,8 +34,6 @@ public:
 
 	HRESULT InitEffects ();
 
-	void UpdateWorldMatrix ();
-
 	void RenderScene (
 		double fTime ,
 		float fElapsedTime ,
@@ -47,6 +50,8 @@ public:
 		InitVertexData ();
 		InitIndexBuffer ();
 	}
+	void SetCameraPos ( XMVECTOR camPos ) override;
+	void SetLightDirection ( XMVECTOR lightDir ) override;
 
 	void Release () override;
 

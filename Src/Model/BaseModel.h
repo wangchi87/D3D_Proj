@@ -54,6 +54,7 @@ public:
 		AddResources ();
 	}
 
+
 	virtual void InitDeviceHandle ( 
 		ID3D11Device* pd3dDevice ,
 		const DXGI_SURFACE_DESC* pBackBufferSurfaceDesc ,
@@ -65,10 +66,6 @@ public:
 		void* pUserContext );
 
 	virtual void AddResources () {}
-
-	void ApplyExtraWorldMatrix ( XMMATRIX extraWorldMatrix );
-
-	XMMATRIX GetWorldMatrix ();
 
 	virtual void SetWorldMatrix ( XMMATRIX worldMatrix );
 
@@ -86,25 +83,17 @@ public:
 
 	virtual void SetTextureRV ( ID3D11ShaderResourceView * txRV );
 
-	virtual void Release ()
-	{
+	virtual void SetCameraPos ( XMVECTOR camPos ) {};
 
-		SAFE_RELEASE ( g_pVertexBuffer );
-		SAFE_RELEASE ( g_pIndexBuffer );
+	virtual void SetLightDirection ( XMVECTOR lightDir ) {};
 
-		SAFE_RELEASE ( g_pVertexLayout );
-		SAFE_RELEASE ( g_pEffect );
-		SAFE_RELEASE ( g_pTextureRV );
+	virtual void Release ();
 
-		delete [] vertices;
-		delete [] indices;
+	void ApplyExtraWorldMatrix ( XMMATRIX extraWorldMatrix );
 
-		/*
-		SAFE_RELEASE ( constBufWorld );
-		SAFE_RELEASE ( worldVariable );
-		SAFE_RELEASE ( viewVariable );
-		SAFE_RELEASE ( projVariable );*/
-	}
+	XMMATRIX GetWorldMatrix ();
+
+
 	~BaseModel ();
 };
 

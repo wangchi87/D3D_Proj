@@ -57,7 +57,7 @@ void MyScene::InitScene (
 
 void MyScene::InitCamera ()
 {
-	XMVECTOR Eye = XMVectorSet ( 0.0f , 0.0f , -30.0f , 0.0f );
+	XMVECTOR Eye = XMVectorSet ( 0.0f , 0.0f , -80.0f , 0.0f );
 	XMVECTOR At = XMVectorSet ( -0.0f , -0.0f , 0.0f , 0.0f );
 	XMVECTOR Up = XMVectorSet ( 0.0f , 1.0f , 0.0f , 0.0f );
 
@@ -119,6 +119,18 @@ void MyScene::UpdateWorldMatrix ()
 
 	BaseModel* skySphere = models[ 2 ];
 	skySphere->SetWorldMatrix ( XMMatrixTranslationFromVector ( cameraPos ) );
+
+
+
+	// UPDATE cameraPos for every object
+
+	for (auto i = 0; i < models.size (); i++)
+	{
+		models[ i ]->SetCameraPos ( cameraPos );
+	}
+
+	snowman.SetCameraPos ( cameraPos );
+	snowmanOnBox.SetCameraPos ( cameraPos );
 }
 
 void MyScene::UpdateViewProjMatrix ()
@@ -143,8 +155,22 @@ void MyScene::UpdateViewProjMatrix ()
 	snowmanOnBox.SetProjMatrix ( projMatrix );
 }
 
+void MyScene::SetLightDirection ()
+{
+	XMVECTOR lightDirection = XMVectorSet ( 3.0f , -4.0 , 0 , 0 );
+
+	for (auto i = 0; i < models.size (); i++)
+	{
+		models[ i ]->SetLightDirection ( lightDirection );
+	}
+
+	snowman.SetLightDirection ( lightDirection );
+	snowmanOnBox.SetLightDirection ( lightDirection );
+}
+
 void MyScene::AddModel ()
 {
+	
 	MeshData model;
 	GeometryGenerator geoGen;
 	geoGen.CreateBox ( 8.0f , 8.0f , 8.0f , model );
@@ -152,7 +178,7 @@ void MyScene::AddModel ()
 	// models[0] is the BOX
 	BaseModel *myCube = new BasicGeometry ( pd3dDevice , pBackBufferSurfaceDesc , pUserContext );
 
-	myCube->Initiallise ( L"cubeEffect.fx" , model , L"seafloor.dds" );
+	myCube->Initiallise ( L"lightingTexEffect.fx" , model , L"seafloor.dds" );
 	myCube->SetWorldMatrix ( XMMatrixIdentity() );
 	models.push_back ( myCube );
 
@@ -166,16 +192,26 @@ void MyScene::AddModel ()
 	models.push_back ( myGrid );
 
 	// models[2] is the SKY-SPHERE
-	geoGen.CreateGeosphere ( 200 , 5,  model );
+	geoGen.CreateGeosphere ( 200 , 3,  model );
 
 	BaseModel *mySky = new BasicGeometry ( pd3dDevice , pBackBufferSurfaceDesc , pUserContext );
 
-	mySky->Initiallise ( L"skyEffect.fx" , model , L"seafloor.dds" );
+	mySky->Initiallise ( L"skyEffect.fx" , model , nullptr );
 	mySky->SetWorldMatrix ( XMMatrixTranslation ( 0 , 0 , 0 ) );
 	models.push_back ( mySky );
 
+	geoGen.CreateGeosphere ( 5 , 3 , model );
+
+	BaseModel *mySphere1 = new BasicGeometry ( pd3dDevice , pBackBufferSurfaceDesc , pUserContext );
+
+	mySphere1->Initiallise ( L"basicTexEffect.fx" , model , L"sun.dds" );
+	mySphere1->SetWorldMatrix ( XMMatrixTranslation ( -30 , 40 , 0 ) );
+	models.push_back ( mySphere1 );
+
 	snowman.Initialise( pd3dDevice , pBackBufferSurfaceDesc , pUserContext );
 	snowmanOnBox.Initialise ( pd3dDevice , pBackBufferSurfaceDesc , pUserContext );
+
+	SetLightDirection ();
 }
 
 void MyScene::RenderScene ( double fTime , float fElapsedTime , void* pUserContext )
@@ -195,10 +231,10 @@ void MyScene::RenderScene ( double fTime , float fElapsedTime , void* pUserConte
 	// set view and projection buffer
 	UpdateViewProjMatrix ();
 
-	snowman.RenderSnowman ( fTime , fElapsedTime , pUserContext );
+	//snowman.RenderSnowman ( fTime , fElapsedTime , pUserContext );
 
-	if (!isCameraOnBoard)
-		snowmanOnBox.RenderSnowman ( fTime , fElapsedTime , pUserContext );
+	//if (!isCameraOnBoard)
+	//	snowmanOnBox.RenderSnowman ( fTime , fElapsedTime , pUserContext );
 
 	for (auto i = 0; i < models.size (); i++)
 	{

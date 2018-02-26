@@ -12,7 +12,7 @@ RasterizerState MyCull
     CullMode = NONE;
 };
 
-cbuffer ConstantBuffer
+cbuffer WorldViewProjMatrix
 {
 	matrix World;
 	matrix View;
@@ -54,9 +54,8 @@ PS_INPUT VS ( VS_INPUT input )
 
 float4 PS ( PS_INPUT input ) : SV_Target
 {
-	//return float4(1.0f,0,0,1.0f);
-	return g_txDiffuse.Sample ( samLinear, input.Tex );
 
+	return g_txDiffuse.Sample ( samLinear, input.Tex );
 }
 
 technique11 Render

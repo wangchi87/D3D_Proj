@@ -27,8 +27,6 @@ HRESULT BasicGeometry::InitVertexLayout ()
 }
 
 
-
-
 HRESULT BasicGeometry::InitEffects ()
 {
 	HRESULT hr;
@@ -54,42 +52,14 @@ HRESULT BasicGeometry::InitEffects ()
 	viewVariable = g_pEffect->GetVariableByName ( "View" )->AsMatrix ();
 	projVariable = g_pEffect->GetVariableByName ( "Projection" )->AsMatrix ();
 
+	cameraPosVariable = g_pEffect->GetVariableByName ( "CameraPos" )->AsVector();
+	lightDirectionVariable = g_pEffect->GetVariableByName ( "LightDir" )->AsVector ();
+
 	g_ptxDiffuseVariable = g_pEffect->GetVariableByName ( "g_txDiffuse" )->AsShaderResource ();
 
 	return S_OK;
 }
 
-void BasicGeometry::UpdateWorldMatrix ()
-{
-	// Update our time
-	static float t = 0.0f;
-	static float angle = 0.0f;
-	{
-		static ULONGLONG timeStart = 0;
-		static ULONGLONG lastTime = 0;
-		ULONGLONG timeCur = GetTickCount64 ();
-		if (timeStart == 0)
-			timeStart = timeCur;
-		t = ( timeCur - timeStart ) / 500.0f;
-
-		float deltaTime = timeCur - lastTime;
-		lastTime = timeCur;
-
-		if (angle <= 360)
-			angle += deltaTime * 0.00005;
-		else
-			angle -= 360;
-	}
-	
-	float xPos = 10 * sin ( angle * DEG_TO_RAD );
-	float yPos = 10 * cos ( angle * DEG_TO_RAD );
-
-	 
-	// NOTE : you really can NOT add Transpose to the matrix when using Effect shader!!  ( XMMatrixRotationY ( t ) );//
-	XMMATRIX worldMatrix;
-	worldMatrix = ( XMMatrixRotationY ( t ) ) * XMMatrixTranslation ( xPos , 0 , yPos );
-	SetWorldMatrix ( worldMatrix );
-}
 
 void BasicGeometry::RenderScene ( double fTime , float fElapsedTime , void* pUserContext )
 {
@@ -110,7 +80,16 @@ void BasicGeometry::RenderScene ( double fTime , float fElapsedTime , void* pUse
 		g_pTechnique->GetPassByIndex ( i )->Apply ( 0 , pd3dImmediateContext );
 		pd3dImmediateContext->DrawIndexed ( vertexIndicesNum , 0 , 0 );
 	}
+}
 
+void BasicGeometry::SetCameraPos ( XMVECTOR camPos )
+{
+	cameraPosVariable->SetFloatVector ( ( float* ) &camPos );
+}
+
+void BasicGeometry::SetLightDirection ( XMVECTOR lightDir )
+{
+	lightDirectionVariable->SetFloatVector ( ( float* ) &lightDir );
 }
 
 void BasicGeometry::Release ()

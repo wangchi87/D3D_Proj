@@ -53,6 +53,8 @@ public:
 
 	void UpdateViewProjMatrix ();
 
+	void SetLightDirection ();
+
 	void AddModel ();
 
 	void RenderScene ( double fTime , float fElapsedTime , void* pUserContext );
@@ -64,5 +66,7 @@ public:
 	void UpdateMousePos ( int xPos , int yPos );
 
 	void CameraTryOnBoard ();
+
+
 };
 

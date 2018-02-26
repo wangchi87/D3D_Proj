@@ -406,12 +406,20 @@
     <ResourceCompile Include="..\Src\EmptyProject11.rc" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="cubeEffect.fx">
+    <None Include="basicTexEffect.fx">
       <FileType>Document</FileType>
     </None>
-    <FxCompile Include="shader.fx">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-    </FxCompile>
+    <None Include="grassEffect.fx">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="skyEffect.fx">
+      <FileType>Document</FileType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="lightingTexEffect.fx">
+      <FileType>Document</FileType>
+    </None>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />

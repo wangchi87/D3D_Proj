@@ -94,6 +94,26 @@ void BaseModel::SetTextureRV ( ID3D11ShaderResourceView * txRV )
 	g_pTextureRV = txRV;
 }
 
+inline void BaseModel::Release ()
+{
+
+	SAFE_RELEASE ( g_pVertexBuffer );
+	SAFE_RELEASE ( g_pIndexBuffer );
+
+	SAFE_RELEASE ( g_pVertexLayout );
+	SAFE_RELEASE ( g_pEffect );
+	SAFE_RELEASE ( g_pTextureRV );
+
+	delete [] vertices;
+	delete [] indices;
+
+	/*
+	SAFE_RELEASE ( constBufWorld );
+	SAFE_RELEASE ( worldVariable );
+	SAFE_RELEASE ( viewVariable );
+	SAFE_RELEASE ( projVariable );*/
+}
+
 void BaseModel::InitTexture ( const wchar_t* fileName )
 {
 	if (fileName == nullptr)

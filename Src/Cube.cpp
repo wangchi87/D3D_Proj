@@ -230,12 +230,12 @@ HRESULT Cube::InitEffects ()
 #if D3D_COMPILER_VERSION >= 46
 	// Read the D3DX effect file
 	WCHAR str[ MAX_PATH ];
-	V_RETURN ( DXUTFindDXSDKMediaFileCch ( str , MAX_PATH , L"cubeEffect.fx" ) );
+	V_RETURN ( DXUTFindDXSDKMediaFileCch ( str , MAX_PATH , L"basicTexEffect.fx" ) );
 
 	V_RETURN ( D3DX11CompileEffectFromFile ( str , nullptr , D3D_COMPILE_STANDARD_FILE_INCLUDE , dwShaderFlags , 0 , pd3dDevice , &g_pEffect , nullptr ) );
 #else
 	ID3DBlob* pEffectBuffer = nullptr;
-	V_RETURN ( DXUTCompileFromFile ( L"cubeEffect.fx" , nullptr , "none" , "fx_5_0" , dwShaderFlags , 0 , &pEffectBuffer ) );
+	V_RETURN ( DXUTCompileFromFile ( L"basicTexEffect.fx" , nullptr , "none" , "fx_5_0" , dwShaderFlags , 0 , &pEffectBuffer ) );
 	hr = D3DX11CreateEffectFromMemory ( pEffectBuffer->GetBufferPointer () , pEffectBuffer->GetBufferSize () , 0 , pd3dDevice , &g_pEffect );
 	SAFE_RELEASE ( pEffectBuffer );
 	if (FAILED ( hr ))

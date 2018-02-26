@@ -44,6 +44,10 @@ public:
 
 	void SetProjMatrix ( XMMATRIX projMatrix ) ;
 
+	void SetCameraPos ( XMVECTOR camPos );
+
+	void SetLightDirection ( XMVECTOR lightDir );
+
 	void RenderSnowman (
 		double fTime ,
 		float fElapsedTime ,

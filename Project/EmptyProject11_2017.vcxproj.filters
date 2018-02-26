@@ -102,12 +102,16 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="shader.fx">
+    <None Include="basicTexEffect.fx">
       <Filter>Shaders</Filter>
-    </FxCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="cubeEffect.fx">
+    </None>
+    <None Include="grassEffect.fx">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="skyEffect.fx">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="lightingTexEffect.fx">
       <Filter>Shaders</Filter>
     </None>
   </ItemGroup>

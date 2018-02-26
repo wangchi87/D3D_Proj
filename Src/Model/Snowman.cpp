@@ -52,7 +52,7 @@ void Snowman::ConfigHead ()
 
 	BaseModel *Head = new BasicGeometry ( pd3dDevice , pBackBufferSurfaceDesc , pUserContext );
 
-	Head->Initiallise ( L"cubeEffect.fx" , model , L"desert_sky.dds" );
+	Head->Initiallise ( L"basicTexEffect.fx" , model , L"desert_sky.dds" );
 
 	XMMATRIX worldMatrix = XMMatrixTranslation ( 0 , 2 , 0 );
 	Head->SetWorldMatrix ( worldMatrix );
@@ -71,7 +71,7 @@ void Snowman::ConfigBody ()
 
 	BaseModel *Body = new BasicGeometry ( pd3dDevice , pBackBufferSurfaceDesc , pUserContext );
 
-	Body->Initiallise ( L"cubeEffect.fx" , model , L"desert_sky.dds" );
+	Body->Initiallise ( L"basicTexEffect.fx" , model , L"desert_sky.dds" );
 
 	XMMATRIX worldMatrix = XMMatrixTranslation ( 0 , -4 , 0 );
 	Body->SetWorldMatrix ( worldMatrix );
@@ -89,7 +89,7 @@ void Snowman::ConfigEye ()
 	// left eye
 	BaseModel *leftEye = new BasicGeometry ( pd3dDevice , pBackBufferSurfaceDesc , pUserContext );
 
-	leftEye->Initiallise ( L"cubeEffect.fx" , model , nullptr );
+	leftEye->Initiallise ( L"basicTexEffect.fx" , model , nullptr );
 
 	XMMATRIX worldMatrix = XMMatrixTranslation ( 1.2 , 2.9 , -2.3 );
 	leftEye->SetWorldMatrix ( worldMatrix );
@@ -99,7 +99,7 @@ void Snowman::ConfigEye ()
 	// right eye
 	BaseModel *rightEye = new BasicGeometry ( pd3dDevice , pBackBufferSurfaceDesc , pUserContext );
 
-	rightEye->Initiallise ( L"cubeEffect.fx" , model , nullptr );
+	rightEye->Initiallise ( L"basicTexEffect.fx" , model , nullptr );
 
 	worldMatrix = XMMatrixTranslation ( -1.2, 2.9 , -2.3 );
 	rightEye->SetWorldMatrix ( worldMatrix );
@@ -117,7 +117,7 @@ void Snowman::ConfigNose ()
 	// left eye
 	BaseModel *nose = new BasicGeometry ( pd3dDevice , pBackBufferSurfaceDesc , pUserContext );
 
-	nose->Initiallise ( L"cubeEffect.fx" , model , nullptr );
+	nose->Initiallise ( L"basicTexEffect.fx" , model , nullptr );
 
 	XMMATRIX worldMatrix = XMMatrixRotationX ( 70 * DEG_TO_RAD ) * XMMatrixTranslation ( 0 , 2 , -2.3 );
 	nose->SetWorldMatrix ( worldMatrix );
@@ -135,7 +135,7 @@ void Snowman::ConfigHand ()
 	// left eye
 	BaseModel *leftHand = new BasicGeometry ( pd3dDevice , pBackBufferSurfaceDesc , pUserContext );
 
-	leftHand->Initiallise ( L"cubeEffect.fx" , model , nullptr );
+	leftHand->Initiallise ( L"basicTexEffect.fx" , model , nullptr );
 
 	XMMATRIX worldMatrix = XMMatrixRotationZ ( 45 * DEG_TO_RAD ) * XMMatrixTranslation ( -6 , -3 , 0 );
 	leftHand->SetWorldMatrix ( worldMatrix );
@@ -145,7 +145,7 @@ void Snowman::ConfigHand ()
 	// right eye
 	BaseModel *rightHand = new BasicGeometry ( pd3dDevice , pBackBufferSurfaceDesc , pUserContext );
 
-	rightHand->Initiallise ( L"cubeEffect.fx" , model , nullptr );
+	rightHand->Initiallise ( L"basicTexEffect.fx" , model , nullptr );
 
 	worldMatrix = XMMatrixRotationZ ( -45 * DEG_TO_RAD ) * XMMatrixTranslation ( 6 , -3 , 0 );
 	rightHand->SetWorldMatrix ( worldMatrix );
@@ -176,6 +176,22 @@ void Snowman::SetProjMatrix ( XMMATRIX projMatrix )
 	for (auto i = 0; i < models.size (); i++)
 	{
 		models[ i ]->SetProjMatrix ( projMatrix );
+	}
+}
+
+void Snowman::SetCameraPos ( XMVECTOR camPos )
+{
+	for (auto i = 0; i < models.size (); i++)
+	{
+		models[ i ]->SetCameraPos( camPos );
+	}
+}
+
+void Snowman::SetLightDirection ( XMVECTOR lightDir )
+{
+	for (auto i = 0; i < models.size (); i++)
+	{
+		models[ i ]->SetLightDirection ( lightDir );
 	}
 }
 
