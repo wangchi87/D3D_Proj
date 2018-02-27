@@ -91,7 +91,7 @@ void MyScene::UpdateWorldMatrix ()
 	}
 
 	float xPos = 30 * sin ( angle * DEG_TO_RAD );
-	float yPos = 30 * cos ( angle * DEG_TO_RAD );
+	float zPos = 30 * cos ( angle * DEG_TO_RAD );
 
 	cameraPos = camera.GetCameraPos ();
 
@@ -99,19 +99,19 @@ void MyScene::UpdateWorldMatrix ()
 	XMMATRIX worldMatrix;
 
 	// set rorating box position (a rotation matrix around Y axis)
-	worldMatrix = ( XMMatrixRotationY ( totalTime ) ) * XMMatrixTranslation ( xPos , -10 , yPos );
+	worldMatrix = ( XMMatrixRotationY ( totalTime ) ) * XMMatrixTranslation ( xPos , -10 , zPos );
 
 	BaseModel * box = models[ 0 ];
 	box->SetWorldMatrix ( worldMatrix );
 
-	boxPos = XMVectorSet ( xPos , 0.0f , yPos , 0.0f );
+	boxPos = XMVectorSet ( xPos , 0.0f , zPos , 0.0f );
 	
 	// if F is pressed and the camera is very close to the box, then get camera on board
 	if(isCameraOnBoard)
 		camera.Position = boxPos;
 
 	// set snow man position
-	worldMatrix = ( XMMatrixRotationY ( totalTime ) ) * XMMatrixTranslation ( xPos , 3 , yPos );
+	worldMatrix = ( XMMatrixRotationY ( totalTime ) ) * XMMatrixTranslation ( xPos , 3 , zPos );
 	snowmanOnBox.ApplyExtraWorldMatrix ( worldMatrix );
 
 	worldMatrix = XMMatrixIdentity();
@@ -123,9 +123,7 @@ void MyScene::UpdateWorldMatrix ()
 	skySphere->SetWorldMatrix ( XMMatrixTranslationFromVector ( cameraPos ) );
 
 
-
 	// UPDATE cameraPos for every object
-
 	for (auto i = 0; i < models.size (); i++)
 	{
 		models[ i ]->SetCameraPos ( cameraPos );
@@ -155,24 +153,42 @@ void MyScene::UpdateViewProjMatrix ()
 
 	snowmanOnBox.SetViewMatrix ( viewMatrix );
 	snowmanOnBox.SetProjMatrix ( projMatrix );
+
+	SetPointLightSourcePos ();
 }
 
-void MyScene::SetLightDirection ()
+void MyScene::SetDirectionalLightDirection ()
 {
 	XMVECTOR lightDirection = XMVectorSet ( 3.0f , -4.0 , 0 , 0 );
 
 	for (auto i = 0; i < models.size (); i++)
 	{
-		models[ i ]->SetLightDirection ( lightDirection );
+		models[ i ]->SetDirectionalLightDirection ( lightDirection );
 	}
 
-	snowman.SetLightDirection ( lightDirection );
-	snowmanOnBox.SetLightDirection ( lightDirection );
+	snowman.SetDirectionalLightDirection ( lightDirection );
+	snowmanOnBox.SetDirectionalLightDirection ( lightDirection );
+}
+
+void MyScene::SetPointLightSourcePos ()
+{
+	XMVECTOR pointLightPos = boxPos + XMVectorSet(20,10,0,0);
+
+	XMMATRIX pointLightPosWorldMat = XMMatrixTranslationFromVector ( pointLightPos );
+
+	models[ 8 ]->SetWorldMatrix ( pointLightPosWorldMat );
+
+	for (auto i = 0; i < models.size (); i++)
+	{
+		models[ i ]->SetPointLightSourcePos ( pointLightPos );
+	}
+
+	snowman.SetPointLightSourcePos ( pointLightPos );
+	snowmanOnBox.SetPointLightSourcePos ( pointLightPos );
 }
 
 void MyScene::AddModel ()
 {
-	
 	MeshData model;
 	GeometryGenerator geoGen;
 	geoGen.CreateBox ( 8.0f , 8.0f , 8.0f , model );
@@ -202,26 +218,52 @@ void MyScene::AddModel ()
 	mySky->SetWorldMatrix ( XMMatrixTranslation ( 0 , 0 , 0 ) );
 	models.push_back ( mySky );
 
+	// models[3] is the SUN
 	geoGen.CreateGeosphere ( 5 , 3 , model );
+	BaseModel *sun = new BasicGeometry ( pd3dDevice , pBackBufferSurfaceDesc , pUserContext );
 
-	BaseModel *mySphere1 = new BasicGeometry ( pd3dDevice , pBackBufferSurfaceDesc , pUserContext );
+	sun->Initiallise ( L"basicTexEffect.fx" , model , L"sun.dds" );
+	sun->SetWorldMatrix ( XMMatrixTranslation ( -90 , 120 , 0 ) );
+	models.push_back ( sun );
 
-	mySphere1->Initiallise ( L"basicTexEffect.fx" , model , L"sun.dds" );
-	mySphere1->SetWorldMatrix ( XMMatrixTranslation ( -90 , 120 , 0 ) );
-	models.push_back ( mySphere1 );
+	// models[4] [5] [6] [7] is a shinning SPHERE
+	BaseModel *shinningSphere = new BasicGeometry ( pd3dDevice , pBackBufferSurfaceDesc , pUserContext );
 
-	
-	BaseModel *mySphere2 = new BasicGeometry ( pd3dDevice , pBackBufferSurfaceDesc , pUserContext );
+	shinningSphere->Initiallise ( L"lightingTexEffect.fx" , model , L"aluminum.dds" );
+	shinningSphere->SetWorldMatrix ( XMMatrixTranslation ( 30 , 30 , 0 ) );
+	models.push_back ( shinningSphere );
 
-	mySphere2->Initiallise ( L"lightingTexEffect.fx" , model , L"aluminum.dds" );
-	mySphere2->SetWorldMatrix ( XMMatrixTranslation ( 30 , 20 , 0 ) );
-	models.push_back ( mySphere2 );
+	BaseModel *shinningSphere2 = new BasicGeometry ( pd3dDevice , pBackBufferSurfaceDesc , pUserContext );
 
+	shinningSphere2->Initiallise ( L"lightingTexEffect.fx" , model , L"aluminum.dds" );
+	shinningSphere2->SetWorldMatrix ( XMMatrixTranslation ( -30 , 30 , 0 ) );
+	models.push_back ( shinningSphere2 );
 
+	BaseModel *shinningSphere3 = new BasicGeometry ( pd3dDevice , pBackBufferSurfaceDesc , pUserContext );
+
+	shinningSphere3->Initiallise ( L"lightingTexEffect.fx" , model , L"aluminum.dds" );
+	shinningSphere3->SetWorldMatrix ( XMMatrixTranslation ( 30 , 30 , 60 ) );
+	models.push_back ( shinningSphere3 );
+
+	BaseModel *shinningSphere4 = new BasicGeometry ( pd3dDevice , pBackBufferSurfaceDesc , pUserContext );
+
+	shinningSphere4->Initiallise ( L"lightingTexEffect.fx" , model , L"aluminum.dds" );
+	shinningSphere4->SetWorldMatrix ( XMMatrixTranslation ( -30 , 30 , 60 ) );
+	models.push_back ( shinningSphere4 );
+
+	// models[8] is a point light souce SPHERE
+	geoGen.CreateGeosphere ( 2 , 3 , model );
+	BaseModel *pointLightSrc = new BasicGeometry ( pd3dDevice , pBackBufferSurfaceDesc , pUserContext );
+
+	pointLightSrc->Initiallise ( L"pointLightEffect.fx" , model , nullptr );
+	pointLightSrc->SetWorldMatrix ( XMMatrixTranslation ( -30 , 30 , 0 ) );
+	models.push_back ( pointLightSrc );
+
+	// snowman 
 	snowman.Initialise( pd3dDevice , pBackBufferSurfaceDesc , pUserContext );
 	snowmanOnBox.Initialise ( pd3dDevice , pBackBufferSurfaceDesc , pUserContext );
 
-	SetLightDirection ();
+	SetDirectionalLightDirection ();
 }
 
 void MyScene::RenderScene ( double fTime , float fElapsedTime , void* pUserContext )
@@ -254,7 +296,6 @@ void MyScene::RenderScene ( double fTime , float fElapsedTime , void* pUserConte
 
 void MyScene::MouseLeave ()
 {
-
 	firstMouseEntry = true;
 }
 

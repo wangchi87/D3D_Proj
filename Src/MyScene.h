@@ -58,7 +58,9 @@ public:
 
 	void UpdateViewProjMatrix ();
 
-	void SetLightDirection ();
+	void SetDirectionalLightDirection ();
+
+	void SetPointLightSourcePos ();
 
 	void AddModel ();
 

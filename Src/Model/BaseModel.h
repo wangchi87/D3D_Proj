@@ -85,7 +85,9 @@ public:
 
 	virtual void SetCameraPos ( XMVECTOR camPos ) {};
 
-	virtual void SetLightDirection ( XMVECTOR lightDir ) {};
+	virtual void SetDirectionalLightDirection ( XMVECTOR lightDir ) {};
+
+	virtual void SetPointLightSourcePos ( XMVECTOR lightPos ) {};
 
 	virtual void SetMaterialRoughness ( float rough ) {};
 

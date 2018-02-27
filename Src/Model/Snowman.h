@@ -46,7 +46,9 @@ public:
 
 	void SetCameraPos ( XMVECTOR camPos );
 
-	void SetLightDirection ( XMVECTOR lightDir );
+	void SetDirectionalLightDirection ( XMVECTOR lightDir );
+
+	void SetPointLightSourcePos ( XMVECTOR lightPos );
 
 	void RenderSnowman (
 		double fTime ,

@@ -12,7 +12,8 @@ class BasicGeometry: public BaseModel
 	ID3DX11EffectShaderResourceVariable*	g_ptxDiffuseVariable;
 
 	ID3DX11EffectVectorVariable*			cameraPosVariable;
-	ID3DX11EffectVectorVariable*			lightDirectionVariable;
+	ID3DX11EffectVectorVariable*			directionalLightSouceDirectionVariable;
+	ID3DX11EffectVectorVariable*			pointLightSourcePosVariable;
 	ID3DX11EffectScalarVariable*			materialRoughnessVariable;
 
 public:
@@ -52,7 +53,9 @@ public:
 	}
 	void SetCameraPos ( XMVECTOR camPos ) override;
 
-	void SetLightDirection ( XMVECTOR lightDir ) override;
+	void SetDirectionalLightDirection ( XMVECTOR lightDir ) override;
+
+	void SetPointLightSourcePos ( XMVECTOR lightPos ) override;
 
 	void SetMaterialRoughness ( float rough ) override; 
 

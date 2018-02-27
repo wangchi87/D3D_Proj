@@ -19,9 +19,12 @@ cbuffer WorldViewProjMatrix
 	matrix Projection;
 };
 
+
 cbuffer Lighting
-{
-	vector LightDir;
+{	
+	// directional light source
+	vector DirectionalLightSourceDirection;
+	vector PointLightSourcePosition;
 	vector CameraPos;
 	float  MaterialRoughness;
 };
@@ -41,31 +44,9 @@ struct PS_INPUT
 	float3 Normal	: 	NORMAL0;
 	float3 TangentU	:	TANGENTU0;
 	float2 Tex		:	TEXCOORD0;
-	float3 viewDirection : VIEWDIR0;
+	float4 ObjWorldPos:  PIXELWORLDPOS0;
 };
 
-
-PS_INPUT VS ( VS_INPUT input )
-{
-	PS_INPUT output = ( PS_INPUT ) 0;
-	float4 worldPosition;
-	
-	worldPosition = mul ( input.Pos  , World );
-	
-	output.Pos = worldPosition;
-	output.Pos = mul ( output.Pos , View );
-	output.Pos = mul ( output.Pos , Projection );
-	
-	output.Normal = mul(input.Normal, World);
-	output.TangentU = input.TangentU;
-	output.Tex = input.Tex;
-	
-	// from point to camera
-	output.viewDirection = CameraPos.xyz - worldPosition.xyz;
-	output.viewDirection = normalize(output.viewDirection);
-	
-	return output;
-}
 
 float Blinn_Phong_BRDF(float3 lightDir, float3 normal, float3 viewDir, float roughness)
 {
@@ -128,9 +109,30 @@ float Cook_Torrance_BRDF(float3 lightDir, float3 normal, float3 viewDir, float r
 	return BRDF + (1-F)/3.14;
 }
 
+PS_INPUT VS ( VS_INPUT input )
+{
+	PS_INPUT output = ( PS_INPUT ) 0;
+	
+	output.ObjWorldPos = mul ( input.Pos  , World );
+	
+	output.Pos = output.ObjWorldPos;
+	output.Pos = mul ( output.Pos , View );
+	output.Pos = mul ( output.Pos , Projection );
+	
+	output.Normal = mul(input.Normal, World);
+	output.TangentU = input.TangentU;
+	output.Tex = input.Tex;
+	
+	return output;
+}
 
 float4 PS ( PS_INPUT input ) : SV_Target
 {
+	// get view direction, from object point to camera
+	float3 viewDirection = CameraPos.xyz - input.ObjWorldPos.xyz;
+	viewDirection = normalize(viewDirection);
+	
+	// define lighting parameters
 	float Kd = 0.3;
 	
 	float3 globalAmbient = Kd * float3(0.50f,0.50f,0.50f);
@@ -138,15 +140,28 @@ float4 PS ( PS_INPUT input ) : SV_Target
 	float3 lightColor = float3(1.0f,1.0f,0.2f);
 	
 	float BRDF = 0;
+	float3 attenuatedLight = float3(0.0f,0.0f,0.0f);
 	
-	//BRDF = Blinn_Phong_BRDF( LightDir, input.Normal, input.viewDirection, 2.0f );
+	// ------ contribution of directional light source
+	//BRDF = Blinn_Phong_BRDF( DirectionalLightSourceDirection, input.Normal, viewDirection, 2.0f );
 	
-	BRDF = Cook_Torrance_BRDF( LightDir, input.Normal, input.viewDirection, MaterialRoughness);
+	BRDF = Cook_Torrance_BRDF( DirectionalLightSourceDirection, input.Normal, viewDirection, MaterialRoughness);
 	
-	float3 attenuatedLight = lightColor * BRDF + globalAmbient;
+	attenuatedLight = lightColor * BRDF + globalAmbient;
+	
+	// ------ contribution of point light source
+
+	float3 pointLightDirection = input.ObjWorldPos.xyz - PointLightSourcePosition.xyz;
+	//pointLightDirection = normalize(pointLightDirection);
+	
+	BRDF = Cook_Torrance_BRDF( pointLightDirection, input.Normal, viewDirection, MaterialRoughness);
+	
+	attenuatedLight += lightColor * BRDF;
 	
 	return saturate( g_txDiffuse.Sample ( samLinear, input.Tex ) * float4(attenuatedLight, 1.0f) );
 }
+
+
 
 technique11 Render
 {

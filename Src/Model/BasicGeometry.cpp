@@ -53,7 +53,8 @@ HRESULT BasicGeometry::InitEffects ()
 	projVariable = g_pEffect->GetVariableByName ( "Projection" )->AsMatrix ();
 
 	cameraPosVariable = g_pEffect->GetVariableByName ( "CameraPos" )->AsVector();
-	lightDirectionVariable = g_pEffect->GetVariableByName ( "LightDir" )->AsVector ();
+	directionalLightSouceDirectionVariable = g_pEffect->GetVariableByName ( "DirectionalLightSourceDirection" )->AsVector ();
+	pointLightSourcePosVariable = g_pEffect->GetVariableByName ( "PointLightSourcePosition" )->AsVector ();
 
 	materialRoughnessVariable = g_pEffect->GetVariableByName ( "MaterialRoughness" )->AsScalar ();
 	materialRoughnessVariable->SetFloat ( 0.3 );
@@ -90,9 +91,14 @@ void BasicGeometry::SetCameraPos ( XMVECTOR camPos )
 	cameraPosVariable->SetFloatVector ( ( float* ) &camPos );
 }
 
-void BasicGeometry::SetLightDirection ( XMVECTOR lightDir )
+void BasicGeometry::SetDirectionalLightDirection ( XMVECTOR lightDir )
 {
-	lightDirectionVariable->SetFloatVector ( ( float* ) &lightDir );
+	directionalLightSouceDirectionVariable->SetFloatVector ( ( float* ) &lightDir );
+}
+
+void BasicGeometry::SetPointLightSourcePos ( XMVECTOR lightPos )
+{
+	pointLightSourcePosVariable->SetFloatVector ( ( float* ) &lightPos );
 }
 
 void BasicGeometry::SetMaterialRoughness ( float rough )

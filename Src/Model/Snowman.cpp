@@ -187,11 +187,19 @@ void Snowman::SetCameraPos ( XMVECTOR camPos )
 	}
 }
 
-void Snowman::SetLightDirection ( XMVECTOR lightDir )
+void Snowman::SetDirectionalLightDirection ( XMVECTOR lightDir )
 {
 	for (auto i = 0; i < models.size (); i++)
 	{
-		models[ i ]->SetLightDirection ( lightDir );
+		models[ i ]->SetDirectionalLightDirection ( lightDir );
+	}
+}
+
+void Snowman::SetPointLightSourcePos ( XMVECTOR lightPos )
+{
+	for (auto i = 0; i < models.size (); i++)
+	{
+		models[ i ]->SetPointLightSourcePos ( lightPos );
 	}
 }
 
