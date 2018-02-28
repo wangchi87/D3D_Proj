@@ -59,7 +59,7 @@ void MyScene::InitScene (
 
 void MyScene::InitCamera ()
 {
-	XMVECTOR Eye = XMVectorSet ( 0.0f , 0.0f , -80.0f , 0.0f );
+	XMVECTOR Eye = XMVectorSet ( -30.0f , 20.0f , -120.0f , 0.0f );
 	XMVECTOR At = XMVectorSet ( -0.0f , -0.0f , 0.0f , 0.0f );
 	XMVECTOR Up = XMVectorSet ( 0.0f , 1.0f , 0.0f , 0.0f );
 
@@ -258,6 +258,15 @@ void MyScene::AddModel ()
 	pointLightSrc->Initiallise ( L"pointLightEffect.fx" , model , nullptr );
 	pointLightSrc->SetWorldMatrix ( XMMatrixTranslation ( -30 , 30 , 0 ) );
 	models.push_back ( pointLightSrc );
+
+	// models[9] is external mesh - bunny
+	geoGen.CreateMeshFromPLY ( L"bun_res2_norm.ply" , model );
+	ScaleMesh ( model , 100 );
+	BaseModel *bunny = new BasicGeometry ( pd3dDevice , pBackBufferSurfaceDesc , pUserContext );
+
+	bunny->Initiallise ( L"meshEffect.fx" , model , nullptr );
+	bunny->SetWorldMatrix ( XMMatrixRotationY( 80 * DEG_TO_RAD) *XMMatrixTranslation ( -35 , -17 , -40 ) );
+	models.push_back ( bunny );
 
 	// snowman 
 	snowman.Initialise( pd3dDevice , pBackBufferSurfaceDesc , pUserContext );

@@ -52,7 +52,7 @@ void Snowman::ConfigHead ()
 
 	BaseModel *Head = new BasicGeometry ( pd3dDevice , pBackBufferSurfaceDesc , pUserContext );
 
-	Head->Initiallise ( L"basicTexEffect.fx" , model , L"desert_sky.dds" );
+	Head->Initiallise ( L"basicTexEffect.fx" , model , L"snow.dds" );
 
 	XMMATRIX worldMatrix = XMMatrixTranslation ( 0 , 2 , 0 );
 	Head->SetWorldMatrix ( worldMatrix );
@@ -71,7 +71,7 @@ void Snowman::ConfigBody ()
 
 	BaseModel *Body = new BasicGeometry ( pd3dDevice , pBackBufferSurfaceDesc , pUserContext );
 
-	Body->Initiallise ( L"basicTexEffect.fx" , model , L"desert_sky.dds" );
+	Body->Initiallise ( L"basicTexEffect.fx" , model , L"snow.dds" );
 
 	XMMATRIX worldMatrix = XMMatrixTranslation ( 0 , -4 , 0 );
 	Body->SetWorldMatrix ( worldMatrix );

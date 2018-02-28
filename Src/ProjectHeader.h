@@ -9,6 +9,8 @@
 using namespace DirectX;
 
 #include <vector>
+#include <fstream>
+#include <sstream>
 using namespace std;
 
 #include "Effects11\d3dx11effect.h"
@@ -36,6 +38,8 @@ struct Vertex
 	XMFLOAT3 TangentU;
 	XMFLOAT2 TexC;
 };
+
+
 
 #include "Model\GeometryGenerator.h"
 

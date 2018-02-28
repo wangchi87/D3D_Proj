@@ -13,16 +13,32 @@
 //***************************************************************************************
 
 
+
+// ****************** modified by Chi Wang for Netease -1 homework *******************
+
+
 #ifndef GEOMETRYGENERATOR_H
 #define GEOMETRYGENERATOR_H
 
 #include "ProjectHeader.h"
+#include "tinyply\tinyply.h"
+using namespace tinyply;
 
 struct MeshData
 {
 	std::vector<Vertex> Vertices;
 	std::vector<WORD> Indices;
 };
+
+inline void ScaleMesh ( MeshData &md, float scaleFactor )
+{
+	for (UINT i = 0; i < md.Vertices.size (); i++)
+	{
+		md.Vertices[ i ].Position.x *= scaleFactor;
+		md.Vertices[ i ].Position.y *= scaleFactor;
+		md.Vertices[ i ].Position.z *= scaleFactor;
+	}
+}
 
 class GeometryGenerator
 {
@@ -63,6 +79,9 @@ public:
 	/// postprocessing effects.
 	///</summary>
 	void CreateFullscreenQuad(MeshData& meshData);
+
+	// load a mesh from external PLY file
+	void CreateMeshFromPLY ( LPCWSTR fileName , MeshData& meshData );
 
 	~GeometryGenerator ()
 	{

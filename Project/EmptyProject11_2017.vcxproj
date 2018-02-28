@@ -383,6 +383,7 @@
     <ClCompile Include="..\Src\Model\GeometryGenerator.cpp" />
     <ClCompile Include="..\Src\Model\ModelLoader.cpp" />
     <ClCompile Include="..\Src\Model\Snowman.cpp" />
+    <ClCompile Include="..\Src\Model\tinyply\tinyply.cpp" />
     <ClCompile Include="..\Src\MyScene.cpp" />
     <ClCompile Include="..\Src\Texture\DDSTextureLoader.cpp" />
   </ItemGroup>
@@ -394,6 +395,7 @@
     <ClInclude Include="..\Src\Model\GeometryGenerator.h" />
     <ClInclude Include="..\Src\Model\ModelLoader.h" />
     <ClInclude Include="..\Src\Model\Snowman.h" />
+    <ClInclude Include="..\Src\Model\tinyply\tinyply.h" />
     <ClInclude Include="..\Src\MyScene.h" />
     <ClInclude Include="..\Src\ProjectHeader.h" />
     <ClInclude Include="..\Src\resource.h" />

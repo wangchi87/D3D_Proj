@@ -54,7 +54,6 @@ public:
 		AddResources ();
 	}
 
-
 	virtual void InitDeviceHandle ( 
 		ID3D11Device* pd3dDevice ,
 		const DXGI_SURFACE_DESC* pBackBufferSurfaceDesc ,

@@ -79,6 +79,7 @@ float Lambertian_BRDF ( float3 lightDir , float3 normal , float reflectance )
 
 float4 PS ( PS_INPUT input ) : SV_Target
 {
+
 	// define lighting parameters
 	float reflectance = 0.9;
 	float BRDF = 0;
@@ -97,7 +98,12 @@ float4 PS ( PS_INPUT input ) : SV_Target
 	attenuatedLight += lightColor * BRDF;
 
 	attenuatedLight += globalAmbient;
-	return saturate ( g_txDiffuse.Sample ( samLinear , input.Tex ) * float4( attenuatedLight , 1.0f ) );
+	
+	return float4( attenuatedLight , 1.0f );
+	//if(g_txDiffuse)
+	//	return saturate ( g_txDiffuse.Sample ( samLinear , input.Tex ) * float4( attenuatedLight , 1.0f ) );
+	//else
+		
 }
 
 technique11 Render
@@ -106,7 +112,7 @@ technique11 Render
 	{
 		SetVertexShader( CompileShader( vs_4_0, VS() ) );  
         SetPixelShader( CompileShader( ps_4_0, PS() ) );      
-		//SetRasterizerState( MyCull );
+		SetRasterizerState( MyCull );
 	}
 }
 

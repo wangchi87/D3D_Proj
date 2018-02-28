@@ -133,7 +133,7 @@ float4 PS ( PS_INPUT input ) : SV_Target
 	viewDirection = normalize(viewDirection);
 	
 	// define lighting parameters
-	float Kd = 0.3;
+	float Kd = 0.5;
 	
 	float3 globalAmbient = Kd * float3(0.50f,0.50f,0.50f);
 	
