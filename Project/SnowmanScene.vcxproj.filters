@@ -94,6 +94,12 @@
     <None Include="lightingTexEffect.fx">
       <Filter>Shaders</Filter>
     </None>
+    <None Include="pointLightEffect.fx">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="meshEffect.fx">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\Src\SnowmannScene.rc">

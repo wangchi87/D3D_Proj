@@ -195,7 +195,7 @@ void MyScene::AddModel ()
 	// models[0] is the BOX
 	BaseModel *myCube = new BasicGeometry ( pd3dDevice , pBackBufferSurfaceDesc , pUserContext );
 
-	myCube->Initiallise ( L"lightingTexEffect.fx" , model , L"container.dds" );
+	myCube->Initiallise ( L"Resources\\lightingTexEffect.fx" , model , L"Resources\\container.dds" );
 	myCube->SetWorldMatrix ( XMMatrixIdentity() );
 	models.push_back ( myCube );
 
@@ -204,7 +204,7 @@ void MyScene::AddModel ()
 
 	BaseModel *myGrid = new BasicGeometry ( pd3dDevice , pBackBufferSurfaceDesc , pUserContext );
 
-	myGrid->Initiallise ( L"grassEffect.fx" , model , L"ground.dds" );
+	myGrid->Initiallise ( L"Resources\\groundEffect.fx" , model , L"Resources\\ground.dds" );
 	myGrid->SetWorldMatrix ( XMMatrixTranslation ( 0 , -15 , 0 ) );
 	models.push_back ( myGrid );
 
@@ -213,7 +213,7 @@ void MyScene::AddModel ()
 
 	BaseModel *mySky = new BasicGeometry ( pd3dDevice , pBackBufferSurfaceDesc , pUserContext );
 
-	mySky->Initiallise ( L"skyEffect.fx" , model , nullptr );
+	mySky->Initiallise ( L"Resources\\skyEffect.fx" , model , nullptr );
 	mySky->SetWorldMatrix ( XMMatrixTranslation ( 0 , 0 , 0 ) );
 	models.push_back ( mySky );
 
@@ -221,32 +221,32 @@ void MyScene::AddModel ()
 	geoGen.CreateGeosphere ( 5 , 3 , model );
 	BaseModel *sun = new BasicGeometry ( pd3dDevice , pBackBufferSurfaceDesc , pUserContext );
 
-	sun->Initiallise ( L"basicTexEffect.fx" , model , L"sun.dds" );
+	sun->Initiallise ( L"Resources\\basicTexEffect.fx" , model , L"Resources\\sun.dds" );
 	sun->SetWorldMatrix ( XMMatrixTranslation ( -90 , 120 , 0 ) );
 	models.push_back ( sun );
 
 	// models[4] [5] [6] [7] is a shinning SPHERE
 	BaseModel *shinningSphere = new BasicGeometry ( pd3dDevice , pBackBufferSurfaceDesc , pUserContext );
 
-	shinningSphere->Initiallise ( L"lightingTexEffect.fx" , model , L"aluminum.dds" );
+	shinningSphere->Initiallise ( L"Resources\\lightingTexEffect.fx" , model , L"Resources\\aluminum.dds" );
 	shinningSphere->SetWorldMatrix ( XMMatrixTranslation ( 30 , 30 , 0 ) );
 	models.push_back ( shinningSphere );
 
 	BaseModel *shinningSphere2 = new BasicGeometry ( pd3dDevice , pBackBufferSurfaceDesc , pUserContext );
 
-	shinningSphere2->Initiallise ( L"lightingTexEffect.fx" , model , L"aluminum.dds" );
+	shinningSphere2->Initiallise ( L"Resources\\lightingTexEffect.fx" , model , L"Resources\\aluminum.dds" );
 	shinningSphere2->SetWorldMatrix ( XMMatrixTranslation ( -30 , 30 , 0 ) );
 	models.push_back ( shinningSphere2 );
 
 	BaseModel *shinningSphere3 = new BasicGeometry ( pd3dDevice , pBackBufferSurfaceDesc , pUserContext );
 
-	shinningSphere3->Initiallise ( L"lightingTexEffect.fx" , model , L"aluminum.dds" );
+	shinningSphere3->Initiallise ( L"Resources\\lightingTexEffect.fx" , model , L"Resources\\aluminum.dds" );
 	shinningSphere3->SetWorldMatrix ( XMMatrixTranslation ( 30 , 30 , 60 ) );
 	models.push_back ( shinningSphere3 );
 
 	BaseModel *shinningSphere4 = new BasicGeometry ( pd3dDevice , pBackBufferSurfaceDesc , pUserContext );
 
-	shinningSphere4->Initiallise ( L"lightingTexEffect.fx" , model , L"aluminum.dds" );
+	shinningSphere4->Initiallise ( L"Resources\\lightingTexEffect.fx" , model , L"Resources\\aluminum.dds" );
 	shinningSphere4->SetWorldMatrix ( XMMatrixTranslation ( -30 , 30 , 60 ) );
 	models.push_back ( shinningSphere4 );
 
@@ -254,16 +254,16 @@ void MyScene::AddModel ()
 	geoGen.CreateGeosphere ( 2 , 3 , model );
 	BaseModel *pointLightSrc = new BasicGeometry ( pd3dDevice , pBackBufferSurfaceDesc , pUserContext );
 
-	pointLightSrc->Initiallise ( L"pointLightEffect.fx" , model , nullptr );
+	pointLightSrc->Initiallise ( L"Resources\\pointLightEffect.fx" , model , nullptr );
 	pointLightSrc->SetWorldMatrix ( XMMatrixTranslation ( -30 , 30 , 0 ) );
 	models.push_back ( pointLightSrc );
 
 	// models[9] is external mesh - bunny
-	geoGen.CreateMeshFromPLY ( L"bun_res2_norm.ply" , model );
+	geoGen.CreateMeshFromPLY ( L"Resources\\bun_res2_norm.ply" , model );
 	ScaleMesh ( model , 100 );
 	BaseModel *bunny = new BasicGeometry ( pd3dDevice , pBackBufferSurfaceDesc , pUserContext );
 
-	bunny->Initiallise ( L"meshEffect.fx" , model , nullptr );
+	bunny->Initiallise ( L"Resources\\meshEffect.fx" , model , nullptr );
 	bunny->SetWorldMatrix ( XMMatrixRotationY( 80 * DEG_TO_RAD) *XMMatrixTranslation ( -35 , -17 , -40 ) );
 	models.push_back ( bunny );
 

@@ -18,7 +18,6 @@ using namespace std;
 #pragma warning( disable : 4100 )
 
 
-
 // global variables
 static BOOL			bTrackLeave = FALSE;
 MyScene				mScene;
@@ -29,7 +28,7 @@ void RequestMouseLeaveMsg ()
 {
 	if (!bTrackLeave)
 	{
-		// 鼠标第一次移入窗口时，请求一个WM_MOUSELEAVE 消息
+		// request a mouse leave msg
 		TRACKMOUSEEVENT tme;
 		tme.cbSize = sizeof ( tme );
 		tme.hwndTrack = DXUTGetHWND ();
@@ -45,7 +44,7 @@ void CallConcoleOutput ( void )
 	AllocConsole ();
 	freopen ( "CONOUT$" , "w+t" , stdout );
 	// test code
-	printf ( "InitConsoleWindow OK!\n\n" );
+	printf ( "Snow man scene\n\n" );
 
 	printf ( "USAGE:\n\n1. use key W A S D and mouse to move around \n" );
 	printf (		   "2. press key F to get on aboard on the moving box, and watch the scene in the view of moving snowman." );
@@ -221,7 +220,7 @@ bool CALLBACK OnDeviceRemoved( void* pUserContext )
 //--------------------------------------------------------------------------------------
 int WINAPI wWinMain( _In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPWSTR lpCmdLine, _In_ int nCmdShow )
 {
-
+	// create an extra cmd line window
 	CallConcoleOutput ();
 	
     // Enable run-time memory check for debug builds.
@@ -250,14 +249,15 @@ int WINAPI wWinMain( _In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 	
 	
     // Perform any application-level initialization here
-
     DXUTInit( true, true, nullptr ); // Parse the command line, show msgboxes on error, no extra command line params
     DXUTSetCursorSettings( true, true ); // Show the cursor and clip it when in full screen
-    DXUTCreateWindow( L"EmptyProject11" );
+    DXUTCreateWindow( L"SnowmanScene" );
 
     // Only require 10-level hardware or later
-    DXUTCreateDevice( D3D_FEATURE_LEVEL_10_0, true, 1200, 900 );
-    DXUTMainLoop(); // Enter into the DXUT ren  der loop
+    DXUTCreateDevice( D3D_FEATURE_LEVEL_10_0, true, 1000, 800 );
+
+	// Enter into the DXUT render loop
+    DXUTMainLoop(); 
 
     // Perform any application-level cleanup here
 
