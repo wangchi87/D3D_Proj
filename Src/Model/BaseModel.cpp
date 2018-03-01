@@ -8,9 +8,9 @@ BaseModel::BaseModel ()
 	vertexIndicesNum = 0; 
 }
 
-BaseModel::BaseModel ( ID3D11Device * d3dDevice , const DXGI_SURFACE_DESC * BackBufferSurfaceDesc , void * UserContext )
+BaseModel::BaseModel ( ID3D11Device * d3dDevice , const DXGI_SURFACE_DESC * backBufferSurfaceDesc , void * userContext )
 {
-	InitDeviceHandle ( d3dDevice , BackBufferSurfaceDesc , UserContext );
+	InitDeviceHandle ( d3dDevice , backBufferSurfaceDesc , userContext );
 }
 
 void BaseModel::SetEffectFileName ( LPCWSTR fileName )
@@ -18,14 +18,14 @@ void BaseModel::SetEffectFileName ( LPCWSTR fileName )
 	effectFileName = fileName;
 }
 
-void BaseModel::InitDeviceHandle ( ID3D11Device * d3dDevice , const DXGI_SURFACE_DESC * BackBufferSurfaceDesc , void * UserContext )
+void BaseModel::InitDeviceHandle ( ID3D11Device * d3dDevice , const DXGI_SURFACE_DESC * backBufferSurfaceDesc , void * userContext )
 {
 	vertexIndicesNum = 0;
 	pd3dImmediateContext = DXUTGetD3D11DeviceContext ();
 	dwShaderFlags = D3DCOMPILE_ENABLE_STRICTNESS;
 	this->pd3dDevice = d3dDevice;
-	this->pBackBufferSurfaceDesc = BackBufferSurfaceDesc;
-	this->pUserContext = UserContext;
+	this->pBackBufferSurfaceDesc = backBufferSurfaceDesc;
+	this->pUserContext = userContext;
 
 #ifdef DEBUG
 	dwShaderFlags |= D3DCOMPILE_DEBUG;
@@ -34,7 +34,7 @@ void BaseModel::InitDeviceHandle ( ID3D11Device * d3dDevice , const DXGI_SURFACE
 
 }
 
-void BaseModel::RenderScene ( double fTime , float fElapsedTime , void * pUserContext ) 
+void BaseModel::RenderScene ( double fTime , float fElapsedTime , void * userContext )
 {	
 	// write vertices and indices data to GPU
 	UINT stride = sizeof ( Vertex );
@@ -107,11 +107,6 @@ inline void BaseModel::Release ()
 	delete [] vertices;
 	delete [] indices;
 
-	/*
-	SAFE_RELEASE ( constBufWorld );
-	SAFE_RELEASE ( worldVariable );
-	SAFE_RELEASE ( viewVariable );
-	SAFE_RELEASE ( projVariable );*/
 }
 
 void BaseModel::InitTexture ( const wchar_t* fileName )
@@ -138,9 +133,7 @@ HRESULT BaseModel::InitVertexData ()
 	D3D11_BUFFER_DESC bd;
 	ZeroMemory ( &bd , sizeof ( bd ) );
 	bd.Usage = D3D11_USAGE_DEFAULT;
-
 	bd.ByteWidth = sizeof ( Vertex ) * vertexNum;
-
 	bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 	bd.CPUAccessFlags = 0;
 

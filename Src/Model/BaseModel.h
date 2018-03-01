@@ -25,7 +25,7 @@ protected:
 	WORD*						indices;
 	UINT						vertexIndicesNum;
 
-	// texture
+	// texture resource
 	ID3D11ShaderResourceView*	g_pTextureRV;
 
 	// effects configurations
@@ -40,8 +40,8 @@ public:
 	BaseModel ();
 	BaseModel ( 
 		ID3D11Device* pd3dDevice ,
-		const DXGI_SURFACE_DESC* pBackBufferSurfaceDesc ,
-		void* pUserContext
+		const DXGI_SURFACE_DESC* backBufferSurfaceDesc ,
+		void* userContext
 		);
 
 	void SetEffectFileName ( LPCWSTR fileName );
@@ -56,8 +56,8 @@ public:
 
 	virtual void InitDeviceHandle ( 
 		ID3D11Device* pd3dDevice ,
-		const DXGI_SURFACE_DESC* pBackBufferSurfaceDesc ,
-		void* pUserContext );
+		const DXGI_SURFACE_DESC* backBufferSurfaceDesc ,
+		void* userContext );
 
 	virtual void RenderScene ( 
 		double fTime , 

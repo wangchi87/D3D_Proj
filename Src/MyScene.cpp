@@ -17,7 +17,7 @@ MyScene::MyScene ()
 MyScene::~MyScene ()
 {
 	// release object
-	for (auto i = 0; i < models.size (); i++)
+	for (size_t i = 0; i < models.size (); i++)
 	{
 		models[ i ]->Release();
 	}
@@ -95,10 +95,10 @@ void MyScene::UpdateWorldMatrix ()
 
 	cameraPos = camera.GetCameraPos ();
 
-	// NOTE : you really can NOT add Transpose to the matrix when using Effect shader!!  ( XMMatrixRotationY ( t ) );//
 	XMMATRIX worldMatrix;
 
 	// set rorating box position (a rotation matrix around Y axis)
+	// NOTE : you really can NOT add Transpose operation to the matrix when using Effect shader!!
 	worldMatrix = ( XMMatrixRotationY ( totalTime ) ) * XMMatrixTranslation ( xPos , -10 , zPos );
 
 	BaseModel * box = models[ 0 ];
@@ -118,19 +118,19 @@ void MyScene::UpdateWorldMatrix ()
 	snowman.ApplyExtraWorldMatrix ( worldMatrix );
 
 	// sky sphere translates with camera
-
 	BaseModel* skySphere = models[ 2 ];
 	skySphere->SetWorldMatrix ( XMMatrixTranslationFromVector ( cameraPos ) );
 
-
 	// UPDATE cameraPos for every object
-	for (auto i = 0; i < models.size (); i++)
+	for (size_t i = 0; i < models.size (); i++)
 	{
 		models[ i ]->SetCameraPos ( cameraPos );
 	}
 
 	snowman.SetCameraPos ( cameraPos );
 	snowmanOnBox.SetCameraPos ( cameraPos );
+
+	SetPointLightSourcePos ();
 }
 
 void MyScene::UpdateViewProjMatrix ()
@@ -142,7 +142,7 @@ void MyScene::UpdateViewProjMatrix ()
 	float fAspectRatio = pBackBufferSurfaceDesc->Width / ( FLOAT ) pBackBufferSurfaceDesc->Height;
 	projMatrix =  XMMatrixPerspectiveFovLH ( XM_PIDIV4 , fAspectRatio , 0.01f , 1000.0f ) ;
 
-	for (auto i = 0; i < models.size (); i++)
+	for (size_t i = 0; i < models.size (); i++)
 	{
 		models[ i ]->SetViewMatrix ( viewMatrix );
 		models[ i ]->SetProjMatrix ( projMatrix );
@@ -153,15 +153,13 @@ void MyScene::UpdateViewProjMatrix ()
 
 	snowmanOnBox.SetViewMatrix ( viewMatrix );
 	snowmanOnBox.SetProjMatrix ( projMatrix );
-
-	SetPointLightSourcePos ();
 }
 
 void MyScene::SetDirectionalLightDirection ()
 {
 	XMVECTOR lightDirection = XMVectorSet ( 3.0f , -4.0 , 0 , 0 );
 
-	for (auto i = 0; i < models.size (); i++)
+	for (size_t i = 0; i < models.size (); i++)
 	{
 		models[ i ]->SetDirectionalLightDirection ( lightDirection );
 	}
@@ -176,9 +174,10 @@ void MyScene::SetPointLightSourcePos ()
 
 	XMMATRIX pointLightPosWorldMat = XMMatrixTranslationFromVector ( pointLightPos );
 
+	// models[8] is the point light 
 	models[ 8 ]->SetWorldMatrix ( pointLightPosWorldMat );
 
-	for (auto i = 0; i < models.size (); i++)
+	for (size_t i = 0; i < models.size (); i++)
 	{
 		models[ i ]->SetPointLightSourcePos ( pointLightPos );
 	}
@@ -279,25 +278,25 @@ void MyScene::RenderScene ( double fTime , float fElapsedTime , void* pUserConte
 {
 	totalTime = fTime;
 	deltaTime = fElapsedTime;
-	//printf ( "fTime %f  fElapsedTime %f \n " , fTime , fElapsedTime );
 
-	// Clear render target and the depth stencil 
+	// clear render target and the depth stencil 
 	auto pRTV = DXUTGetD3D11RenderTargetView ();
 	pd3dImmediateContext->ClearRenderTargetView ( pRTV , Colors::MidnightBlue );
 
 	auto pDSV = DXUTGetD3D11DepthStencilView ();
 	pd3dImmediateContext->ClearDepthStencilView ( pDSV , D3D11_CLEAR_DEPTH , 1.0 , 0 );
 
+	// update matrix of all models
 	UpdateWorldMatrix ();
-	// set view and projection buffer
 	UpdateViewProjMatrix ();
 
+	// do the rendering
 	snowman.RenderSnowman ( fTime , fElapsedTime , pUserContext );
 
 	if (!isCameraOnBoard)
 		snowmanOnBox.RenderSnowman ( fTime , fElapsedTime , pUserContext );
 
-	for (auto i = 0; i < models.size (); i++)
+	for (size_t i = 0; i < models.size (); i++)
 	{
 		models[ i ]->RenderScene (fTime,fElapsedTime, pUserContext);
 	}
@@ -352,14 +351,13 @@ void MyScene::CameraTryOnBoard ()
 	{
 		cameraPos = camera.GetCameraPos ();
 		float dis = PointsDistance ( cameraPos , boxPos );
-		//printf ( "dis: %f \n" , dis );
 		if (dis < 15)
 		{
 			isCameraOnBoard = true;
 		}
 		else
 		{
-			printf ( "camera is too far from the box, distance is : %f \n" , dis );
+			printf ( "\nToo far from the box, please move closer, distance: %f, \n" , dis );
 		}
 	}
 }
@@ -370,7 +368,9 @@ void MyScene::IncreaseMaterialRoughness ()
 	if (materialRoughness > 1)
 		materialRoughness = 1;
 
-	for (auto i = 0; i < models.size (); i++)
+	printf ( "\nRoughness of shinning spheres: %f \n" , materialRoughness );
+
+	for (size_t i = 0; i < models.size (); i++)
 	{
 		models[ i ]->SetMaterialRoughness( materialRoughness );
 	}
@@ -382,7 +382,9 @@ void MyScene::DecreaseMaterialRoughness ()
 	if (materialRoughness <= 0.05)
 		materialRoughness = 0.05;
 
-	for (auto i = 0; i < models.size (); i++)
+	printf ( "\nRoughness of shinning spheres: %f \n" , materialRoughness );
+
+	for (size_t i = 0; i < models.size (); i++)
 	{
 		models[ i ]->SetMaterialRoughness ( materialRoughness );
 	}

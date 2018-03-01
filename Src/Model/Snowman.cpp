@@ -8,22 +8,22 @@ Snowman::Snowman ()
 
 Snowman::Snowman ( 
 		ID3D11Device * pd3dDevice , 
-		const DXGI_SURFACE_DESC * pBackBufferSurfaceDesc ,
-		void * pUserContext 
+		const DXGI_SURFACE_DESC * backBufferSurfaceDesc ,
+		void * userContext
 )
 {
-	Initialise ( pd3dDevice , pBackBufferSurfaceDesc , pUserContext );
+	Initialise ( pd3dDevice , backBufferSurfaceDesc , userContext );
 }
 
 void Snowman::Initialise ( 
 	ID3D11Device * pd3dDevice ,
-	const DXGI_SURFACE_DESC * pBackBufferSurfaceDesc ,
-	void * pUserContext 
+	const DXGI_SURFACE_DESC * backBufferSurfaceDesc ,
+	void * userContext 
 )
 {
 	this->pd3dDevice = pd3dDevice;
-	this->pBackBufferSurfaceDesc = pBackBufferSurfaceDesc;
-	this->pUserContext = pUserContext;
+	this->pBackBufferSurfaceDesc = backBufferSurfaceDesc;
+	this->pUserContext = userContext;
 
 	SetupSnowman ();
 }
@@ -135,7 +135,7 @@ void Snowman::ConfigHand ()
 	// left eye
 	BaseModel *leftHand = new BasicGeometry ( pd3dDevice , pBackBufferSurfaceDesc , pUserContext );
 
-	leftHand->Initiallise ( L"basicTexEffect.fx" , model , nullptr );
+	leftHand->Initiallise ( L"basicTexEffect.fx" , model , L"grass.dds" );
 
 	XMMATRIX worldMatrix = XMMatrixRotationZ ( 45 * DEG_TO_RAD ) * XMMatrixTranslation ( -6 , -3 , 0 );
 	leftHand->SetWorldMatrix ( worldMatrix );
@@ -156,7 +156,7 @@ void Snowman::ConfigHand ()
 void Snowman::ApplyExtraWorldMatrix ( XMMATRIX worldMatrix )
 {
 	
-	for (auto i = 0; i < models.size (); i++)
+	for (size_t i = 0; i < models.size (); i++)
 	{
 		XMMATRIX newPos = componentPos[ i ] * worldMatrix;
 		models[ i ]->SetWorldMatrix( newPos );
@@ -165,7 +165,7 @@ void Snowman::ApplyExtraWorldMatrix ( XMMATRIX worldMatrix )
 
 void Snowman::SetViewMatrix ( XMMATRIX viewMatrix )
 {
-	for (auto i = 0; i < models.size (); i++)
+	for (size_t i = 0; i < models.size (); i++)
 	{
 		models[ i ]->SetViewMatrix ( viewMatrix );
 	}
@@ -173,7 +173,7 @@ void Snowman::SetViewMatrix ( XMMATRIX viewMatrix )
 
 void Snowman::SetProjMatrix ( XMMATRIX projMatrix )
 {
-	for (auto i = 0; i < models.size (); i++)
+	for (size_t i = 0; i < models.size (); i++)
 	{
 		models[ i ]->SetProjMatrix ( projMatrix );
 	}
@@ -181,7 +181,7 @@ void Snowman::SetProjMatrix ( XMMATRIX projMatrix )
 
 void Snowman::SetCameraPos ( XMVECTOR camPos )
 {
-	for (auto i = 0; i < models.size (); i++)
+	for (size_t i = 0; i < models.size (); i++)
 	{
 		models[ i ]->SetCameraPos( camPos );
 	}
@@ -189,7 +189,7 @@ void Snowman::SetCameraPos ( XMVECTOR camPos )
 
 void Snowman::SetDirectionalLightDirection ( XMVECTOR lightDir )
 {
-	for (auto i = 0; i < models.size (); i++)
+	for (size_t i = 0; i < models.size (); i++)
 	{
 		models[ i ]->SetDirectionalLightDirection ( lightDir );
 	}
@@ -197,23 +197,23 @@ void Snowman::SetDirectionalLightDirection ( XMVECTOR lightDir )
 
 void Snowman::SetPointLightSourcePos ( XMVECTOR lightPos )
 {
-	for (auto i = 0; i < models.size (); i++)
+	for (size_t i = 0; i < models.size (); i++)
 	{
 		models[ i ]->SetPointLightSourcePos ( lightPos );
 	}
 }
 
-void Snowman::RenderSnowman ( double fTime , float fElapsedTime , void * pUserContex )
+void Snowman::RenderSnowman ( double fTime , float fElapsedTime , void * userContext )
 {
-	for (auto i = 0; i < models.size (); i++)
+	for (size_t i = 0; i < models.size (); i++)
 	{
-		models[ i ]->RenderScene ( fTime , fElapsedTime , pUserContext );
+		models[ i ]->RenderScene ( fTime , fElapsedTime , userContext );
 	}
 }
 
 void Snowman::Release ()
 {
-	for (auto i = 0; i < models.size (); i++)
+	for (size_t i = 0; i < models.size (); i++)
 	{
 		models[ i ]->Release ();
 	}

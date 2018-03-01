@@ -18,14 +18,14 @@ public:
 
 	Snowman (
 		ID3D11Device* pd3dDevice ,
-		const DXGI_SURFACE_DESC* pBackBufferSurfaceDesc ,
-		void* pUserContext
+		const DXGI_SURFACE_DESC* backBufferSurfaceDesc ,
+		void* userContext
 		);
 
 	void Initialise( 
 		ID3D11Device* pd3dDevice ,
-		const DXGI_SURFACE_DESC* pBackBufferSurfaceDesc ,
-		void* pUserContext
+		const DXGI_SURFACE_DESC* backBufferSurfaceDesc ,
+		void* userContext
 		);
 
 	~Snowman ();

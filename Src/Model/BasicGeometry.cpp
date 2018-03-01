@@ -1,8 +1,6 @@
 #include "BasicGeometry.h"
 
 
-
-
 HRESULT BasicGeometry::InitVertexLayout ()
 {
 	HRESULT hr = S_OK;
@@ -65,12 +63,10 @@ HRESULT BasicGeometry::InitEffects ()
 }
 
 
-void BasicGeometry::RenderScene ( double fTime , float fElapsedTime , void* pUserContext )
+void BasicGeometry::RenderScene ( double fTime , float fElapsedTime , void* userContext )
 {
 	// write vertices and indices data to GPU
-	BaseModel::RenderScene ( fTime , fElapsedTime , pUserContext );
-
-	//UpdateWorldMatrix ();
+	BaseModel::RenderScene ( fTime , fElapsedTime , userContext );
 
 	if ( g_pTextureRV != nullptr )
 		g_ptxDiffuseVariable->SetResource ( g_pTextureRV );
@@ -113,29 +109,4 @@ void BasicGeometry::Release ()
 
 BasicGeometry::~BasicGeometry ()
 {
-	
-}
-
-// this is actually not used anymore
-void BasicGeometry::InitBasicGeometryData ()
-{
-	MeshData box;
-	GeometryGenerator geoGen;
-
-	geoGen.CreateGeosphere ( 3 , 5 , box );
-
-
-	vertexNum = box.Vertices.size ();
-	vertexIndicesNum = box.Indices.size ();
-
-	vertices = new Vertex[ vertexNum ];
-
-	for (WORD i = 0; i < vertexNum; i++)
-		vertices[ i ] = box.Vertices[ i ];
-
-	indices = new WORD[ vertexIndicesNum ];
-
-	for (WORD i = 0; i < vertexIndicesNum; i++)
-		indices[ i ] = box.Indices[ i ];
-
 }

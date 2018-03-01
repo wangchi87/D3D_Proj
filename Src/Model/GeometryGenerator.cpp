@@ -658,20 +658,9 @@ void GeometryGenerator::CreateMeshFromPLY ( LPCWSTR fileName , MeshData & meshDa
 		// Parse the ASCII header fields
 		PlyFile file ( ss );
 
-		for (auto e : file.get_elements ())
-		{
-			std::cout << "element - " << e.name << " (" << e.size << ")" << std::endl;
-			for (auto p : e.properties)
-			{
-				std::cout << "\tproperty - " << p.name << " (" << PropertyTable[ p.propertyType ].str << ")" << std::endl;
-			}
-		}
 		std::cout << std::endl;
+		std::cout <<"Start loading external PLY file "<< std::endl;
 
-		for (auto c : file.comments)
-		{
-			std::cout << "Comment: " << c << std::endl;
-		}
 
 		// Define containers to hold the extracted data. The type must match
 		// the property type given in the header. Tinyply will interally allocate the
@@ -706,12 +695,14 @@ void GeometryGenerator::CreateMeshFromPLY ( LPCWSTR fileName , MeshData & meshDa
 		//		timepoint after = now ();
 
 		// Good place to put a breakpoint!
-		//		std::cout << "Parsing took " << difference_micros ( before , after ) << "¦Ìs: " << std::endl;
-		std::cout << "\tRead " << verts.size () << " total vertices (" << vertexCount << " properties)." << std::endl;
-		std::cout << "\tRead " << norms.size () << " total normals (" << normalCount << " properties)." << std::endl;
-		std::cout << "\tRead " << colors.size () << " total vertex colors (" << colorCount << " properties)." << std::endl;
-		std::cout << "\tRead " << faces.size () << " total faces (triangles) (" << faceCount << " properties)." << std::endl;
-		std::cout << "\tRead " << uvCoords.size () << " total texcoords (" << faceTexcoordCount << " properties)." << std::endl;
+
+		//std::cout << "\tRead " << verts.size () << " total vertices (" << vertexCount << " properties)." << std::endl;
+		//std::cout << "\tRead " << norms.size () << " total normals (" << normalCount << " properties)." << std::endl;
+		//std::cout << "\tRead " << colors.size () << " total vertex colors (" << colorCount << " properties)." << std::endl;
+		//std::cout << "\tRead " << faces.size () << " total faces (triangles) (" << faceCount << " properties)." << std::endl;
+		//std::cout << "\tRead " << uvCoords.size () << " total texcoords (" << faceTexcoordCount << " properties)." << std::endl;
+
+		std::cout << "Succeed in loading PLY file " << std::endl;
 
 		meshData.Vertices.clear ();
 		meshData.Indices.clear ();
@@ -732,6 +723,13 @@ void GeometryGenerator::CreateMeshFromPLY ( LPCWSTR fileName , MeshData & meshDa
 				v.Normal.y = norms[ i * 3 + 1 ];
 				v.Normal.z = norms[ i * 3 + 2 ];
 			}
+
+			if (faceTexcoordCount == vertexCount)
+			{
+				v.TexC.x = uvCoords[ i * 3 ];
+				v.TexC.y = uvCoords[ i * 3 + 1 ];
+			}
+
 			meshData.Vertices[i] = ( v );
 		}
 

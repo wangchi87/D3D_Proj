@@ -6,7 +6,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 //--------------------------------------------------------------------------------------
 
-//#pragma comment( linker, "/subsystem:\"console\" /entry:\"WinMainCRTStartup\"")  
 
 #include "MyScene.h"
 
@@ -46,7 +45,12 @@ void CallConcoleOutput ( void )
 	AllocConsole ();
 	freopen ( "CONOUT$" , "w+t" , stdout );
 	// test code
-	printf ( "InitConsoleWindow OK!/n" );
+	printf ( "InitConsoleWindow OK!\n\n" );
+
+	printf ( "USAGE:\n\n1. use key W A S D and mouse to move around \n" );
+	printf (		   "2. press key F to get on aboard on the moving box, and watch the scene in the view of moving snowman." );
+	printf (				"(This is only available when you are close enough to the moving box) \n" );
+	printf (		   "3. press key Z and C to increse and decrease the roughness parameters of the shinning balls.\n" );
 }
 
 //--------------------------------------------------------------------------------------
@@ -108,7 +112,6 @@ void CALLBACK OnD3D11FrameRender( ID3D11Device* pd3dDevice, ID3D11DeviceContext*
                                   double fTime, float fElapsedTime, void* pUserContext )
 {
 	mScene.RenderScene ( fTime , fElapsedTime , pUserContext );
-	//dc.RenderScene ( fTime , fElapsedTime , pUserContext );
 }
 
 
@@ -201,9 +204,7 @@ void CALLBACK OnMouse( bool bLeftButtonDown, bool bRightButtonDown, bool bMiddle
                        bool bSideButton1Down, bool bSideButton2Down, int nMouseWheelDelta,
                        int xPos, int yPos, void* pUserContext )
 {
-	printf ( "mouse move OK!/n" );
 	mScene.UpdateMousePos ( xPos , yPos );
-	//dc.UpdateMousePos ( xPos , yPos );
 }
 
 
@@ -222,8 +223,6 @@ int WINAPI wWinMain( _In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 {
 
 	CallConcoleOutput ();
-
-	OutputDebugString ( L"asdssadas" );
 	
     // Enable run-time memory check for debug builds.
 #ifdef _DEBUG
@@ -257,7 +256,7 @@ int WINAPI wWinMain( _In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
     DXUTCreateWindow( L"EmptyProject11" );
 
     // Only require 10-level hardware or later
-    DXUTCreateDevice( D3D_FEATURE_LEVEL_10_0, true, 1200, 1000 );
+    DXUTCreateDevice( D3D_FEATURE_LEVEL_10_0, true, 1200, 900 );
     DXUTMainLoop(); // Enter into the DXUT ren  der loop
 
     // Perform any application-level cleanup here

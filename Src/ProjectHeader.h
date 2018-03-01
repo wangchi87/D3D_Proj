@@ -4,21 +4,20 @@
 #define PROJECT_HEADER
 
 // DXUT header
-#include "DXUT\DXUT.h"
-#include "DXUTOpt\SDKmisc.h"
+#include <DXUT\DXUT.h>
+#include <DXUTOpt\SDKmisc.h>
+#include <DXUT\DDSTextureLoader.h>
+#include <Effects11\d3dx11effect.h>
 using namespace DirectX;
 
+// std header
 #include <vector>
 #include <fstream>
 #include <sstream>
 using namespace std;
 
-#include "Effects11\d3dx11effect.h"
-
-// self-defined header
-
+// self-defined content
 #include "Camera\FirstPersonCamera.h"
-#include "Texture\DDSTextureLoader.h"
 
 struct Vertex
 {
@@ -39,7 +38,11 @@ struct Vertex
 	XMFLOAT2 TexC;
 };
 
-
+struct MeshData
+{
+	std::vector<Vertex> Vertices;
+	std::vector<WORD> Indices;
+};
 
 #include "Model\GeometryGenerator.h"
 

@@ -38,12 +38,11 @@ public:
 	void RenderScene (
 		double fTime ,
 		float fElapsedTime ,
-		void* pUserContex
+		void* userContext
 	) override;
 
 	void AddResources () override
 	{
-		//InitBasicGeometryData ();
 
 		InitEffects ();
 		InitVertexLayout ();

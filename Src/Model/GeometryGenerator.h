@@ -21,14 +21,11 @@
 #define GEOMETRYGENERATOR_H
 
 #include "ProjectHeader.h"
+
 #include "tinyply\tinyply.h"
 using namespace tinyply;
 
-struct MeshData
-{
-	std::vector<Vertex> Vertices;
-	std::vector<WORD> Indices;
-};
+
 
 inline void ScaleMesh ( MeshData &md, float scaleFactor )
 {
@@ -80,7 +77,9 @@ public:
 	///</summary>
 	void CreateFullscreenQuad(MeshData& meshData);
 
-	// load a mesh from external PLY file
+	///<summary>
+	/// load a mesh from external PLY file
+	///</summary>
 	void CreateMeshFromPLY ( LPCWSTR fileName , MeshData& meshData );
 
 	~GeometryGenerator ()

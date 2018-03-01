@@ -27,7 +27,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectName>EmptyProject11</ProjectName>
+    <ProjectName>SnowmanScene</ProjectName>
     <ProjectGuid>{D3D11108-96D0-4629-88B8-122C0256058C}</ProjectGuid>
     <RootNamespace>EmptyProject11</RootNamespace>
     <Keyword>Win32Proj</Keyword>
@@ -376,36 +376,30 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\Src\Camera\FirstPersonCamera.cpp" />
-    <ClCompile Include="..\Src\Cube.cpp" />
-    <ClCompile Include="..\Src\EmptyProject11.cpp" />
+    <ClCompile Include="..\Src\SnowmanScene.cpp" />
     <ClCompile Include="..\Src\Model\BaseModel.cpp" />
     <ClCompile Include="..\Src\Model\BasicGeometry.cpp" />
     <ClCompile Include="..\Src\Model\GeometryGenerator.cpp" />
-    <ClCompile Include="..\Src\Model\ModelLoader.cpp" />
     <ClCompile Include="..\Src\Model\Snowman.cpp" />
     <ClCompile Include="..\Src\Model\tinyply\tinyply.cpp" />
     <ClCompile Include="..\Src\MyScene.cpp" />
-    <ClCompile Include="..\Src\Texture\DDSTextureLoader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Src\Camera\FirstPersonCamera.h" />
-    <ClInclude Include="..\Src\Cube.h" />
     <ClInclude Include="..\Src\Model\BaseModel.h" />
     <ClInclude Include="..\Src\Model\BasicGeometry.h" />
     <ClInclude Include="..\Src\Model\GeometryGenerator.h" />
-    <ClInclude Include="..\Src\Model\ModelLoader.h" />
     <ClInclude Include="..\Src\Model\Snowman.h" />
     <ClInclude Include="..\Src\Model\tinyply\tinyply.h" />
     <ClInclude Include="..\Src\MyScene.h" />
     <ClInclude Include="..\Src\ProjectHeader.h" />
     <ClInclude Include="..\Src\resource.h" />
-    <ClInclude Include="..\Src\Texture\DDSTextureLoader.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\Dependency\DXUTOpt\directx.ico" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="..\Src\EmptyProject11.rc" />
+    <ResourceCompile Include="..\Src\SnowmannScene.rc" />
   </ItemGroup>
   <ItemGroup>
     <None Include="basicTexEffect.fx">

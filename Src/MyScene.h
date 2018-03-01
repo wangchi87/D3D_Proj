@@ -13,9 +13,6 @@ class MyScene
 	void*						pUserContext;
 
 	DWORD						dwShaderFlags;
-
-	XMMATRIX					g_View;
-	XMMATRIX					g_Projection;
 	
 	// variable for first person camera
 	FirstPersonCamera			camera;
@@ -25,7 +22,6 @@ class MyScene
 
 	// geometry models
 	vector<BaseModel*>			models;
-
 	Snowman						snowman;
 	Snowman						snowmanOnBox;
 
@@ -41,8 +37,6 @@ class MyScene
 
 	// model material roughness( 0-1,the larger, the rougher)
 	float						materialRoughness;
-
-
 
 public:
 	MyScene ();
