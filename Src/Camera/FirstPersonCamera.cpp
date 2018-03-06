@@ -166,7 +166,7 @@ void FirstPersonCamera::ProcessMouseScroll ( float yoffset )
 // conver degree to radians
 float FirstPersonCamera::ToRadians ( float angDeg )
 {
-	return angDeg * RAD_TO_DEG;
+	return angDeg * DEG_TO_RAD;
 }
 
 // Calculates the front vector from the Camera's (updated) Eular Angles

@@ -5,8 +5,8 @@
 
 #include "ProjectHeader.h"
 
-#define DEG_TO_RAD 180/XM_PI
-#define RAD_TO_DEG XM_PI/180
+#define RAD_TO_DEG 180/XM_PI
+#define DEG_TO_RAD XM_PI/180
 
 // Defines several possible options for camera movement. Used as abstraction to stay away from window-system specific input methods
 enum Camera_Movement {

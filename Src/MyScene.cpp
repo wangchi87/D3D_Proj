@@ -90,8 +90,8 @@ void MyScene::UpdateWorldMatrix ()
 			angle -= 360;
 	}
 
-	float xPos = 30 * sin ( angle * DEG_TO_RAD );
-	float zPos = 30 * cos ( angle * DEG_TO_RAD );
+	float xPos = 30 * sin ( angle * RAD_TO_DEG );
+	float zPos = 30 * cos ( angle * RAD_TO_DEG );
 
 	cameraPos = camera.GetCameraPos ();
 
@@ -264,7 +264,7 @@ void MyScene::AddModel ()
 	BaseModel *bunny = new BasicGeometry ( pd3dDevice , pBackBufferSurfaceDesc , pUserContext );
 
 	bunny->Initiallise ( L"Resources\\meshEffect.fx" , model , nullptr );
-	bunny->SetWorldMatrix ( XMMatrixRotationY( 80 * DEG_TO_RAD) *XMMatrixTranslation ( -35 , -17 , -40 ) );
+	bunny->SetWorldMatrix ( XMMatrixRotationY( 80 * RAD_TO_DEG) *XMMatrixTranslation ( -35 , -17 , -40 ) );
 	models.push_back ( bunny );
 
 	// snowman 

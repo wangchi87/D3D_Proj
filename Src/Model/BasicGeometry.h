@@ -11,6 +11,7 @@ class BasicGeometry: public BaseModel
 
 	ID3DX11EffectShaderResourceVariable*	g_ptxDiffuseVariable;
 
+	// effect file variables
 	ID3DX11EffectVectorVariable*			cameraPosVariable;
 	ID3DX11EffectVectorVariable*			directionalLightSouceDirectionVariable;
 	ID3DX11EffectVectorVariable*			pointLightSourcePosVariable;
@@ -29,8 +30,6 @@ public:
 		pUserContext
 	) {};
 
-	void InitBasicGeometryData ();
-
 	HRESULT InitVertexLayout ();
 
 	HRESULT InitEffects ();
@@ -43,13 +42,14 @@ public:
 
 	void AddResources () override
 	{
-
 		InitEffects ();
-		InitVertexLayout ();
 
+		InitVertexLayout ();
 		InitVertexData ();
 		InitIndexBuffer ();
 	}
+
+	// override virtual base functions
 	void SetCameraPos ( XMVECTOR camPos ) override;
 
 	void SetDirectionalLightDirection ( XMVECTOR lightDir ) override;

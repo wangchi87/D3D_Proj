@@ -18,6 +18,14 @@ void BaseModel::SetEffectFileName ( LPCWSTR fileName )
 	effectFileName = fileName;
 }
 
+void BaseModel::Initiallise ( LPCWSTR eFileName , MeshData model , const wchar_t * txFileName )
+{
+	SetEffectFileName ( eFileName );
+	InitGeometryData ( model );
+	InitTexture ( txFileName );
+	AddResources ();
+}
+
 void BaseModel::InitDeviceHandle ( ID3D11Device * d3dDevice , const DXGI_SURFACE_DESC * backBufferSurfaceDesc , void * userContext )
 {
 	vertexIndicesNum = 0;

@@ -38,16 +38,15 @@ public:
 	void ConfigNose ();
 	void ConfigHand ();
 
+	// set world, view , projection matrix
 	void ApplyExtraWorldMatrix ( XMMATRIX worldMatrix ) ;
-
 	void SetViewMatrix ( XMMATRIX viewMatrix ) ;
-
 	void SetProjMatrix ( XMMATRIX projMatrix ) ;
 
 	void SetCameraPos ( XMVECTOR camPos );
 
+	// set light source
 	void SetDirectionalLightDirection ( XMVECTOR lightDir );
-
 	void SetPointLightSourcePos ( XMVECTOR lightPos );
 
 	void RenderSnowman (

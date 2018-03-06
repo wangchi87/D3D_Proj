@@ -26,7 +26,6 @@
 using namespace tinyply;
 
 
-
 inline void ScaleMesh ( MeshData &md, float scaleFactor )
 {
 	for (UINT i = 0; i < md.Vertices.size (); i++)
@@ -41,45 +40,31 @@ class GeometryGenerator
 {
 public:
 
-	///<summary>
-	/// Creates a box centered at the origin with the given dimensions.
-	///</summary>
+	//Creates a box centered at the origin with the given dimensions.
 	void CreateBox(float width, float height, float depth, MeshData& meshData);
 
-	///<summary>
-	/// Creates a sphere centered at the origin with the given radius.  The
-	/// slices and stacks parameters control the degree of tessellation.
-	///</summary>
+	// Creates a sphere centered at the origin with the given radius.  The
+	//slices and stacks parameters control the degree of tessellation.
 	void CreateSphere(float radius, WORD sliceCount, WORD stackCount, MeshData& meshData);
 
-	///<summary>
-	/// Creates a geosphere centered at the origin with the given radius.  The
-	/// depth controls the level of tessellation.
-	///</summary>
+	// Creates a geosphere centered at the origin with the given radius.  The
+	// depth controls the level of tessellation.
 	void CreateGeosphere(float radius, WORD numSubdivisions, MeshData& meshData);
 
-	///<summary>
-	/// Creates a cylinder parallel to the y-axis, and centered about the origin.  
-	/// The bottom and top radius can vary to form various cone shapes rather than true
+	// Creates a cylinder parallel to the y-axis, and centered about the origin.  
+	// The bottom and top radius can vary to form various cone shapes rather than true
 	// cylinders.  The slices and stacks parameters control the degree of tessellation.
-	///</summary>
 	void CreateCylinder(float bottomRadius, float topRadius, float height, WORD sliceCount, WORD stackCount, MeshData& meshData);
 
-	///<summary>
-	/// Creates an mxn grid in the xz-plane with m rows and n columns, centered
-	/// at the origin with the specified width and depth.
-	///</summary>
+	// Creates an mxn grid in the xz-plane with m rows and n columns, centered
+	// at the origin with the specified width and depth.
 	void CreateGrid(float width, float depth, WORD m, WORD n, MeshData& meshData);
 
-	///<summary>
-	/// Creates a quad covering the screen in NDC coordinates.  This is useful for
-	/// postprocessing effects.
-	///</summary>
+	// Creates a quad covering the screen in NDC coordinates.  This is useful for
+	// postprocessing effects.
 	void CreateFullscreenQuad(MeshData& meshData);
 
-	///<summary>
-	/// load a mesh from external PLY file
-	///</summary>
+	// load a mesh from external PLY file
 	void CreateMeshFromPLY ( LPCWSTR fileName , MeshData& meshData );
 
 	~GeometryGenerator ()

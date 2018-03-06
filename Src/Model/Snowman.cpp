@@ -119,7 +119,7 @@ void Snowman::ConfigNose ()
 
 	nose->Initiallise ( L"Resources\\basicTexEffect.fx" , model , nullptr );
 
-	XMMATRIX worldMatrix = XMMatrixRotationX ( 70 * DEG_TO_RAD ) * XMMatrixTranslation ( 0 , 2 , -2.3 );
+	XMMATRIX worldMatrix = XMMatrixRotationX ( 70 * RAD_TO_DEG ) * XMMatrixTranslation ( 0 , 2 , -2.3 );
 	nose->SetWorldMatrix ( worldMatrix );
 	componentPos.push_back ( worldMatrix );
 	models.push_back ( nose );
@@ -137,7 +137,7 @@ void Snowman::ConfigHand ()
 
 	leftHand->Initiallise ( L"Resources\\basicTexEffect.fx" , model , L"Resources\\grass.dds" );
 
-	XMMATRIX worldMatrix = XMMatrixRotationZ ( 45 * DEG_TO_RAD ) * XMMatrixTranslation ( -6 , -3 , 0 );
+	XMMATRIX worldMatrix = XMMatrixRotationZ ( 45 * RAD_TO_DEG ) * XMMatrixTranslation ( -6 , -3 , 0 );
 	leftHand->SetWorldMatrix ( worldMatrix );
 	componentPos.push_back ( worldMatrix );
 	models.push_back ( leftHand );
@@ -147,7 +147,7 @@ void Snowman::ConfigHand ()
 
 	rightHand->Initiallise ( L"Resources\\basicTexEffect.fx" , model , L"Resources\\grass.dds" );
 
-	worldMatrix = XMMatrixRotationZ ( -45 * DEG_TO_RAD ) * XMMatrixTranslation ( 6 , -3 , 0 );
+	worldMatrix = XMMatrixRotationZ ( -45 * RAD_TO_DEG ) * XMMatrixTranslation ( 6 , -3 , 0 );
 	rightHand->SetWorldMatrix ( worldMatrix );
 	componentPos.push_back ( worldMatrix );
 	models.push_back ( rightHand );

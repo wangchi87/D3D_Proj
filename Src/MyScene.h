@@ -46,19 +46,17 @@ public:
 		const DXGI_SURFACE_DESC* pBackBufferSurfaceDesc ,
 		void* pUserContext );
 
-	void InitCamera ();
-
-	void UpdateWorldMatrix ();
-
-	void UpdateViewProjMatrix ();
-
-	void SetDirectionalLightDirection ();
-
-	void SetPointLightSourcePos ();
-
 	void AddModel ();
 
 	void RenderScene ( double fTime , float fElapsedTime , void* pUserContext );
+
+	// change roughness
+	void IncreaseMaterialRoughness ();
+
+	void DecreaseMaterialRoughness ();
+
+	// change camera pos
+	void InitCamera ();
 
 	void MouseLeave ();
 
@@ -68,8 +66,13 @@ public:
 
 	void CameraTryOnBoard ();
 
-	void IncreaseMaterialRoughness ();
+private:
+	void UpdateWorldMatrix ();
 
-	void DecreaseMaterialRoughness ();
+	void UpdateViewProjMatrix ();
+
+	void SetDirectionalLightDirection ();
+
+	void SetPointLightSourcePos ();
 };
 

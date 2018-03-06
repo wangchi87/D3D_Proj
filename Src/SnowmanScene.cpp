@@ -1,9 +1,9 @@
 //--------------------------------------------------------------------------------------
-// File: EmptyProject11.cpp
+// File: SnowmanScene.cpp
 //
-// Empty starting point for new Direct3D 11 Win32 desktop applications
+// Starting point for new Direct3D 11 Win32 desktop applications of a snowman scene
 //
-// Copyright (c) Microsoft Corporation. All rights reserved.
+// Chi Wang for NetEase -1 homework
 //--------------------------------------------------------------------------------------
 
 
